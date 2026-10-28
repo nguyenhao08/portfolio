@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · CV Data Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Marked.js để parse Markdown preview -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:    #0a0f1e;
+      --navy2:   #0f172a;
+      --navy3:   #1e293b;
+      --navy4:   #334155;
+      --sky:     #38bdf8;
+      --sky-dim: #0ea5e9;
+      --emerald: #34d399;
+      --red:     #f87171;
+      --amber:   #fbbf24;
+      --text:    #e2e8f0;
+      --muted:   #94a3b8;
+      --border:  rgba(255,255,255,0.08);
+      --card:    rgba(255,255,255,0.04);
+      --mono:    'JetBrains Mono', monospace;
+      --font:    'Plus Jakarta Sans', sans-serif;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font);
+      background: var(--navy);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy2); }
+    ::-webkit-scrollbar-thumb { background: var(--navy4); border-radius: 3px; }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      background: var(--navy2);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 16px; }
+    .topbar-logo {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--sky);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .topbar-logo i { font-size: 16px; }
+    .topbar-divider { width: 1px; height: 24px; background: var(--border); }
+    .topbar-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 3px 9px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--navy4);
+      transition: background 0.3s;
+    }
+    .status-dot.connected { background: var(--emerald); box-shadow: 0 0 6px rgba(52,211,153,0.5); }
+    .status-dot.error     { background: var(--red); }
+    .status-dot.loading   { background: var(--amber); animation: blink 0.8s infinite; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .nav-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-link:hover { background: var(--card); color: var(--text); }
+
+    /* ===== LAYOUT ===== */
+    .workspace {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ===== LEFT PANEL — CONFIG ===== */
+    .panel-config {
+      background: var(--navy2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .panel-section {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-section:last-child { border-bottom: none; }
+    .panel-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .panel-section-title i { color: var(--sky); }
+
+    .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .field label .req { color: var(--red); font-size: 10px; }
+    .field input, .field select {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-family: var(--mono);
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    .field input:focus, .field select:focus { border-color: var(--sky-dim); }
+    .field input::placeholder { color: var(--navy4); }
+    .field .hint {
+      font-size: 11px;
+      color: var(--navy4);
+      line-height: 1.4;
+    }
+    .field .hint a { color: var(--sky); text-decoration: none; }
+
+    .token-wrap { position: relative; }
+    .token-wrap input { padding-right: 38px; }
+    .token-toggle {
+      position: absolute;
+      right: 10px; top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 2px;
+    }
+    .token-toggle:hover { color: var(--sky); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 16px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      font-family: var(--font);
+    }
+    .btn-primary { background: var(--sky-dim); color: #fff; width: 100%; }
+    .btn-primary:hover { background: var(--sky); transform: translateY(-1px); }
+    .btn-primary:disabled { background: var(--navy4); cursor: not-allowed; transform: none; }
+    .btn-danger  { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.25); width: 100%; }
+    .btn-danger:hover  { background: rgba(248,113,113,0.22); }
+    .btn-outline { background: var(--card); color: var(--text); border: 1px solid var(--border); width: 100%; }
+    .btn-outline:hover { border-color: var(--sky); color: var(--sky); }
+
+    .btn-group { display: flex; flex-direction: column; gap: 8px; }
+
+    /* File info card */
+    .file-info {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--muted);
+      display: none;
+    }
+    .file-info.visible { display: block; }
+    .file-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3px 0;
+    }
+    .file-info-row span:first-child { color: var(--navy4); }
+    .file-info-row span:last-child { color: var(--text); word-break: break-all; text-align: right; }
+
+    /* Commit message */
+    .commit-msg {
+      background: var(--navy);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-family: var(--mono);
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      resize: none;
+      min-height: 64px;
+      transition: border-color 0.2s;
+    }
+    .commit-msg:focus { border-color: var(--sky-dim); }
+
+    /* ===== RIGHT PANEL — EDITOR ===== */
+    .panel-editor {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .editor-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--navy2);
+      flex-shrink: 0;
+    }
+    .editor-tab {
+      padding: 12px 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .editor-tab:hover { color: var(--text); }
+    .editor-tab.active { color: var(--sky); border-bottom-color: var(--sky); }
+    .tab-badge {
+      background: rgba(56,189,248,0.15);
+      color: var(--sky);
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 10px;
+    }
+
+    .editor-views { flex: 1; display: flex; overflow: hidden; }
+
+    /* Raw markdown textarea */
+    .editor-raw {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .editor-raw.active { display: flex; }
+
+    .line-num-editor { display: flex; flex: 1; overflow: hidden; }
+    .line-numbers {
+      width: 48px;
+      background: var(--navy2);
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+      padding: 16px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--navy4);
+      text-align: right;
+      padding-right: 10px;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .line-numbers div { line-height: 21px; }
+
+    #mdEditor {
+      flex: 1;
+      background: var(--navy);
+      border: none;
+      outline: none;
+      resize: none;
+      padding: 16px 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 21px;
+      color: var(--text);
+      overflow-y: auto;
+      tab-size: 2;
+    }
+    #mdEditor::selection { background: rgba(56, 189, 248, 0.2); }
+
+    /* Preview pane */
+    .editor-preview {
+      flex: 1;
+      display: none;
+      overflow-y: auto;
+      padding: 32px 48px;
+      background: var(--navy);
+    }
+    .editor-preview.active { display: block; }
+    .editor-preview .md-content { max-width: 720px; }
+    .editor-preview .md-content h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #f1f5f9;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .editor-preview .md-content h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--sky);
+      margin: 28px 0 12px;
+    }
+    .editor-preview .md-content h3 { font-size: 15px; color: var(--text); margin: 20px 0 8px; }
+    .editor-preview .md-content p { font-size: 14px; color: #94a3b8; line-height: 1.8; margin-bottom: 12px; }
+    .editor-preview .md-content ul, .editor-preview .md-content ol {
+      padding-left: 22px;
+      margin-bottom: 12px;
+    }
+    .editor-preview .md-content li { font-size: 13.5px; color: #94a3b8; line-height: 1.75; margin-bottom: 4px; }
+    .editor-preview .md-content strong { color: var(--text); font-weight: 700; }
+    .editor-preview .md-content code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--navy2);
+      color: var(--sky);
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .editor-preview .md-content pre {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    .editor-preview .md-content pre code { background: none; border: none; padding: 0; }
+    .editor-preview .md-content blockquote {
+      border-left: 3px solid var(--sky);
+      margin: 16px 0;
+      padding: 8px 16px;
+      color: var(--muted);
+    }
+
+    /* Split view */
+    .editor-split {
+      flex: 1;
+      display: none;
+      overflow: hidden;
+    }
+    .editor-split.active { display: grid; grid-template-columns: 1fr 1fr; }
+    .split-left {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .split-header {
+      padding: 8px 16px;
+      background: var(--navy2);
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .split-left textarea {
+      flex: 1;
+      background: var(--navy);
+      border: none;
+      outline: none;
+      resize: none;
+      padding: 16px 18px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 21px;
+      color: var(--text);
+      overflow-y: auto;
+    }
+    .split-right {
+      overflow-y: auto;
+      padding: 20px 28px;
+      background: var(--navy);
+    }
+
+    /* Status bar */
+    .statusbar {
+      background: var(--sky-dim);
+      padding: 3px 14px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: rgba(255,255,255,0.85);
+      flex-shrink: 0;
+    }
+    .statusbar.error-bar { background: #b91c1c; }
+    .statusbar.success-bar { background: #059669; }
+    .statusbar.idle-bar { background: var(--navy3); }
+    .statusbar span { display: flex; align-items: center; gap: 5px; }
+
+    /* Toast notifications */
+    #toast-container {
+      position: fixed;
+      bottom: 40px; right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 999;
+    }
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s ease;
+      max-width: 320px;
+    }
+    .toast.success { border-color: rgba(52,211,153,0.4); }
+    .toast.error   { border-color: rgba(248,113,113,0.4); }
+    .toast.info    { border-color: rgba(56,189,248,0.3); }
+    .toast i { font-size: 15px; }
+    .toast.success i { color: var(--emerald); }
+    .toast.error   i { color: var(--red); }
+    .toast.info    i { color: var(--sky); }
+    @keyframes slideIn {
+      from { opacity:0; transform: translateX(20px); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+
+    /* Diff viewer */
+    .diff-block {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .diff-line { padding: 2px 12px; line-height: 1.6; }
+    .diff-line.added   { background: rgba(52,211,153,0.08); color: #86efac; }
+    .diff-line.removed { background: rgba(248,113,113,0.08); color: #fca5a5; }
+    .diff-line.context { color: var(--navy4); }
+    .diff-header { padding: 8px 12px; background: var(--navy3); color: var(--muted); border-bottom: 1px solid var(--border); }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--navy2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .modal-title i { color: var(--amber); }
+    .modal-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    .modal-btn-cancel {
+      padding: 9px 20px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .modal-btn-confirm {
+      padding: 9px 20px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--sky-dim);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+    .modal-btn-confirm:hover { background: var(--sky); }
+    .modal-btn-cancel:hover { border-color: var(--sky); color: var(--sky); }
+
+    /* Local storage indicator */
+    .local-saved {
+      display: none;
+      font-size: 11px;
+      color: var(--emerald);
+      font-family: var(--mono);
+      align-items: center;
+      gap: 4px;
+    }
+    .local-saved.show { display: flex; }
+  </style>
+</head>
+<body>
+
+  <!-- ======================== TOPBAR ======================== -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <i class="fa-brands fa-github"></i> CV Admin
+      </div>
+      <div class="topbar-divider"></div>
+      <div class="topbar-badge">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Chưa kết nối</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a href="index.html" class="nav-link" target="_blank">
+        <i class="fa-solid fa-eye"></i> Xem Portfolio
+      </a>
+      <a href="portfolio.html" class="nav-link" target="_blank">
+        <i class="fa-solid fa-user"></i> Portfolio
+      </a>
+      <a href="cv.html" class="nav-link" target="_blank">
+        <i class="fa-solid fa-file-lines"></i> CV
+      </a>
+    </div>
+  </div>
+
+  <!-- ======================== WORKSPACE ======================== -->
+  <div class="workspace">
+
+    <!-- LEFT CONFIG PANEL -->
+    <aside class="panel-config">
+
+      <!-- GitHub Config -->
+      <div class="panel-section">
+        <div class="panel-section-title">
+          <i class="fa-brands fa-github"></i> Kết nối GitHub
+        </div>
+
+        <div class="field">
+          <label>GitHub Username <span class="req">*</span></label>
+          <input type="text" id="cfgOwner" placeholder="vd: vonguyenhao08" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label>Repository Name <span class="req">*</span></label>
+          <input type="text" id="cfgRepo" placeholder="vd: my-cv-project">
+        </div>
+
+        <div class="field">
+          <label>Branch</label>
+          <input type="text" id="cfgBranch" value="main" placeholder="main">
+        </div>
+
+        <div class="field">
+          <label>Đường dẫn file <span class="req">*</span></label>
+          <input type="text" id="cfgPath" value="cv_data.md" placeholder="cv_data.md">
+        </div>
+
+        <div class="field">
+          <label>Personal Access Token (PAT) <span class="req">*</span></label>
+          <div class="token-wrap">
+            <input type="password" id="cfgToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+            <button class="token-toggle" onclick="toggleToken()" title="Hiện/ẩn token">
+              <i class="fa-solid fa-eye" id="tokenEyeIcon"></i>
+            </button>
+          </div>
+          <span class="hint">
+            Tạo tại <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>.
+            Cần quyền <strong>repo</strong> (Contents: Read & Write).
+            Token được lưu trong <strong>localStorage</strong> của trình duyệt.
+          </span>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:4px;">
+          <button class="btn btn-primary" onclick="saveConfigAndConnect()" id="btnConnect">
+            <i class="fa-solid fa-plug-circle-bolt"></i> Kết nối & Tải file
+          </button>
+        </div>
+
+        <div class="local-saved" id="localSavedIndicator" style="margin-top:8px;">
+          <i class="fa-solid fa-circle-check"></i> Đã lưu cấu hình vào trình duyệt
+        </div>
+      </div>
+
+      <!-- File Info -->
+      <div class="panel-section">
+        <div class="panel-section-title">
+          <i class="fa-solid fa-circle-info"></i> Thông tin file
+        </div>
+        <div class="file-info" id="fileInfo">
+          <div class="file-info-row"><span>File</span><span id="fiName">—</span></div>
+          <div class="file-info-row"><span>Branch</span><span id="fiBranch">—</span></div>
+          <div class="file-info-row"><span>SHA</span><span id="fiSha" style="font-size:10.5px;">—</span></div>
+          <div class="file-info-row"><span>Kích thước</span><span id="fiSize">—</span></div>
+          <div class="file-info-row"><span>Cập nhật lần cuối</span><span id="fiDate">—</span></div>
+        </div>
+        <p id="fileInfoEmpty" style="font-size:12px; color:var(--muted);">Chưa kết nối. Nhập cấu hình bên trên và bấm "Kết nối".</p>
+      </div>
+
+      <!-- Commit & Save -->
+      <div class="panel-section">
+        <div class="panel-section-title">
+          <i class="fa-solid fa-code-commit"></i> Commit & Push
+        </div>
+        <div class="field">
+          <label>Commit message</label>
+          <textarea class="commit-msg" id="commitMsg" placeholder="docs: update cv_data.md via admin panel"></textarea>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="pushToGitHub()" id="btnPush" disabled>
+            <i class="fa-solid fa-cloud-arrow-up"></i> Lưu lên GitHub
+          </button>
+          <button class="btn btn-outline" onclick="fetchFile()" id="btnRefresh" disabled>
+            <i class="fa-solid fa-rotate"></i> Tải lại từ GitHub
+          </button>
+          <button class="btn btn-danger" onclick="showResetModal()" id="btnReset" disabled>
+            <i class="fa-solid fa-clock-rotate-left"></i> Hoàn tác thay đổi
+          </button>
+        </div>
+      </div>
+
+      <!-- Diff section -->
+      <div class="panel-section" id="diffSection" style="display:none;">
+        <div class="panel-section-title">
+          <i class="fa-solid fa-code-compare"></i> Thay đổi sẽ commit
+        </div>
+        <div id="diffViewer"></div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT EDITOR PANEL -->
+    <div class="panel-editor">
+
+      <!-- Tabs -->
+      <div class="editor-tabs">
+        <div class="editor-tab active" data-tab="raw" onclick="switchTab('raw')">
+          <i class="fa-solid fa-code"></i> Markdown Editor
+          <span class="tab-badge" id="changedBadge" style="display:none;">✎ Đã sửa</span>
+        </div>
+        <div class="editor-tab" data-tab="preview" onclick="switchTab('preview')">
+          <i class="fa-solid fa-eye"></i> Xem trước
+        </div>
+        <div class="editor-tab" data-tab="split" onclick="switchTab('split')">
+          <i class="fa-solid fa-table-columns"></i> Split View
+        </div>
+        <div style="margin-left:auto; padding:0 16px; display:flex; align-items:center; gap:12px;">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">
+            <i class="fa-solid fa-file-code"></i> <span id="lineCount">0</span> dòng · <span id="charCount">0</span> ký tự
+          </span>
+        </div>
+      </div>
+
+      <!-- View: Raw Editor -->
+      <div class="editor-raw active" id="viewRaw">
+        <div class="line-num-editor">
+          <div class="line-numbers" id="lineNumbers"></div>
+          <textarea id="mdEditor"
+            placeholder="&#x2022; Chưa tải file. Nhập cấu hình GitHub và bấm 'Kết nối & Tải file' ở bên trái.&#10;&#10;&#x2022; Sau khi kết nối, nội dung cv_data.md sẽ hiện tại đây để bạn chỉnh sửa.&#10;&#10;&#x2022; Sau khi sửa xong, bấm 'Lưu lên GitHub' để commit."
+            spellcheck="false"
+            oninput="onEditorInput()"></textarea>
+        </div>
+      </div>
+
+      <!-- View: Preview -->
+      <div class="editor-preview" id="viewPreview">
+        <div class="md-content" id="mdPreviewContent">
+          <p style="color:var(--muted);font-size:14px;">Nội dung xem trước sẽ hiện ở đây sau khi bạn nhập hoặc tải Markdown...</p>
+        </div>
+      </div>
+
+      <!-- View: Split -->
+      <div class="editor-split" id="viewSplit">
+        <div class="split-left">
+          <div class="split-header"><i class="fa-solid fa-code"></i> Markdown Source</div>
+          <textarea id="splitEditor" spellcheck="false" oninput="syncSplit(this.value)"></textarea>
+        </div>
+        <div class="split-right">
+          <div class="split-header" style="background:var(--navy2);padding:8px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-family:var(--mono);display:flex;align-items:center;gap:6px;position:sticky;top:0;z-index:1;">
+            <i class="fa-solid fa-eye"></i> Preview
+          </div>
+          <div class="md-content" id="splitPreviewContent" style="padding-top:16px;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="statusbar idle-bar" id="statusBar">
+    <span><i class="fa-solid fa-circle-info"></i> Sẵn sàng · Nhập cấu hình GitHub để bắt đầu</span>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- MODAL: Confirm Reset -->
+  <div class="modal-overlay" id="resetModal">
+    <div class="modal">
+      <div class="modal-title"><i class="fa-solid fa-triangle-exclamation"></i> Hoàn tác thay đổi?</div>
+      <p class="modal-desc">Tất cả chỉnh sửa chưa lưu lên GitHub sẽ bị mất và file sẽ được tải lại từ GitHub. Bạn chắc chắn chưa?</p>
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" onclick="closeResetModal()">Hủy bỏ</button>
+        <button class="modal-btn-confirm" onclick="confirmReset()">Hoàn tác</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // STATE
+    // ============================================================
+    let currentSHA = '';
+    let originalContent = '';
+    let isConnected = false;
+
+    // ============================================================
+    // INIT — load saved config from localStorage
+    // ============================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      const cfg = loadConfig();
+      if (cfg.owner)  document.getElementById('cfgOwner').value  = cfg.owner;
+      if (cfg.repo)   document.getElementById('cfgRepo').value   = cfg.repo;
+      if (cfg.branch) document.getElementById('cfgBranch').value = cfg.branch;
+      if (cfg.path)   document.getElementById('cfgPath').value   = cfg.path;
+      if (cfg.token)  document.getElementById('cfgToken').value  = cfg.token;
+
+      if (cfg.owner && cfg.repo && cfg.token) {
+        document.getElementById('localSavedIndicator').classList.add('show');
+      }
+
+      // Set default commit message with timestamp
+      setDefaultCommitMsg();
+      updateLineNumbers();
+    });
+
+    function loadConfig() {
+      try { return JSON.parse(localStorage.getItem('cvAdminConfig') || '{}'); }
+      catch(e) { return {}; }
+    }
+
+    function saveConfig() {
+      const cfg = {
+        owner:  document.getElementById('cfgOwner').value.trim(),
+        repo:   document.getElementById('cfgRepo').value.trim(),
+        branch: document.getElementById('cfgBranch').value.trim() || 'main',
+        path:   document.getElementById('cfgPath').value.trim() || 'cv_data.md',
+        token:  document.getElementById('cfgToken').value.trim(),
+      };
+      localStorage.setItem('cvAdminConfig', JSON.stringify(cfg));
+      return cfg;
+    }
+
+    function getConfig() {
+      return {
+        owner:  document.getElementById('cfgOwner').value.trim(),
+        repo:   document.getElementById('cfgRepo').value.trim(),
+        branch: document.getElementById('cfgBranch').value.trim() || 'main',
+        path:   document.getElementById('cfgPath').value.trim() || 'cv_data.md',
+        token:  document.getElementById('cfgToken').value.trim(),
+      };
+    }
+
+    function setDefaultCommitMsg() {
+      const now = new Date().toLocaleString('vi-VN');
+      document.getElementById('commitMsg').value = `docs: cập nhật cv_data.md qua Admin Panel · ${now}`;
+    }
+
+    // ============================================================
+    // CONNECT & FETCH
+    // ============================================================
+    async function saveConfigAndConnect() {
+      const cfg = getConfig();
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        toast('Vui lòng nhập đầy đủ: GitHub Username, Repo Name và Token.', 'error');
+        return;
+      }
+      saveConfig();
+      document.getElementById('localSavedIndicator').classList.add('show');
+      await fetchFile();
+    }
+
+    async function fetchFile() {
+      const cfg = getConfig();
+      setStatus('loading', 'Đang kết nối GitHub API...');
+
+      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${cfg.branch}`;
+
+      try {
+        const res = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${cfg.token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+          }
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.message || `HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        const content = atob(data.content.replace(/\n/g, ''));
+        currentSHA = data.sha;
+        originalContent = content;
+
+        // Populate editor
+        document.getElementById('mdEditor').value = content;
+        document.getElementById('splitEditor').value = content;
+        updateLineNumbers();
+        updateStats();
+        renderPreview(content);
+
+        // File info
+        showFileInfo(data, cfg);
+
+        // Fetch last commit date
+        fetchLastCommitDate(cfg, data.sha);
+
+        isConnected = true;
+        setStatus('connected', `Đã kết nối · ${cfg.owner}/${cfg.repo}/${cfg.path}`);
+        enableButtons(true);
+        toast(`Tải thành công file "${cfg.path}" từ ${cfg.owner}/${cfg.repo}`, 'success');
+        document.getElementById('changedBadge').style.display = 'none';
+
+      } catch(e) {
+        setStatus('error', `Lỗi: ${e.message}`);
+        toast(`Không thể kết nối: ${e.message}`, 'error');
+        enableButtons(false);
+      }
+    }
+
+    async function fetchLastCommitDate(cfg, sha) {
+      try {
+        const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/commits?path=${cfg.path}&sha=${cfg.branch}&per_page=1`;
+        const res = await fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${cfg.token}`,
+            'Accept': 'application/vnd.github.v3+json',
+          }
+        });
+        if (!res.ok) return;
+        const commits = await res.json();
+        if (commits && commits.length > 0) {
+          const date = new Date(commits[0].commit.author.date);
+          document.getElementById('fiDate').textContent = date.toLocaleString('vi-VN');
+        }
+      } catch(e) { /* silent */ }
+    }
+
+    function showFileInfo(data, cfg) {
+      document.getElementById('fiName').textContent = data.name;
+      document.getElementById('fiBranch').textContent = cfg.branch;
+      document.getElementById('fiSha').textContent = data.sha.substring(0, 12) + '...';
+      document.getElementById('fiSize').textContent = formatBytes(data.size);
+      document.getElementById('fileInfo').classList.add('visible');
+      document.getElementById('fileInfoEmpty').style.display = 'none';
+    }
+
+    // ============================================================
+    // PUSH TO GITHUB
+    // ============================================================
+    async function pushToGitHub() {
+      if (!isConnected || !currentSHA) {
+        toast('Chưa kết nối. Vui lòng tải file trước.', 'error');
+        return;
+      }
+
+      const cfg = getConfig();
+      const newContent = document.getElementById('mdEditor').value;
+      const commitMsg = document.getElementById('commitMsg').value.trim()
+                     || 'docs: update cv_data.md';
+
+      // Show diff in sidebar
+      showDiff(originalContent, newContent);
+
+      setStatus('loading', 'Đang commit & push lên GitHub...');
+      document.getElementById('btnPush').disabled = true;
+      document.getElementById('btnPush').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
+
+      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
+
+      try {
+        const res = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${cfg.token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+          body: JSON.stringify({
+            message: commitMsg,
+            content: btoa(unescape(encodeURIComponent(newContent))),
+            sha: currentSHA,
+            branch: cfg.branch,
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message || `HTTP ${res.status}`);
+        }
+
+        // Update SHA for next commit
+        currentSHA = data.content.sha;
+        originalContent = newContent;
+        document.getElementById('fiSha').textContent = data.content.sha.substring(0,12) + '...';
+        document.getElementById('fiDate').textContent = new Date().toLocaleString('vi-VN');
+        document.getElementById('changedBadge').style.display = 'none';
+
+        setStatus('connected', `✓ Commit thành công · ${cfg.owner}/${cfg.repo}`);
+        toast(`Commit thành công! File "${cfg.path}" đã được cập nhật trên GitHub.`, 'success');
+        setDefaultCommitMsg();
+
+      } catch(e) {
+        setStatus('error', `Lỗi push: ${e.message}`);
+        toast(`Push thất bại: ${e.message}`, 'error');
+      } finally {
+        document.getElementById('btnPush').disabled = false;
+        document.getElementById('btnPush').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Lưu lên GitHub';
+      }
+    }
+
+    // ============================================================
+    // EDITOR EVENTS
+    // ============================================================
+    function onEditorInput() {
+      const content = document.getElementById('mdEditor').value;
+      document.getElementById('splitEditor').value = content;
+      updateLineNumbers();
+      updateStats();
+      renderPreview(content);
+
+      const changed = content !== originalContent && isConnected;
+      document.getElementById('changedBadge').style.display = changed ? 'inline-flex' : 'none';
+    }
+
+    function syncSplit(val) {
+      document.getElementById('mdEditor').value = val;
+      updateLineNumbers();
+      updateStats();
+      renderPreview(val);
+      const changed = val !== originalContent && isConnected;
+      document.getElementById('changedBadge').style.display = changed ? 'inline-flex' : 'none';
+    }
+
+    function updateLineNumbers() {
+      const text = document.getElementById('mdEditor').value;
+      const lines = text.split('\n').length;
+      const container = document.getElementById('lineNumbers');
+      container.innerHTML = Array.from({length: lines}, (_, i) => `<div>${i+1}</div>`).join('');
+      document.getElementById('lineCount').textContent = lines;
+    }
+
+    function updateStats() {
+      const chars = document.getElementById('mdEditor').value.length;
+      document.getElementById('charCount').textContent = chars.toLocaleString('vi-VN');
+    }
+
+    // Sync scroll between editor and line numbers
+    document.addEventListener('DOMContentLoaded', () => {
+      const editor = document.getElementById('mdEditor');
+      const lineNums = document.getElementById('lineNumbers');
+      if (editor && lineNums) {
+        editor.addEventListener('scroll', () => {
+          lineNums.scrollTop = editor.scrollTop;
+        });
+      }
+    });
+
+    // ============================================================
+    // PREVIEW
+    // ============================================================
+    function renderPreview(md) {
+      const html = marked.parse(md || '');
+      document.getElementById('mdPreviewContent').innerHTML = html;
+      document.getElementById('splitPreviewContent').innerHTML = html;
+    }
+
+    // ============================================================
+    // TABS
+    // ============================================================
+    function switchTab(tab) {
+      document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+      document.getElementById('viewRaw').classList.remove('active');
+      document.getElementById('viewPreview').classList.remove('active');
+      document.getElementById('viewSplit').classList.remove('active');
+
+      const content = document.getElementById('mdEditor').value;
+      if (tab === 'raw')     { document.getElementById('viewRaw').classList.add('active'); }
+      if (tab === 'preview') { renderPreview(content); document.getElementById('viewPreview').classList.add('active'); }
+      if (tab === 'split')   {
+        renderPreview(content);
+        document.getElementById('splitEditor').value = content;
+        document.getElementById('viewSplit').classList.add('active');
+      }
+    }
+
+    // ============================================================
+    // DIFF VIEWER
+    // ============================================================
+    function showDiff(original, current) {
+      const origLines = original.split('\n');
+      const currLines = current.split('\n');
+
+      if (origLines.join('\n') === currLines.join('\n')) {
+        document.getElementById('diffSection').style.display = 'none';
+        return;
+      }
+
+      let diffHtml = '<div class="diff-block"><div class="diff-header"><i class="fa-solid fa-code-compare"></i> Thay đổi trong cv_data.md</div>';
+
+      const maxLen = Math.max(origLines.length, currLines.length);
+      let hasChanges = false;
+
+      for (let i = 0; i < maxLen; i++) {
+        const o = origLines[i];
+        const c = currLines[i];
+        if (o === undefined) {
+          diffHtml += `<div class="diff-line added">+ ${escapeHtml(c)}</div>`;
+          hasChanges = true;
+        } else if (c === undefined) {
+          diffHtml += `<div class="diff-line removed">- ${escapeHtml(o)}</div>`;
+          hasChanges = true;
+        } else if (o !== c) {
+          diffHtml += `<div class="diff-line removed">- ${escapeHtml(o)}</div>`;
+          diffHtml += `<div class="diff-line added">+ ${escapeHtml(c)}</div>`;
+          hasChanges = true;
+        }
+        // Skip context lines for brevity
+      }
+
+      diffHtml += '</div>';
+
+      if (hasChanges) {
+        document.getElementById('diffViewer').innerHTML = diffHtml;
+        document.getElementById('diffSection').style.display = 'block';
+      }
+    }
+
+    function escapeHtml(str = '') {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // ============================================================
+    // UI HELPERS
+    // ============================================================
+    function setStatus(state, msg) {
+      const dot = document.getElementById('statusDot');
+      const txt = document.getElementById('statusText');
+      const bar = document.getElementById('statusBar');
+
+      dot.className = 'status-dot ' + state;
+      txt.textContent = msg.length > 60 ? msg.substring(0, 58) + '…' : msg;
+
+      bar.className = 'statusbar';
+      bar.innerHTML = `<span>${msg}</span>`;
+
+      if (state === 'connected') bar.classList.add('success-bar');
+      else if (state === 'error') bar.classList.add('error-bar');
+      else bar.classList.add('idle-bar');
+    }
+
+    function enableButtons(enable) {
+      ['btnPush', 'btnRefresh', 'btnReset'].forEach(id => {
+        document.getElementById(id).disabled = !enable;
+      });
+    }
+
+    function toggleToken() {
+      const inp = document.getElementById('cfgToken');
+      const icon = document.getElementById('tokenEyeIcon');
+      if (inp.type === 'password') {
+        inp.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        inp.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    // ============================================================
+    // TOAST
+    // ============================================================
+    function toast(msg, type = 'info') {
+      const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+      const container = document.getElementById('toast-container');
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.innerHTML = `<i class="fa-solid ${icons[type]}"></i><span>${msg}</span>`;
+      container.appendChild(el);
+      setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all 0.3s'; setTimeout(()=>el.remove(), 300); }, 4000);
+    }
+
+    // ============================================================
+    // RESET MODAL
+    // ============================================================
+    function showResetModal() { document.getElementById('resetModal').classList.add('open'); }
+    function closeResetModal() { document.getElementById('resetModal').classList.remove('open'); }
+    async function confirmReset() {
+      closeResetModal();
+      await fetchFile();
+    }
+
+    // ============================================================
+    // UTILS
+    // ============================================================
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      return (bytes / 1024).toFixed(1) + ' KB';
+    }
+
+    // Tab key support in editor
+    document.addEventListener('DOMContentLoaded', () => {
+      const editor = document.getElementById('mdEditor');
+      if (editor) {
+        editor.addEventListener('keydown', function(e) {
+          if (e.key === 'Tab') {
+            e.preventDefault();
+            const start = this.selectionStart;
+            const end = this.selectionEnd;
+            this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+            this.selectionStart = this.selectionEnd = start + 2;
+            onEditorInput();
+          }
+          // Ctrl+S shortcut
+          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            pushToGitHub();
+          }
+        });
+      }
+
+      // Close modal on overlay click
+      document.getElementById('resetModal').addEventListener('click', function(e) {
+        if (e.target === this) closeResetModal();
+      });
+    });
+  </script>
+</body>
+</html>

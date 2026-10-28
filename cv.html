@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Võ Nguyễn Hào - Curriculum Vitae</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-dark: #090e17;
+      --navy-sidebar: #0f172a;
+      --navy-accent: #1e293b;
+      --navy-light: #334155;
+      --teal-primary: #0ea5e9;
+      --teal-accent: #06b6d4;
+      --teal-emerald: #10b981;
+      --teal-glow: rgba(14, 165, 233, 0.15);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --text-sidebar: #cbd5e1;
+      --bg-page: #f1f5f9;
+      --card-bg: #ffffff;
+      --border-subtle: #e2e8f0;
+      --tag-bg: #f8fafc;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.5;
+      font-size: 13.5px;
+      display: flex;
+      justify-content: center;
+      padding: 30px 15px;
+    }
+
+    /* Action bar on top for preview screen */
+    .screen-toolbar {
+      position: fixed;
+      top: 15px;
+      right: 25px;
+      display: flex;
+      gap: 12px;
+      z-index: 1000;
+    }
+
+    .btn-action {
+      background: #0f172a;
+      color: #ffffff;
+      border: 1px solid #334155;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-action:hover {
+      background: #1e293b;
+      border-color: var(--teal-primary);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-action.btn-accent {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      border: none;
+    }
+
+    .btn-action.btn-accent:hover {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    }
+
+    /* CV Container - standard 2-page or continuous responsive container */
+    .cv-container {
+      width: 100%;
+      max-width: 960px;
+      background: #ffffff;
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.12);
+      border-radius: 12px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 310px 1fr;
+    }
+
+    /* ================= SIDEBAR (LEFT) ================= */
+    .cv-sidebar {
+      background-color: var(--navy-sidebar);
+      color: var(--text-sidebar);
+      padding: 36px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .profile-card {
+      text-align: center;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #0ea5e9, #10b981);
+      box-shadow: 0 4px 20px rgba(14, 165, 233, 0.35);
+    }
+
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .name {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+
+    .title-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #38bdf8;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 4px 10px;
+      border-radius: 20px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-section-title i {
+      color: var(--teal-primary);
+      font-size: 12px;
+    }
+
+    /* Contact details list */
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+
+    .contact-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal-accent);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .contact-text a {
+      color: #e2e8f0;
+      text-decoration: none;
+      transition: color 0.2s;
+      word-break: break-all;
+    }
+
+    .contact-text a:hover {
+      color: #38bdf8;
+    }
+
+    .contact-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      display: block;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* Education & Certifications */
+    .edu-item {
+      margin-bottom: 14px;
+      position: relative;
+      padding-left: 14px;
+      border-left: 2px solid var(--teal-accent);
+    }
+
+    .edu-degree {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .edu-school {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .edu-cert-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 5px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Key Competencies / Skills */
+    .skills-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .skill-cat-name {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .pill-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      color: #e2e8f0;
+      font-family: var(--font-sans);
+    }
+
+    .skill-pill.highlight {
+      background: rgba(14, 165, 233, 0.18);
+      border-color: rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    .skill-pill.badge-iso {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    /* Core Strengths summary card */
+    .strength-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .strength-card strong {
+      color: #38bdf8;
+    }
+
+    /* ================= MAIN CONTENT (RIGHT) ================= */
+    .cv-main {
+      padding: 36px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      background: #ffffff;
+    }
+
+    .main-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+    }
+
+    .main-section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--navy-sidebar);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .main-section-title i {
+      color: #0284c7;
+      font-size: 15px;
+    }
+
+    .section-counter {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    /* Executive summary */
+    .summary-text {
+      font-size: 13.5px;
+      color: #334155;
+      line-height: 1.6;
+      background: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 8px;
+      border-left: 4px solid #0ea5e9;
+    }
+
+    /* Timeline Experience */
+    .timeline {
+      position: relative;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      left: 3px;
+      width: 2px;
+      background: #e2e8f0;
+    }
+
+    .timeline-item {
+      position: relative;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -19px;
+      top: 5px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #0ea5e9;
+      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+    }
+
+    .timeline-item.current .timeline-dot {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .exp-role {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .exp-period {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #0284c7;
+      background: #e0f2fe;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .exp-period.current-tag {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .exp-company {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .exp-company i {
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .exp-responsibilities {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .exp-responsibilities li {
+      font-size: 12.8px;
+      color: #475569;
+      line-height: 1.5;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .exp-responsibilities li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: #0ea5e9;
+      font-size: 11px;
+    }
+
+    /* Key Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .project-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 13px 15px;
+      transition: all 0.2s ease;
+      page-break-inside: avoid;
+      break-inside: avoid;
+      border-left: 3px solid #cbd5e1;
+    }
+
+    .project-card:hover {
+      border-color: #94a3b8;
+      border-left-color: #0ea5e9;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    }
+
+    .project-card.featured {
+      border-left-color: #0ea5e9;
+      background: #fafcff;
+    }
+
+    .project-card.iso-highlight {
+      border-left-color: #10b981;
+      background: #f0fdf4;
+    }
+
+    .proj-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 5px;
+      gap: 8px;
+    }
+
+    .proj-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .proj-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .proj-category {
+      font-size: 11px;
+      font-weight: 600;
+      color: #0369a1;
+      background: #e0f2fe;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .proj-desc {
+      font-size: 12.6px;
+      color: #475569;
+      line-height: 1.5;
+      margin-bottom: 7px;
+    }
+
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .proj-tech-tag {
+      font-size: 10.5px;
+      font-family: var(--font-mono);
+      color: #475569;
+      background: #f1f5f9;
+      padding: 1px 6px;
+      border-radius: 3px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .proj-tech-tag.integration {
+      color: #0284c7;
+      background: #f0f9ff;
+      border-color: #bae6fd;
+    }
+
+    /* Print Break Utilities */
+    .page-break-after {
+      page-break-after: always;
+      break-after: page;
+    }
+
+    .avoid-break {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* ================= PRINT STYLES ================= */
+    @page {
+      size: A4 portrait;
+      margin: 8mm 8mm 8mm 8mm;
+    }
+
+    @media print {
+      body {
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 12px !important;
+      }
+
+      .screen-toolbar {
+        display: none !important;
+      }
+
+      .cv-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        grid-template-columns: 270px 1fr !important;
+      }
+
+      .cv-sidebar {
+        padding: 22px 18px !important;
+        gap: 18px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .cv-main {
+        padding: 22px 24px !important;
+        gap: 18px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .avatar-wrapper {
+        width: 90px !important;
+        height: 90px !important;
+        margin-bottom: 12px !important;
+      }
+
+      .avatar-inner {
+        font-size: 30px !important;
+      }
+
+      .name {
+        font-size: 19px !important;
+      }
+
+      .main-section-title {
+        font-size: 13.5px !important;
+      }
+
+      .project-card {
+        padding: 9px 12px !important;
+        margin-bottom: 0 !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        box-shadow: none !important;
+      }
+
+      .timeline-item {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      a {
+        text-decoration: none !important;
+        color: inherit !important;
+      }
+    }
+
+    /* Responsive for small screens / tablets */
+    @media screen and (max-width: 820px) {
+      body {
+        padding: 10px;
+      }
+      .screen-toolbar {
+        top: 10px;
+        right: 10px;
+      }
+      .cv-container {
+        grid-template-columns: 1fr;
+      }
+      .cv-sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 25px 20px;
+      }
+      .cv-main {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Action Buttons for quick Print/Download -->
+  <div class="screen-toolbar">
+    <button onclick="window.print()" class="btn-action btn-accent">
+      <i class="fa-solid fa-print"></i> In / Lưu PDF (A4)
+    </button>
+  </div>
+
+  <div class="cv-container">
+    
+    <!-- ==================== LEFT COLUMN (SIDEBAR) ==================== -->
+    <aside class="cv-sidebar">
+      
+      <!-- Profile Header -->
+      <div class="profile-card">
+        <div class="avatar-wrapper">
+          <div class="avatar-inner">VH</div>
+        </div>
+        <h1 class="name">VÕ NGUYỄN HÀO</h1>
+        <div class="title-badge">BOD Sales Assistant</div>
+        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 6px; font-weight: 500;">
+          IT Pre-Sales & Enterprise Solution Consultant
+        </div>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="sidebar-block">
+        <div class="sidebar-section-title">
+          <i class="fa-solid fa-address-card"></i> Thông tin liên hệ
+        </div>
+        <div class="contact-list">
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="contact-text">
+              <span class="contact-label">Khu vực</span>
+              Tân Bình, TP. Hồ Chí Minh
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+            <div class="contact-text">
+              <span class="contact-label">Điện thoại</span>
+              <a href="tel:0377116163">0377 116 163</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="contact-text">
+              <span class="contact-label">Email</span>
+              <a href="mailto:vonguyenhao08@gmail.com">vonguyenhao08@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-brands fa-linkedin-in"></i></div>
+            <div class="contact-text">
+              <span class="contact-label">LinkedIn</span>
+              <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank">hao-nguyen-986a171a9</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education & Certification -->
+      <div class="sidebar-block">
+        <div class="sidebar-section-title">
+          <i class="fa-solid fa-graduation-cap"></i> Học vấn & Chứng chỉ
+        </div>
+        
+        <div class="edu-item">
+          <div class="edu-degree">Cử nhân Công nghệ Phần mềm</div>
+          <div class="edu-school">Trường Đại học Quy Nhơn</div>
+        </div>
+
+        <div class="edu-item" style="border-left-color: #10b981;">
+          <div class="edu-degree">Chứng nhận & Ngôn ngữ</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+            <span class="edu-cert-tag">
+              <i class="fa-solid fa-shield-halved"></i> ISO 27001:2022
+            </span>
+            <span class="edu-cert-tag" style="background: rgba(14, 165, 233, 0.15); border-color: rgba(14, 165, 233, 0.3); color: #38bdf8;">
+              <i class="fa-solid fa-language"></i> Tiếng Anh B1
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Competencies -->
+      <div class="sidebar-block">
+        <div class="sidebar-section-title">
+          <i class="fa-solid fa-layer-group"></i> Năng lực chuyên môn
+        </div>
+        <div class="skills-group">
+          <div>
+            <div class="skill-cat-name">Tư vấn & Kinh doanh giải pháp</div>
+            <div class="pill-cloud">
+              <span class="skill-pill highlight">BOD Sales Assistant</span>
+              <span class="skill-pill highlight">IT Pre-Sales</span>
+              <span class="skill-pill">Enterprise ERP</span>
+              <span class="skill-pill">e-Procurement</span>
+              <span class="skill-pill">Giải pháp WMS & POSM</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="skill-cat-name">Hệ thống & Tích hợp (Integrations)</div>
+            <div class="pill-cloud">
+              <span class="skill-pill">Open API Integration</span>
+              <span class="skill-pill">SAML 2.0 / SSO</span>
+              <span class="skill-pill">Bank APIs & VietQR</span>
+              <span class="skill-pill">Hóa đơn S-Invoice</span>
+              <span class="skill-pill">Galaxy DMS / iPOS</span>
+              <span class="skill-pill">Arito eKYC & Biometrics</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="skill-cat-name">Quản trị & Tiêu chuẩn</div>
+            <div class="pill-cloud">
+              <span class="skill-pill badge-iso">Project Management (ISO)</span>
+              <span class="skill-pill">ISO/IEC 27001:2022</span>
+              <span class="skill-pill">Chuẩn kế toán TT99</span>
+              <span class="skill-pill">Quản lý rủi ro ISMS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Value Proposition / Core Value -->
+      <div class="strength-card">
+        <div style="font-weight: 700; color: #ffffff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-bullseye" style="color: #38bdf8;"></i> Định vị giá trị
+        </div>
+        Cầu nối chiến lược giữa <strong>Nghiệp vụ Doanh nghiệp (Business)</strong> và <strong>Kiến trúc Công nghệ (Technology)</strong>, tối ưu hóa quy trình phê duyệt Ban Giám đốc và dẫn dắt giải pháp B2B chuyển đổi số quy mô lớn.
+      </div>
+
+    </aside>
+
+    <!-- ==================== RIGHT COLUMN (MAIN CONTENT) ==================== -->
+    <main class="cv-main">
+      
+      <!-- Section: Executive Summary -->
+      <section>
+        <div class="main-section-header">
+          <h2 class="main-section-title">
+            <i class="fa-solid fa-user-tie"></i> Hồ sơ chuyên môn
+          </h2>
+        </div>
+        <p class="summary-text">
+          Chuyên gia tư vấn giải pháp CNTT doanh nghiệp (<strong>Enterprise Solution Consultant</strong>) kiêm <strong>Trợ lý Kinh doanh Ban Giám đốc (BOD Sales Assistant)</strong> tại <strong>Arito Solutions</strong>. Sở hữu nền tảng Cử nhân Công nghệ Phần mềm kết hợp kinh nghiệm thực chiến đa ngành (F&B, Thủy sản, FMCG, Bán buôn & Phân phối). Năng lực chuyên sâu về tư vấn Pre-Sales, thiết kế kiến trúc tích hợp hệ sinh thái ERP, e-Procurement, WMS, eKYC và dẫn dắt chuẩn hóa an toàn thông tin theo chuẩn quốc tế <strong>ISO 27001:2022</strong>.
+        </p>
+      </section>
+
+      <!-- Section: Work Experience -->
+      <section>
+        <div class="main-section-header">
+          <h2 class="main-section-title">
+            <i class="fa-solid fa-briefcase"></i> Quá trình công tác
+          </h2>
+        </div>
+
+        <div class="timeline">
+          
+          <!-- Role 1: BOD Sales Assistant -->
+          <div class="timeline-item current">
+            <div class="timeline-dot"></div>
+            <div class="exp-header">
+              <span class="exp-role">Trợ lý Kinh doanh Ban Giám đốc (BOD Sales Assistant)</span>
+              <span class="exp-period current-tag">01/07/2026 – Hiện tại</span>
+            </div>
+            <div class="exp-company">
+              <i class="fa-solid fa-building"></i> Công ty Cổ phần Giải pháp Công nghệ Arito (Arito Solutions)
+            </div>
+            <ul class="exp-responsibilities">
+              <li>Trực tiếp tham mưu và hỗ trợ Ban Giám đốc trong công tác định hướng kinh doanh, đánh giá cơ hội thị trường và xây dựng chiến lược tiếp cận các khách hàng doanh nghiệp lớn (Enterprise Accounts).</li>
+              <li>Chủ trì phối hợp giữa khối Kinh doanh (BD/Sales) và khối Kỹ thuật/Triển khai để thẩm định tính khả thi, kiến trúc hệ thống và giải pháp tổng thể trước khi trình phê duyệt cấp cao.</li>
+              <li>Đại diện doanh nghiệp làm việc trực tiếp cùng C-Level, Ban điều hành của khách hàng trong các phiên trình bày giải pháp chuyển đổi số phức hợp.</li>
+            </ul>
+          </div>
+
+          <!-- Role 2: BD Executive & Assistant to Deputy CEO -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="exp-header">
+              <span class="exp-role">BD Executive & Assistant to Deputy CEO</span>
+              <span class="exp-period">02/2025 – 06/2026</span>
+            </div>
+            <div class="exp-company">
+              <i class="fa-solid fa-building"></i> Công ty Cổ phần Giải pháp Công nghệ Arito (Arito Solutions)
+            </div>
+            <ul class="exp-responsibilities">
+              <li>Đồng hành cùng Phó Tổng Giám đốc trong phát triển kinh doanh dịch vụ CNTT, khảo sát nhu cầu nghiệp vụ và xây dựng hồ sơ thầu, đề xuất giải pháp kỹ thuật (RFP/RFI/Proposal).</li>
+              <li>Tư vấn giải pháp Pre-Sales hệ thống ERP, e-Procurement, WMS và ký số cho các tập đoàn đa quốc gia và tổng công ty trong nước.</li>
+              <li>Quản lý tiến độ dự án chiến lược nội bộ, tối ưu quy trình phối hợp liên phòng ban và hỗ trợ mở rộng mạng lưới đối tác công nghệ ngân hàng & thanh toán.</li>
+            </ul>
+          </div>
+
+          <!-- Role 3: ISO Project Manager -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="exp-header">
+              <span class="exp-role">Project Manager – Dự án Chứng nhận ISO 27001:2022</span>
+              <span class="exp-period">Arito Solutions</span>
+            </div>
+            <div class="exp-company">
+              <i class="fa-solid fa-shield-virus"></i> Hệ thống Quản lý An toàn Thông tin (ISMS)
+            </div>
+            <ul class="exp-responsibilities">
+              <li>Đóng vai trò Project Manager dẫn dắt toàn diện dự án triển khai và áp dụng hệ thống bảo mật thông tin chuẩn quốc tế <strong>ISO/IEC 27001:2022</strong> cho toàn công ty.</li>
+              <li>Chủ trì thiết lập chính sách bảo mật, đánh giá rủi ro an toàn thông tin trên toàn bộ quy trình phát triển phần mềm, hạ tầng máy chủ và vận hành dịch vụ khách hàng.</li>
+              <li>Điều phối các đợt đánh giá nội bộ và làm việc trực tiếp với tổ chức chứng nhận độc lập, đưa Arito Solutions chính thức đạt chứng nhận ISO 27001:2022 đúng lộ trình.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Section: Key Projects -->
+      <section>
+        <div class="main-section-header">
+          <h2 class="main-section-title">
+            <i class="fa-solid fa-diagram-project"></i> Danh mục Dự án Trọng điểm
+          </h2>
+          <span class="section-counter">8 Dự án Enterprise</span>
+        </div>
+
+        <div class="projects-grid">
+          
+          <!-- Project 1: Black Pearl Việt Nam -->
+          <div class="project-card featured">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">01</span>
+                <span>Chuỗi F&B Black Pearl Việt Nam (Đô Đô, Mr. Good Tea)</span>
+              </div>
+              <span class="proj-category">F&B Retail ERP</span>
+            </div>
+            <p class="proj-desc">
+              Triển khai hệ thống Arito ERP cho chuỗi thương hiệu trà sữa Đô Đô và Mr. Good Tea; tích hợp dữ liệu bán hàng điểm bán POS, hệ thống hóa đơn điện tử, đồng bộ luồng thu chi ngân hàng và nâng cấp hệ thống kế toán chuẩn TT99.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag integration">Arito ERP</span>
+              <span class="proj-tech-tag integration">iPOS POS Sync</span>
+              <span class="proj-tech-tag integration">S-Invoice</span>
+              <span class="proj-tech-tag integration">Vietcombank API</span>
+              <span class="proj-tech-tag">Thông tư 99</span>
+            </div>
+          </div>
+
+          <!-- Project 2: Square Group / Bằng Phương -->
+          <div class="project-card">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">02</span>
+                <span>Bằng Phương / Square Group</span>
+              </div>
+              <span class="proj-category">POSM & Warehouse</span>
+            </div>
+            <p class="proj-desc">
+              Xây dựng giải pháp kho POSM Warehouse đặc thù phục vụ ngành truyền thông quảng cáo; số hóa toàn diện quy trình luân chuyển và phê duyệt điện tử vật phẩm quảng cáo đa cấp độ.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag integration">POSM Warehouse Management</span>
+              <span class="proj-tech-tag integration">E-Approval Workflow</span>
+              <span class="proj-tech-tag">Multi-branch Inventory</span>
+            </div>
+          </div>
+
+          <!-- Project 3: I Group & Nha Trang Seafoods -->
+          <div class="project-card featured">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">03</span>
+                <span>I Group & Nha Trang Seafoods</span>
+              </div>
+              <span class="proj-category">e-Procurement & Big Data</span>
+            </div>
+            <p class="proj-desc">
+              Hệ thống mua sắm điện tử (e-Procurement) cho tập đoàn thủy sản quy mô lớn, xử lý tự động hóa hơn <strong>80.000 hóa đơn đầu vào</strong>, kết nối hệ sinh thái nhà cung cấp qua API mở và bảo mật xác thực tập trung SSO SAML 2.0.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag integration">e-Procurement System</span>
+              <span class="proj-tech-tag">80.000+ Invoices Processing</span>
+              <span class="proj-tech-tag integration">SSO SAML 2.0</span>
+              <span class="proj-tech-tag integration">Open API Integration</span>
+            </div>
+          </div>
+
+          <!-- Project 4: CMV -->
+          <div class="project-card featured">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">04</span>
+                <span>Công ty CP Thương Nghiệp Cà Mau (CMV)</span>
+              </div>
+              <span class="proj-category">Large Distribution ERP</span>
+            </div>
+            <p class="proj-desc">
+              Triển khai giải pháp Arito ERP quy mô <strong>125 người dùng phân tán trên 31 chi nhánh</strong>; giải quyết bài toán kế toán phân phối phức tạp, tích hợp sâu với Galaxy DMS và tự động hóa thanh toán đa kênh qua ngân hàng số.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag integration">Arito ERP (125 Users / 31 Branches)</span>
+              <span class="proj-tech-tag integration">Galaxy DMS Integration</span>
+              <span class="proj-tech-tag integration">VietinBank & VCB API</span>
+              <span class="proj-tech-tag integration">VietQR Dynamic</span>
+            </div>
+          </div>
+
+          <!-- Project 5: De Heus -->
+          <div class="project-card">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">05</span>
+                <span>Tập đoàn De Heus – Nhà máy Premix Sông Mây</span>
+              </div>
+              <span class="proj-category">Smart Factory & eKYC</span>
+            </div>
+            <p class="proj-desc">
+              Giải pháp số hóa tiếp nhận nguyên liệu kho (WH Intake) kết hợp nền tảng định danh điện tử Arito eKYC, nhận diện khuôn mặt tài xế tự động tại cổng kiểm soát và quy trình ký số biên bản nội bộ.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag integration">WH Intake Logistics</span>
+              <span class="proj-tech-tag integration">Arito eKYC Biometrics</span>
+              <span class="proj-tech-tag">Face Recognition</span>
+              <span class="proj-tech-tag integration">Digital Signature</span>
+            </div>
+          </div>
+
+          <!-- Project 6: Sunrise INS -->
+          <div class="project-card">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">06</span>
+                <span>Sunrise INS</span>
+              </div>
+              <span class="proj-category">Financial Reporting Compliance</span>
+            </div>
+            <p class="proj-desc">
+              Chuẩn hóa kiến trúc dữ liệu kế toán tài chính, cấu hình hệ thống và nâng cấp gói báo cáo quản trị tuân thủ quy chuẩn kế toán mới theo Thông tư 99 của Bộ Tài chính.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag">Data Restructuring</span>
+              <span class="proj-tech-tag">Financial Accounting</span>
+              <span class="proj-tech-tag">TT99 Reporting Standards</span>
+            </div>
+          </div>
+
+          <!-- Project 7: Tentamus Indonesia -->
+          <div class="project-card">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">07</span>
+                <span>Tentamus Indonesia</span>
+              </div>
+              <span class="proj-category">Global Pre-Sales</span>
+            </div>
+            <p class="proj-desc">
+              Tư vấn giải pháp Pre-Sales cấp quốc tế về sự tích hợp giữa hệ thống hoạch định nguồn lực ERP và giải pháp quản lý thông tin phòng thí nghiệm (LIMS) cho thị trường nước ngoài.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag">International IT Pre-Sales</span>
+              <span class="proj-tech-tag">Enterprise ERP</span>
+              <span class="proj-tech-tag">LIMS Solution Architecture</span>
+            </div>
+          </div>
+
+          <!-- Project 8: Acecook Việt Nam -->
+          <div class="project-card">
+            <div class="proj-top">
+              <div class="proj-title">
+                <span class="proj-num">08</span>
+                <span>Acecook Việt Nam</span>
+              </div>
+              <span class="proj-category">FMCG Supplier Portal</span>
+            </div>
+            <p class="proj-desc">
+              Phát triển giải pháp phát hành chứng từ điện tử và cổng quản lý chất lượng nhà cung ứng ASUPP, số hóa dòng luân chuyển chứng từ kỹ thuật và tiêu chuẩn chất lượng sản xuất.
+            </p>
+            <div class="proj-tags">
+              <span class="proj-tech-tag">ASUPP Platform</span>
+              <span class="proj-tech-tag">E-Document Issuance</span>
+              <span class="proj-tech-tag">Supplier Quality Management</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

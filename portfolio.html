@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Võ Nguyễn Hào — Enterprise Solution Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:     #0a0f1e;
+      --navy2:    #0f172a;
+      --navy3:    #1e293b;
+      --navy4:    #334155;
+      --sky:      #38bdf8;
+      --sky-dim:  #0ea5e9;
+      --cyan:     #22d3ee;
+      --emerald:  #34d399;
+      --violet:   #a78bfa;
+      --text:     #e2e8f0;
+      --muted:    #94a3b8;
+      --border:   rgba(255,255,255,0.07);
+      --card:     rgba(255,255,255,0.04);
+      --card-hov: rgba(255,255,255,0.08);
+      --font:     'Plus Jakarta Sans', sans-serif;
+      --mono:     'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--navy);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===========================
+       SCROLLBAR
+    =========================== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy2); }
+    ::-webkit-scrollbar-thumb { background: var(--navy4); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--sky-dim); }
+
+    /* ===========================
+       NAVIGATION
+    =========================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 60px;
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      background: rgba(10, 15, 30, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 60px;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--sky);
+      letter-spacing: 0.5px;
+    }
+    .nav-logo span { color: var(--muted); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .nav-links a:hover { color: var(--sky); }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sky);
+      border: 1px solid var(--sky);
+      padding: 7px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover {
+      background: var(--sky);
+      color: var(--navy);
+    }
+
+    /* ===========================
+       HERO SECTION
+    =========================== */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 60px;
+      overflow: hidden;
+    }
+
+    /* Grid background */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    /* Glow blobs */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+      pointer-events: none;
+    }
+    .blob-1 { width: 600px; height: 600px; top: -100px; right: -100px; background: #0ea5e9; }
+    .blob-2 { width: 400px; height: 400px; bottom: 50px; left: -80px; background: #a78bfa; opacity: 0.12; }
+
+    .hero-content {
+      position: relative;
+      max-width: 720px;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--sky);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    h1.hero-name {
+      font-size: clamp(44px, 7vw, 76px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 8px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero-name .highlight {
+      background: linear-gradient(135deg, var(--sky) 0%, var(--cyan) 50%, var(--emerald) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-title strong { color: var(--text); }
+
+    .hero-desc {
+      font-size: 15.5px;
+      color: #94a3b8;
+      line-height: 1.75;
+      max-width: 620px;
+      margin-bottom: 44px;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 44px;
+      animation: fadeUp 0.6s 0.35s ease both;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid;
+    }
+    .badge-sky   { color: var(--sky);     background: rgba(56,189,248,0.08);  border-color: rgba(56,189,248,0.25); }
+    .badge-green { color: var(--emerald); background: rgba(52,211,153,0.08);  border-color: rgba(52,211,153,0.25); }
+    .badge-violet{ color: var(--violet);  background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.25); }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--sky-dim);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      background: var(--sky);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(14, 165, 233, 0.35);
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: all 0.2s;
+      background: var(--card);
+    }
+    .btn-ghost:hover {
+      border-color: var(--sky);
+      color: var(--sky);
+      transform: translateY(-2px);
+    }
+
+    /* Stats floating card */
+    .hero-stats {
+      position: absolute;
+      right: 80px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeLeft 0.8s 0.5s ease both;
+      z-index: 1;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 24px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      min-width: 140px;
+      transition: all 0.3s;
+    }
+    .stat-card:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateX(-4px);
+    }
+    .stat-num {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--sky), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+    /* ===========================
+       SECTIONS COMMON
+    =========================== */
+    section {
+      padding: 100px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-tag {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--sky);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-tag::before { content: '//'; opacity: 0.5; }
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: #f1f5f9;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    /* ===========================
+       ABOUT SECTION
+    =========================== */
+    #about {
+      border-top: 1px solid var(--border);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 15px;
+      color: #94a3b8;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .about-text p strong { color: var(--text); }
+
+    .about-skills-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 28px 0 14px;
+    }
+    .skills-flex { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 5px;
+      transition: all 0.2s;
+      font-family: var(--mono);
+    }
+    .skill-tag:hover {
+      border-color: var(--sky);
+      color: var(--sky);
+      background: rgba(56, 189, 248, 0.06);
+    }
+    .skill-tag.key {
+      color: var(--sky);
+      border-color: rgba(56, 189, 248, 0.3);
+      background: rgba(56, 189, 248, 0.07);
+    }
+
+    .about-certs {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.3s;
+    }
+    .cert-card:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      background: var(--card-hov);
+      transform: translateX(4px);
+    }
+    .cert-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .cert-name { font-size: 13.5px; font-weight: 700; color: #f1f5f9; margin-bottom: 2px; }
+    .cert-sub  { font-size: 12px; color: var(--muted); }
+
+    /* ===========================
+       EXPERIENCE TIMELINE
+    =========================== */
+    #experience { border-top: 1px solid var(--border); }
+    .timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 16px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--sky-dim), transparent);
+    }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 32px;
+      padding: 0 0 48px 0;
+      position: relative;
+    }
+    .exp-item:last-child { padding-bottom: 0; }
+
+    .exp-timeline-col {
+      text-align: right;
+      padding-top: 4px;
+      position: relative;
+    }
+    .exp-dot {
+      position: absolute;
+      right: -24px;
+      top: 6px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 2px solid var(--sky-dim);
+      z-index: 1;
+    }
+    .exp-item.current .exp-dot {
+      background: var(--emerald);
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.2);
+    }
+    .exp-period {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .exp-period .now-tag {
+      display: block;
+      color: var(--emerald);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .exp-body {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      transition: all 0.3s;
+    }
+    .exp-body:hover {
+      border-color: rgba(56, 189, 248, 0.2);
+      background: var(--card-hov);
+    }
+    .exp-role {
+      font-size: 17px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+    }
+    .exp-company {
+      font-size: 13px;
+      color: var(--sky);
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .exp-company::before { content: '↳'; opacity: 0.5; }
+    .exp-points { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .exp-points li {
+      font-size: 13.5px;
+      color: #94a3b8;
+      line-height: 1.55;
+      padding-left: 16px;
+      position: relative;
+    }
+    .exp-points li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--sky-dim);
+    }
+    .exp-points li strong { color: var(--text); }
+
+    /* ===========================
+       PROJECTS GRID
+    =========================== */
+    #projects { border-top: 1px solid var(--border); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--sky), var(--cyan));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .project-card:hover {
+      border-color: rgba(56, 189, 248, 0.25);
+      background: var(--card-hov);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-card.featured {
+      border-color: rgba(56, 189, 248, 0.2);
+      background: rgba(14, 165, 233, 0.04);
+    }
+    .project-card.featured::before { opacity: 0.6; }
+
+    .proj-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .proj-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--sky);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .proj-category-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--sky);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .proj-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.3;
+    }
+    .proj-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.65;
+      flex-grow: 1;
+    }
+    .proj-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tech-chip {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.03);
+    }
+    .tech-chip.int {
+      color: #7dd3fc;
+      border-color: rgba(125, 211, 252, 0.25);
+      background: rgba(125, 211, 252, 0.05);
+    }
+
+    /* ===========================
+       CONTACT SECTION
+    =========================== */
+    #contact {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding-bottom: 120px;
+    }
+    #contact .section-tag { justify-content: center; }
+    #contact .section-title { margin: 0 auto 16px; }
+    #contact .section-desc { margin: 0 auto 48px; text-align: center; }
+
+    .contact-cards {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 22px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.25s;
+      min-width: 200px;
+    }
+    .contact-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      background: var(--card-hov);
+      color: var(--sky);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .contact-card-icon {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--sky);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .contact-card-info .label { font-size: 10.5px; color: var(--muted); display: block; margin-bottom: 2px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .contact-card-info .value { font-size: 13.5px; font-weight: 600; }
+
+    .contact-cta-box {
+      background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(52, 211, 153, 0.05));
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 20px;
+      padding: 48px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .cta-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+    }
+    .cta-desc {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: 12.5px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .footer-socials { display: flex; gap: 16px; }
+    .footer-socials a {
+      color: var(--muted);
+      font-size: 15px;
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    .footer-socials a:hover { color: var(--sky); }
+
+    /* ===========================
+       ANIMATIONS
+    =========================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeLeft {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger children */
+    .stagger > * {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .stagger.visible > * { opacity: 1; transform: translateY(0); }
+    .stagger.visible > *:nth-child(1) { transition-delay: 0.0s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: 0.08s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: 0.16s; }
+    .stagger.visible > *:nth-child(4) { transition-delay: 0.24s; }
+    .stagger.visible > *:nth-child(5) { transition-delay: 0.32s; }
+    .stagger.visible > *:nth-child(6) { transition-delay: 0.40s; }
+    .stagger.visible > *:nth-child(7) { transition-delay: 0.48s; }
+    .stagger.visible > *:nth-child(8) { transition-delay: 0.56s; }
+
+    /* Typed cursor */
+    .typed-cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--sky);
+      margin-left: 3px;
+      vertical-align: text-bottom;
+      animation: blink 1.1s step-end infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      nav.scrolled { padding: 12px 24px; }
+      .nav-links { display: none; }
+      #hero { padding: 0 24px; padding-top: 80px; flex-direction: column; justify-content: center; }
+      .hero-stats { position: static; transform: none; flex-direction: row; flex-wrap: wrap; justify-content: center; margin-top: 40px; }
+      section { padding: 60px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 80px 1fr; gap: 16px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px; }
+      .contact-cta-box { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======================== NAVBAR ======================== -->
+  <nav id="navbar">
+    <div class="nav-logo">vnh<span>.portfolio()</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">Giới thiệu</a></li>
+      <li><a href="#experience">Kinh nghiệm</a></li>
+      <li><a href="#projects">Dự án</a></li>
+      <li><a href="#contact">Liên hệ</a></li>
+    </ul>
+    <a href="cv.html" class="nav-cta" target="_blank">
+      <i class="fa-solid fa-file-arrow-down"></i> Xem CV
+    </a>
+  </nav>
+
+  <!-- ======================== HERO ======================== -->
+  <section id="hero">
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        Sẵn sàng kết nối · TP. Hồ Chí Minh, Vietnam
+      </div>
+
+      <h1 class="hero-name">
+        Võ Nguyễn<br>
+        <span class="highlight">Hào</span><span class="typed-cursor"></span>
+      </h1>
+
+      <p class="hero-title">
+        <strong>BOD Sales Assistant</strong> · IT Pre-Sales &amp; Enterprise Solution Consultant
+      </p>
+
+      <p class="hero-desc">
+        Cầu nối chiến lược giữa nghiệp vụ doanh nghiệp và kiến trúc công nghệ — tư vấn và triển khai giải pháp ERP, e-Procurement, WMS, eKYC cho các tập đoàn B2B tại Arito Solutions.
+      </p>
+
+      <div class="hero-badges">
+        <span class="hero-badge badge-green">
+          <i class="fa-solid fa-shield-halved"></i> ISO 27001:2022 PM
+        </span>
+        <span class="hero-badge badge-sky">
+          <i class="fa-solid fa-plug"></i> Enterprise ERP & Integrations
+        </span>
+        <span class="hero-badge badge-violet">
+          <i class="fa-solid fa-briefcase"></i> BOD-Level Strategic Advisory
+        </span>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">
+          <i class="fa-solid fa-diagram-project"></i> Xem dự án
+        </a>
+        <a href="#contact" class="btn-ghost">
+          <i class="fa-solid fa-paper-plane"></i> Kết nối ngay
+        </a>
+      </div>
+    </div>
+
+    <!-- Floating stats -->
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">8+</div>
+        <div class="stat-label">Dự án Enterprise</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">80K</div>
+        <div class="stat-label">Hóa đơn xử lý / NTS</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">125</div>
+        <div class="stat-label">Users · 31 chi nhánh</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">ISO</div>
+        <div class="stat-label">27001:2022 Certified PM</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== ABOUT ======================== -->
+  <section id="about">
+    <div class="section-tag">01 · about me</div>
+    <h2 class="section-title reveal">Tôi là ai?</h2>
+    <p class="section-desc reveal">Một chuyên gia tư vấn &amp; kinh doanh giải pháp CNTT — hiểu sâu cả về nghiệp vụ doanh nghiệp lẫn kiến trúc công nghệ.</p>
+
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          Với nền tảng <strong>Cử nhân Công nghệ Phần mềm</strong> từ Đại học Quy Nhơn, tôi chọn hướng phát triển theo chiều rộng: không chỉ code mà còn thấu hiểu quy trình nghiệp vụ, tư vấn giải pháp và giao tiếp ở cấp C-Level.
+        </p>
+        <p>
+          Hiện tại, tôi đảm nhiệm vai trò <strong>Trợ lý Kinh doanh Ban Giám đốc</strong> tại Arito Solutions — trực tiếp tham mưu và làm cầu nối giữa chiến lược kinh doanh của BGĐ và khả năng kỹ thuật của đội triển khai.
+        </p>
+        <p>
+          Tôi đã dẫn dắt dự án đưa Arito Solutions đạt chứng nhận <strong>ISO/IEC 27001:2022</strong> với vai trò Project Manager — từ đánh giá rủi ro, xây dựng chính sách ISMS đến làm việc với tổ chức chứng nhận độc lập.
+        </p>
+
+        <div class="about-skills-title">Core Competencies</div>
+        <div class="skills-flex">
+          <span class="skill-tag key">IT Pre-Sales</span>
+          <span class="skill-tag key">ERP Consulting</span>
+          <span class="skill-tag key">e-Procurement</span>
+          <span class="skill-tag key">Project Management</span>
+          <span class="skill-tag">SAML 2.0 / SSO</span>
+          <span class="skill-tag">Open API Integration</span>
+          <span class="skill-tag">Bank API / VietQR</span>
+          <span class="skill-tag">WMS / POSM</span>
+          <span class="skill-tag">eKYC / Biometrics</span>
+          <span class="skill-tag">ISMS Risk Assessment</span>
+          <span class="skill-tag">Galaxy DMS</span>
+          <span class="skill-tag">S-Invoice / TT99</span>
+          <span class="skill-tag">Arito ERP</span>
+          <span class="skill-tag">LIMS Solutions</span>
+        </div>
+      </div>
+
+      <div class="about-certs stagger">
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(52,211,153,0.12); color: #34d399;">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <div class="cert-name">ISO/IEC 27001:2022</div>
+            <div class="cert-sub">Chứng nhận An toàn Thông tin · PM Leader</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(56,189,248,0.1); color: #38bdf8;">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <div class="cert-name">Cử nhân Công nghệ Phần mềm</div>
+            <div class="cert-sub">Đại học Quy Nhơn</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(167,139,250,0.1); color: #a78bfa;">
+            <i class="fa-solid fa-language"></i>
+          </div>
+          <div>
+            <div class="cert-name">Tiếng Anh — B1</div>
+            <div class="cert-sub">Giao tiếp & tư vấn giải pháp quốc tế</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(251,191,36,0.1); color: #fbbf24;">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <div>
+            <div class="cert-name">Arito Solutions</div>
+            <div class="cert-sub">BOD Sales Assistant · Từ 01/07/2026</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(244,63,94,0.1); color: #f43f5e;">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </div>
+          <div>
+            <div class="cert-name">LinkedIn Profile</div>
+            <div class="cert-sub" style="color: #60a5fa;">linkedin.com/in/hao-nguyen-986a171a9</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== EXPERIENCE ======================== -->
+  <section id="experience">
+    <div class="section-tag">02 · experience</div>
+    <h2 class="section-title reveal">Quá trình công tác</h2>
+    <p class="section-desc reveal">Từ kỹ thuật đến chiến lược — hành trình xây dựng cầu nối giữa công nghệ và kinh doanh.</p>
+
+    <div class="timeline">
+
+      <div class="exp-item current reveal">
+        <div class="exp-timeline-col">
+          <div class="exp-period">
+            <span class="now-tag">● HIỆN TẠI</span>
+            Jul 2026
+          </div>
+          <div class="exp-dot"></div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-role">Trợ lý Kinh doanh Ban Giám đốc</div>
+          <div class="exp-company">Arito Solutions — BOD Sales Assistant</div>
+          <ul class="exp-points">
+            <li>Trực tiếp tham mưu <strong>Ban Giám đốc</strong> trong định hướng kinh doanh, đánh giá cơ hội thị trường và chiến lược tiếp cận Enterprise Accounts.</li>
+            <li>Thẩm định tính khả thi kỹ thuật và kiến trúc giải pháp tổng thể trước khi trình phê duyệt cấp cao.</li>
+            <li>Đại diện doanh nghiệp làm việc cùng <strong>C-Level khách hàng</strong> trong các buổi trình bày giải pháp chuyển đổi số phức hợp.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-timeline-col">
+          <div class="exp-period">Feb 2025<br>—<br>Jun 2026</div>
+          <div class="exp-dot"></div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-role">BD Executive &amp; Assistant to Deputy CEO</div>
+          <div class="exp-company">Arito Solutions — Business Development</div>
+          <ul class="exp-points">
+            <li>Đồng hành cùng Phó Tổng Giám đốc trong phát triển kinh doanh dịch vụ CNTT, xây dựng hồ sơ thầu, RFP/RFI/Proposal.</li>
+            <li>Tư vấn giải pháp Pre-Sales hệ thống <strong>ERP, e-Procurement, WMS</strong> và ký số cho các tập đoàn đa quốc gia.</li>
+            <li>Mở rộng mạng lưới đối tác công nghệ ngân hàng &amp; thanh toán; tối ưu quy trình phối hợp liên phòng ban.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-timeline-col">
+          <div class="exp-period">Dự án đặc biệt</div>
+          <div class="exp-dot"></div>
+        </div>
+        <div class="exp-body">
+          <div class="exp-role">Project Manager — ISO 27001:2022 Certification</div>
+          <div class="exp-company">Arito Solutions — ISMS Implementation</div>
+          <ul class="exp-points">
+            <li>Dẫn dắt toàn diện dự án triển khai <strong>Hệ thống Quản lý An toàn Thông tin (ISMS)</strong> chuẩn ISO/IEC 27001:2022.</li>
+            <li>Chủ trì thiết lập chính sách bảo mật, đánh giá rủi ro trên toàn bộ quy trình phát triển phần mềm, hạ tầng và vận hành.</li>
+            <li>Điều phối đánh giá nội bộ và làm việc với <strong>tổ chức chứng nhận độc lập</strong>, hoàn thành đúng lộ trình kế hoạch.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================== PROJECTS ======================== -->
+  <section id="projects">
+    <div class="section-tag">03 · projects</div>
+    <h2 class="section-title reveal">Dự án trọng điểm</h2>
+    <p class="section-desc reveal">8 dự án enterprise đã tham gia tư vấn &amp; triển khai — trải rộng các ngành F&amp;B, Thủy sản, FMCG, Phân phối, Nông nghiệp công nghệ cao.</p>
+
+    <div class="projects-grid stagger">
+
+      <!-- 1 -->
+      <div class="project-card featured">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_01</span>
+          <span class="proj-category-tag">F&amp;B Retail ERP</span>
+        </div>
+        <div class="proj-name">Black Pearl Việt Nam<br><span style="font-size:13px;font-weight:500;color:var(--muted)">Chuỗi Đô Đô &amp; Mr. Good Tea</span></div>
+        <p class="proj-desc">Triển khai Arito ERP cho chuỗi thương hiệu F&amp;B, đồng bộ dữ liệu bán hàng điểm bán POS, hóa đơn điện tử và luồng thu chi ngân hàng thời gian thực. Nâng cấp kế toán chuẩn Thông tư 99.</p>
+        <div class="proj-tech">
+          <span class="tech-chip int">Arito ERP</span>
+          <span class="tech-chip int">iPOS Integration</span>
+          <span class="tech-chip int">S-Invoice</span>
+          <span class="tech-chip int">Vietcombank API</span>
+          <span class="tech-chip">TT99</span>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="project-card">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_02</span>
+          <span class="proj-category-tag">POSM Warehouse</span>
+        </div>
+        <div class="proj-name">Bằng Phương / Square Group</div>
+        <p class="proj-desc">Giải pháp kho POSM Warehouse đặc thù phục vụ ngành truyền thông quảng cáo. Số hóa quy trình luân chuyển &amp; phê duyệt điện tử vật phẩm tiếp thị đa cấp độ.</p>
+        <div class="proj-tech">
+          <span class="tech-chip int">POSM WMS</span>
+          <span class="tech-chip int">E-Approval Workflow</span>
+          <span class="tech-chip">Multi-branch Inventory</span>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="project-card featured">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_03</span>
+          <span class="proj-category-tag">e-Procurement</span>
+        </div>
+        <div class="proj-name">I Group &amp; Nha Trang Seafoods</div>
+        <p class="proj-desc">Hệ thống mua sắm điện tử tập đoàn thủy sản quy mô lớn. Xử lý &gt;<strong style="color:var(--sky)">80.000 hóa đơn đầu vào</strong>, kết nối nhà cung cấp qua Open API và bảo mật xác thực tập trung SSO SAML 2.0.</p>
+        <div class="proj-tech">
+          <span class="tech-chip int">e-Procurement System</span>
+          <span class="tech-chip">80.000+ Invoices</span>
+          <span class="tech-chip int">SSO SAML 2.0</span>
+          <span class="tech-chip int">Open API</span>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="project-card featured">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_04</span>
+          <span class="proj-category-tag">Large Distribution ERP</span>
+        </div>
+        <div class="proj-name">Thương Nghiệp Cà Mau (CMV)</div>
+        <p class="proj-desc">Arito ERP quy mô <strong style="color:var(--sky)">125 users / 31 chi nhánh</strong>. Giải quyết kế toán phân phối phức tạp, tích hợp Galaxy DMS và thanh toán đa kênh ngân hàng số.</p>
+        <div class="proj-tech">
+          <span class="tech-chip int">Arito ERP</span>
+          <span class="tech-chip int">Galaxy DMS</span>
+          <span class="tech-chip int">VietinBank API</span>
+          <span class="tech-chip int">Vietcombank API</span>
+          <span class="tech-chip int">VietQR Dynamic</span>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="project-card">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_05</span>
+          <span class="proj-category-tag">Smart Factory &amp; eKYC</span>
+        </div>
+        <div class="proj-name">De Heus — Premix Sông Mây</div>
+        <p class="proj-desc">Số hóa tiếp nhận nguyên liệu kho (WH Intake) kết hợp định danh điện tử Arito eKYC. Nhận diện khuôn mặt tài xế tại cổng kiểm soát &amp; ký số biên bản nội bộ.</p>
+        <div class="proj-tech">
+          <span class="tech-chip int">WH Intake Logistics</span>
+          <span class="tech-chip int">Arito eKYC</span>
+          <span class="tech-chip">Face Recognition</span>
+          <span class="tech-chip int">Digital Signature</span>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="project-card">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_06</span>
+          <span class="proj-category-tag">Financial Compliance</span>
+        </div>
+        <div class="proj-name">Sunrise INS</div>
+        <p class="proj-desc">Chuẩn hóa kiến trúc dữ liệu kế toán tài chính, cấu hình hệ thống và nâng cấp gói báo cáo quản trị tuân thủ Thông tư 99 của Bộ Tài chính.</p>
+        <div class="proj-tech">
+          <span class="tech-chip">Data Restructuring</span>
+          <span class="tech-chip">Financial Accounting</span>
+          <span class="tech-chip">TT99 Standards</span>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="project-card">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_07</span>
+          <span class="proj-category-tag">Global Pre-Sales</span>
+        </div>
+        <div class="proj-name">Tentamus Indonesia</div>
+        <p class="proj-desc">Tư vấn Pre-Sales quốc tế về kiến trúc tích hợp giữa hệ thống ERP và LIMS (Laboratory Information Management System) cho thị trường nước ngoài.</p>
+        <div class="proj-tech">
+          <span class="tech-chip">International Pre-Sales</span>
+          <span class="tech-chip int">Enterprise ERP</span>
+          <span class="tech-chip">LIMS Architecture</span>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="project-card">
+        <div class="proj-header">
+          <span class="proj-num">PROJECT_08</span>
+          <span class="proj-category-tag">FMCG Supplier Portal</span>
+        </div>
+        <div class="proj-name">Acecook Việt Nam</div>
+        <p class="proj-desc">Phát triển giải pháp phát hành chứng từ điện tử &amp; cổng quản lý chất lượng nhà cung ứng ASUPP — số hóa luồng chứng từ kỹ thuật và tiêu chuẩn chất lượng sản xuất.</p>
+        <div class="proj-tech">
+          <span class="tech-chip int">ASUPP Platform</span>
+          <span class="tech-chip">E-Document Issuance</span>
+          <span class="tech-chip">Supplier Quality Mgmt</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================== CONTACT ======================== -->
+  <section id="contact">
+    <div class="section-tag">04 · contact</div>
+    <h2 class="section-title">Hãy kết nối với tôi</h2>
+    <p class="section-desc">Bạn có dự án cần tư vấn giải pháp CNTT doanh nghiệp? Hãy để chúng ta trao đổi.</p>
+
+    <div class="contact-cards stagger">
+      <a href="tel:0377116163" class="contact-card">
+        <div class="contact-card-icon"><i class="fa-solid fa-phone"></i></div>
+        <div class="contact-card-info">
+          <span class="label">Điện thoại</span>
+          <span class="value">0377 116 163</span>
+        </div>
+      </a>
+      <a href="mailto:vonguyenhao08@gmail.com" class="contact-card">
+        <div class="contact-card-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="contact-card-info">
+          <span class="label">Email</span>
+          <span class="value">vonguyenhao08@gmail.com</span>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank" class="contact-card">
+        <div class="contact-card-icon" style="background: rgba(10,102,194,0.15); color: #60a5fa;"><i class="fa-brands fa-linkedin-in"></i></div>
+        <div class="contact-card-info">
+          <span class="label">LinkedIn</span>
+          <span class="value">hao-nguyen-986a171a9</span>
+        </div>
+      </a>
+      <div class="contact-card" style="cursor:default;">
+        <div class="contact-card-icon" style="background: rgba(167,139,250,0.1); color:#a78bfa;"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="contact-card-info">
+          <span class="label">Địa chỉ</span>
+          <span class="value">Tân Bình, TP. HCM</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-cta-box reveal">
+      <div class="cta-title">Bạn đang tìm kiếm giải pháp CNTT doanh nghiệp?</div>
+      <p class="cta-desc">Từ ERP, e-Procurement, WMS đến tích hợp ngân hàng &amp; định danh điện tử — tôi có thể giúp bạn thiết kế kiến trúc giải pháp phù hợp, tiết kiệm và hiệu quả.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="mailto:vonguyenhao08@gmail.com" class="btn-primary">
+          <i class="fa-solid fa-envelope"></i> Gửi email ngay
+        </a>
+        <a href="cv.html" target="_blank" class="btn-ghost">
+          <i class="fa-solid fa-file-lines"></i> Tải CV đầy đủ
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer>
+    <div class="footer-copy">© 2026 · Võ Nguyễn Hào · <span style="color:var(--sky)">vnh.portfolio()</span></div>
+    <div class="footer-socials">
+      <a href="mailto:vonguyenhao08@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+      <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+      <a href="tel:0377116163" title="Phone"><i class="fa-solid fa-phone"></i></a>
+      <a href="cv.html" target="_blank" title="CV"><i class="fa-solid fa-file-lines"></i></a>
+    </div>
+  </footer>
+
+  <!-- ======================== JS ======================== -->
+  <script>
+    // Navbar scroll effect
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Intersection Observer — scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+
+    // Typed effect on hero title
+    const cursor = document.querySelector('.typed-cursor');
+    // Just keep the blinking cursor — name is already rendered
+    // We could add a typing animation; for now keep it simple and fast
+
+    // Smooth active nav link highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => {
+            a.style.color = '';
+            if (a.getAttribute('href') === '#' + e.target.id) a.style.color = '#38bdf8';
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -40% 0px' });
+
+    sections.forEach(s => sectionObserver.observe(s));
+  </script>
+
+</body>
+</html>
