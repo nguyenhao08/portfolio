@@ -42,6 +42,71 @@
     }
 
     /* ===========================
+       LOADING OVERLAY
+    =========================== */
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--navy);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      transition: opacity 0.5s ease;
+    }
+    #loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loading-spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(56, 189, 248, 0.15);
+      border-top-color: var(--sky);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* ===========================
+       LIVE SOURCE BADGE
+    =========================== */
+    #source-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 200;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid;
+      backdrop-filter: blur(8px);
+      display: none;
+    }
+    #source-badge.github {
+      color: var(--emerald);
+      background: rgba(52, 211, 153, 0.1);
+      border-color: rgba(52, 211, 153, 0.3);
+    }
+    #source-badge.local {
+      color: var(--violet);
+      background: rgba(167, 139, 250, 0.1);
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    /* ===========================
        SCROLLBAR
     =========================== */
     ::-webkit-scrollbar { width: 6px; }
@@ -797,6 +862,15 @@
 </head>
 <body>
 
+  <!-- ======================== LOADING OVERLAY ======================== -->
+  <div id="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Đang tải dữ liệu CV...</div>
+  </div>
+
+  <!-- ======================== SOURCE BADGE ======================== -->
+  <div id="source-badge"></div>
+
   <!-- ======================== NAVBAR ======================== -->
   <nav id="navbar">
     <div class="nav-logo">vnh<span>.portfolio()</span></div>
@@ -817,20 +891,20 @@
     <div class="hero-blob blob-2"></div>
 
     <div class="hero-content">
-      <div class="hero-eyebrow">
+      <div class="hero-eyebrow" id="hero-eyebrow">
         Sẵn sàng kết nối · TP. Hồ Chí Minh, Vietnam
       </div>
 
-      <h1 class="hero-name">
-        Võ Nguyễn<br>
-        <span class="highlight">Hào</span><span class="typed-cursor"></span>
+      <h1 class="hero-name" id="hero-name">
+        <!-- Filled dynamically -->
+        <span class="typed-cursor"></span>
       </h1>
 
-      <p class="hero-title">
-        <strong>BOD Sales Assistant</strong> · IT Pre-Sales &amp; Enterprise Solution Consultant
+      <p class="hero-title" id="hero-title">
+        <!-- Filled dynamically -->
       </p>
 
-      <p class="hero-desc">
+      <p class="hero-desc" id="hero-desc">
         Cầu nối chiến lược giữa nghiệp vụ doanh nghiệp và kiến trúc công nghệ — tư vấn và triển khai giải pháp ERP, e-Procurement, WMS, eKYC cho các tập đoàn B2B tại Arito Solutions.
       </p>
 
@@ -839,7 +913,7 @@
           <i class="fa-solid fa-shield-halved"></i> ISO 27001:2022 PM
         </span>
         <span class="hero-badge badge-sky">
-          <i class="fa-solid fa-plug"></i> Enterprise ERP & Integrations
+          <i class="fa-solid fa-plug"></i> Enterprise ERP &amp; Integrations
         </span>
         <span class="hero-badge badge-violet">
           <i class="fa-solid fa-briefcase"></i> BOD-Level Strategic Advisory
@@ -884,82 +958,12 @@
     <p class="section-desc reveal">Một chuyên gia tư vấn &amp; kinh doanh giải pháp CNTT — hiểu sâu cả về nghiệp vụ doanh nghiệp lẫn kiến trúc công nghệ.</p>
 
     <div class="about-grid">
-      <div class="about-text reveal">
-        <p>
-          Với nền tảng <strong>Cử nhân Công nghệ Phần mềm</strong> từ Đại học Quy Nhơn, tôi chọn hướng phát triển theo chiều rộng: không chỉ code mà còn thấu hiểu quy trình nghiệp vụ, tư vấn giải pháp và giao tiếp ở cấp C-Level.
-        </p>
-        <p>
-          Hiện tại, tôi đảm nhiệm vai trò <strong>Trợ lý Kinh doanh Ban Giám đốc</strong> tại Arito Solutions — trực tiếp tham mưu và làm cầu nối giữa chiến lược kinh doanh của BGĐ và khả năng kỹ thuật của đội triển khai.
-        </p>
-        <p>
-          Tôi đã dẫn dắt dự án đưa Arito Solutions đạt chứng nhận <strong>ISO/IEC 27001:2022</strong> với vai trò Project Manager — từ đánh giá rủi ro, xây dựng chính sách ISMS đến làm việc với tổ chức chứng nhận độc lập.
-        </p>
-
-        <div class="about-skills-title">Core Competencies</div>
-        <div class="skills-flex">
-          <span class="skill-tag key">IT Pre-Sales</span>
-          <span class="skill-tag key">ERP Consulting</span>
-          <span class="skill-tag key">e-Procurement</span>
-          <span class="skill-tag key">Project Management</span>
-          <span class="skill-tag">SAML 2.0 / SSO</span>
-          <span class="skill-tag">Open API Integration</span>
-          <span class="skill-tag">Bank API / VietQR</span>
-          <span class="skill-tag">WMS / POSM</span>
-          <span class="skill-tag">eKYC / Biometrics</span>
-          <span class="skill-tag">ISMS Risk Assessment</span>
-          <span class="skill-tag">Galaxy DMS</span>
-          <span class="skill-tag">S-Invoice / TT99</span>
-          <span class="skill-tag">Arito ERP</span>
-          <span class="skill-tag">LIMS Solutions</span>
-        </div>
+      <div class="about-text reveal" id="about-text">
+        <!-- Filled dynamically -->
       </div>
 
-      <div class="about-certs stagger">
-        <div class="cert-card">
-          <div class="cert-icon" style="background: rgba(52,211,153,0.12); color: #34d399;">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
-          <div>
-            <div class="cert-name">ISO/IEC 27001:2022</div>
-            <div class="cert-sub">Chứng nhận An toàn Thông tin · PM Leader</div>
-          </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon" style="background: rgba(56,189,248,0.1); color: #38bdf8;">
-            <i class="fa-solid fa-graduation-cap"></i>
-          </div>
-          <div>
-            <div class="cert-name">Cử nhân Công nghệ Phần mềm</div>
-            <div class="cert-sub">Đại học Quy Nhơn</div>
-          </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon" style="background: rgba(167,139,250,0.1); color: #a78bfa;">
-            <i class="fa-solid fa-language"></i>
-          </div>
-          <div>
-            <div class="cert-name">Tiếng Anh — B1</div>
-            <div class="cert-sub">Giao tiếp & tư vấn giải pháp quốc tế</div>
-          </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon" style="background: rgba(251,191,36,0.1); color: #fbbf24;">
-            <i class="fa-solid fa-building-columns"></i>
-          </div>
-          <div>
-            <div class="cert-name">Arito Solutions</div>
-            <div class="cert-sub">BOD Sales Assistant · Từ 01/07/2026</div>
-          </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon" style="background: rgba(244,63,94,0.1); color: #f43f5e;">
-            <i class="fa-brands fa-linkedin-in"></i>
-          </div>
-          <div>
-            <div class="cert-name">LinkedIn Profile</div>
-            <div class="cert-sub" style="color: #60a5fa;">linkedin.com/in/hao-nguyen-986a171a9</div>
-          </div>
-        </div>
+      <div class="about-certs stagger" id="about-certs">
+        <!-- Filled dynamically -->
       </div>
     </div>
   </section>
@@ -981,7 +985,7 @@
           <div class="exp-dot"></div>
         </div>
         <div class="exp-body">
-          <div class="exp-role">Trợ lý Kinh doanh Ban Giám đốc</div>
+          <div class="exp-role" id="exp-role-1">Trợ lý Kinh doanh Ban Giám đốc</div>
           <div class="exp-company">Arito Solutions — BOD Sales Assistant</div>
           <ul class="exp-points">
             <li>Trực tiếp tham mưu <strong>Ban Giám đốc</strong> trong định hướng kinh doanh, đánh giá cơ hội thị trường và chiến lược tiếp cận Enterprise Accounts.</li>
@@ -1013,7 +1017,7 @@
           <div class="exp-dot"></div>
         </div>
         <div class="exp-body">
-          <div class="exp-role">Project Manager — ISO 27001:2022 Certification</div>
+          <div class="exp-role" id="exp-role-pm">Project Manager — ISO 27001:2022 Certification</div>
           <div class="exp-company">Arito Solutions — ISMS Implementation</div>
           <ul class="exp-points">
             <li>Dẫn dắt toàn diện dự án triển khai <strong>Hệ thống Quản lý An toàn Thông tin (ISMS)</strong> chuẩn ISO/IEC 27001:2022.</li>
@@ -1032,134 +1036,8 @@
     <h2 class="section-title reveal">Dự án trọng điểm</h2>
     <p class="section-desc reveal">8 dự án enterprise đã tham gia tư vấn &amp; triển khai — trải rộng các ngành F&amp;B, Thủy sản, FMCG, Phân phối, Nông nghiệp công nghệ cao.</p>
 
-    <div class="projects-grid stagger">
-
-      <!-- 1 -->
-      <div class="project-card featured">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_01</span>
-          <span class="proj-category-tag">F&amp;B Retail ERP</span>
-        </div>
-        <div class="proj-name">Black Pearl Việt Nam<br><span style="font-size:13px;font-weight:500;color:var(--muted)">Chuỗi Đô Đô &amp; Mr. Good Tea</span></div>
-        <p class="proj-desc">Triển khai Arito ERP cho chuỗi thương hiệu F&amp;B, đồng bộ dữ liệu bán hàng điểm bán POS, hóa đơn điện tử và luồng thu chi ngân hàng thời gian thực. Nâng cấp kế toán chuẩn Thông tư 99.</p>
-        <div class="proj-tech">
-          <span class="tech-chip int">Arito ERP</span>
-          <span class="tech-chip int">iPOS Integration</span>
-          <span class="tech-chip int">S-Invoice</span>
-          <span class="tech-chip int">Vietcombank API</span>
-          <span class="tech-chip">TT99</span>
-        </div>
-      </div>
-
-      <!-- 2 -->
-      <div class="project-card">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_02</span>
-          <span class="proj-category-tag">POSM Warehouse</span>
-        </div>
-        <div class="proj-name">Bằng Phương / Square Group</div>
-        <p class="proj-desc">Giải pháp kho POSM Warehouse đặc thù phục vụ ngành truyền thông quảng cáo. Số hóa quy trình luân chuyển &amp; phê duyệt điện tử vật phẩm tiếp thị đa cấp độ.</p>
-        <div class="proj-tech">
-          <span class="tech-chip int">POSM WMS</span>
-          <span class="tech-chip int">E-Approval Workflow</span>
-          <span class="tech-chip">Multi-branch Inventory</span>
-        </div>
-      </div>
-
-      <!-- 3 -->
-      <div class="project-card featured">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_03</span>
-          <span class="proj-category-tag">e-Procurement</span>
-        </div>
-        <div class="proj-name">I Group &amp; Nha Trang Seafoods</div>
-        <p class="proj-desc">Hệ thống mua sắm điện tử tập đoàn thủy sản quy mô lớn. Xử lý &gt;<strong style="color:var(--sky)">80.000 hóa đơn đầu vào</strong>, kết nối nhà cung cấp qua Open API và bảo mật xác thực tập trung SSO SAML 2.0.</p>
-        <div class="proj-tech">
-          <span class="tech-chip int">e-Procurement System</span>
-          <span class="tech-chip">80.000+ Invoices</span>
-          <span class="tech-chip int">SSO SAML 2.0</span>
-          <span class="tech-chip int">Open API</span>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="project-card featured">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_04</span>
-          <span class="proj-category-tag">Large Distribution ERP</span>
-        </div>
-        <div class="proj-name">Thương Nghiệp Cà Mau (CMV)</div>
-        <p class="proj-desc">Arito ERP quy mô <strong style="color:var(--sky)">125 users / 31 chi nhánh</strong>. Giải quyết kế toán phân phối phức tạp, tích hợp Galaxy DMS và thanh toán đa kênh ngân hàng số.</p>
-        <div class="proj-tech">
-          <span class="tech-chip int">Arito ERP</span>
-          <span class="tech-chip int">Galaxy DMS</span>
-          <span class="tech-chip int">VietinBank API</span>
-          <span class="tech-chip int">Vietcombank API</span>
-          <span class="tech-chip int">VietQR Dynamic</span>
-        </div>
-      </div>
-
-      <!-- 5 -->
-      <div class="project-card">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_05</span>
-          <span class="proj-category-tag">Smart Factory &amp; eKYC</span>
-        </div>
-        <div class="proj-name">De Heus — Premix Sông Mây</div>
-        <p class="proj-desc">Số hóa tiếp nhận nguyên liệu kho (WH Intake) kết hợp định danh điện tử Arito eKYC. Nhận diện khuôn mặt tài xế tại cổng kiểm soát &amp; ký số biên bản nội bộ.</p>
-        <div class="proj-tech">
-          <span class="tech-chip int">WH Intake Logistics</span>
-          <span class="tech-chip int">Arito eKYC</span>
-          <span class="tech-chip">Face Recognition</span>
-          <span class="tech-chip int">Digital Signature</span>
-        </div>
-      </div>
-
-      <!-- 6 -->
-      <div class="project-card">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_06</span>
-          <span class="proj-category-tag">Financial Compliance</span>
-        </div>
-        <div class="proj-name">Sunrise INS</div>
-        <p class="proj-desc">Chuẩn hóa kiến trúc dữ liệu kế toán tài chính, cấu hình hệ thống và nâng cấp gói báo cáo quản trị tuân thủ Thông tư 99 của Bộ Tài chính.</p>
-        <div class="proj-tech">
-          <span class="tech-chip">Data Restructuring</span>
-          <span class="tech-chip">Financial Accounting</span>
-          <span class="tech-chip">TT99 Standards</span>
-        </div>
-      </div>
-
-      <!-- 7 -->
-      <div class="project-card">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_07</span>
-          <span class="proj-category-tag">Global Pre-Sales</span>
-        </div>
-        <div class="proj-name">Tentamus Indonesia</div>
-        <p class="proj-desc">Tư vấn Pre-Sales quốc tế về kiến trúc tích hợp giữa hệ thống ERP và LIMS (Laboratory Information Management System) cho thị trường nước ngoài.</p>
-        <div class="proj-tech">
-          <span class="tech-chip">International Pre-Sales</span>
-          <span class="tech-chip int">Enterprise ERP</span>
-          <span class="tech-chip">LIMS Architecture</span>
-        </div>
-      </div>
-
-      <!-- 8 -->
-      <div class="project-card">
-        <div class="proj-header">
-          <span class="proj-num">PROJECT_08</span>
-          <span class="proj-category-tag">FMCG Supplier Portal</span>
-        </div>
-        <div class="proj-name">Acecook Việt Nam</div>
-        <p class="proj-desc">Phát triển giải pháp phát hành chứng từ điện tử &amp; cổng quản lý chất lượng nhà cung ứng ASUPP — số hóa luồng chứng từ kỹ thuật và tiêu chuẩn chất lượng sản xuất.</p>
-        <div class="proj-tech">
-          <span class="tech-chip int">ASUPP Platform</span>
-          <span class="tech-chip">E-Document Issuance</span>
-          <span class="tech-chip">Supplier Quality Mgmt</span>
-        </div>
-      </div>
-
+    <div class="projects-grid stagger" id="projects-grid">
+      <!-- Filled dynamically -->
     </div>
   </section>
 
@@ -1169,103 +1047,377 @@
     <h2 class="section-title">Hãy kết nối với tôi</h2>
     <p class="section-desc">Bạn có dự án cần tư vấn giải pháp CNTT doanh nghiệp? Hãy để chúng ta trao đổi.</p>
 
-    <div class="contact-cards stagger">
-      <a href="tel:0377116163" class="contact-card">
-        <div class="contact-card-icon"><i class="fa-solid fa-phone"></i></div>
-        <div class="contact-card-info">
-          <span class="label">Điện thoại</span>
-          <span class="value">0377 116 163</span>
-        </div>
-      </a>
-      <a href="mailto:vonguyenhao08@gmail.com" class="contact-card">
-        <div class="contact-card-icon"><i class="fa-solid fa-envelope"></i></div>
-        <div class="contact-card-info">
-          <span class="label">Email</span>
-          <span class="value">vonguyenhao08@gmail.com</span>
-        </div>
-      </a>
-      <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank" class="contact-card">
-        <div class="contact-card-icon" style="background: rgba(10,102,194,0.15); color: #60a5fa;"><i class="fa-brands fa-linkedin-in"></i></div>
-        <div class="contact-card-info">
-          <span class="label">LinkedIn</span>
-          <span class="value">hao-nguyen-986a171a9</span>
-        </div>
-      </a>
-      <div class="contact-card" style="cursor:default;">
-        <div class="contact-card-icon" style="background: rgba(167,139,250,0.1); color:#a78bfa;"><i class="fa-solid fa-location-dot"></i></div>
-        <div class="contact-card-info">
-          <span class="label">Địa chỉ</span>
-          <span class="value">Tân Bình, TP. HCM</span>
-        </div>
-      </div>
+    <div class="contact-cards stagger" id="contact-cards">
+      <!-- Filled dynamically -->
     </div>
 
-    <div class="contact-cta-box reveal">
-      <div class="cta-title">Bạn đang tìm kiếm giải pháp CNTT doanh nghiệp?</div>
-      <p class="cta-desc">Từ ERP, e-Procurement, WMS đến tích hợp ngân hàng &amp; định danh điện tử — tôi có thể giúp bạn thiết kế kiến trúc giải pháp phù hợp, tiết kiệm và hiệu quả.</p>
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-        <a href="mailto:vonguyenhao08@gmail.com" class="btn-primary">
-          <i class="fa-solid fa-envelope"></i> Gửi email ngay
-        </a>
-        <a href="cv.html" target="_blank" class="btn-ghost">
-          <i class="fa-solid fa-file-lines"></i> Tải CV đầy đủ
-        </a>
-      </div>
+    <div class="contact-cta-box reveal" id="contact-cta-box">
+      <!-- Filled dynamically -->
     </div>
   </section>
 
   <!-- ======================== FOOTER ======================== -->
-  <footer>
-    <div class="footer-copy">© 2026 · Võ Nguyễn Hào · <span style="color:var(--sky)">vnh.portfolio()</span></div>
-    <div class="footer-socials">
-      <a href="mailto:vonguyenhao08@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
-      <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-      <a href="tel:0377116163" title="Phone"><i class="fa-solid fa-phone"></i></a>
-      <a href="cv.html" target="_blank" title="CV"><i class="fa-solid fa-file-lines"></i></a>
-    </div>
+  <footer id="footer">
+    <!-- Filled dynamically -->
   </footer>
 
-  <!-- ======================== JS ======================== -->
+  <!-- ======================== CV LOADER ======================== -->
+  <script src="cv-loader.js"></script>
+
+  <!-- ======================== RENDER SCRIPT ======================== -->
   <script>
-    // Navbar scroll effect
-    const nav = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 40);
-    });
+    // ── Project metadata ─────────────────────────────────────────────────────
+    const PROJECT_CATEGORIES = {
+      '1': 'F&B ERP',
+      '2': 'POSM Warehouse',
+      '3': 'e-Procurement',
+      '4': 'ERP Phân phối',
+      '5': 'Smart Factory & eKYC',
+      '6': 'Financial Compliance',
+      '7': 'Global Pre-Sales',
+      '8': 'FMCG Portal'
+    };
+    // IDs that get "featured" styling (teal border-left)
+    const FEATURED_IDS = new Set(['1', '3', '4']);
 
-    // Intersection Observer — scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function pad(n) {
+      return String(n).padStart(2, '0');
+    }
+
+    // ── Render: HERO ──────────────────────────────────────────────────────────
+    function renderHero(profile) {
+      // Split name into two parts: first word(s) and last word for highlight
+      const nameParts = profile.name.trim().split(/\s+/);
+      const lastName = nameParts.pop();
+      const firstName = nameParts.join(' ');
+
+      const heroName = document.getElementById('hero-name');
+      heroName.innerHTML =
+        escapeHtml(firstName) + '<br>' +
+        '<span class="highlight">' + escapeHtml(lastName) + '</span>' +
+        '<span class="typed-cursor"></span>';
+
+      const heroTitle = document.getElementById('hero-title');
+      heroTitle.innerHTML =
+        '<strong>' + escapeHtml(profile.title) + '</strong>' +
+        (profile.subTitle ? ' · ' + escapeHtml(profile.subTitle) : '');
+
+      // Update eyebrow location if available
+      if (profile.contact && profile.contact.location) {
+        const eyebrow = document.getElementById('hero-eyebrow');
+        eyebrow.textContent = 'Sẵn sàng kết nối · ' + profile.contact.location;
+      }
+    }
+
+    // ── Render: ABOUT ─────────────────────────────────────────────────────────
+    function renderAbout(profile) {
+      // Split education into degree + school
+      const eduParts = (profile.education || '').split(' - ');
+      const degree = eduParts[0] || profile.education || 'Cử nhân Công nghệ Phần mềm';
+      const school = eduParts[1] || 'Đại học Quy Nhơn';
+
+      // About text paragraphs
+      const aboutText = document.getElementById('about-text');
+      aboutText.innerHTML = `
+        <p>
+          Với nền tảng <strong>${escapeHtml(degree)}</strong> từ ${escapeHtml(school)}, tôi chọn hướng phát triển theo chiều rộng: không chỉ code mà còn thấu hiểu quy trình nghiệp vụ, tư vấn giải pháp và giao tiếp ở cấp C-Level.
+        </p>
+        <p>
+          Hiện tại, tôi đảm nhiệm vai trò <strong>${escapeHtml(profile.currentRole || 'Trợ lý Kinh doanh Ban Giám đốc')}</strong> tại Arito Solutions — trực tiếp tham mưu và làm cầu nối giữa chiến lược kinh doanh của BGĐ và khả năng kỹ thuật của đội triển khai.
+        </p>
+        <p>
+          Tôi đã dẫn dắt dự án đưa Arito Solutions đạt chứng nhận <strong>ISO/IEC 27001:2022</strong> với vai trò Project Manager — từ đánh giá rủi ro, xây dựng chính sách ISMS đến làm việc với tổ chức chứng nhận độc lập.
+        </p>
+
+        <div class="about-skills-title">Core Competencies</div>
+        <div class="skills-flex">
+          <span class="skill-tag key">IT Pre-Sales</span>
+          <span class="skill-tag key">ERP Consulting</span>
+          <span class="skill-tag key">e-Procurement</span>
+          <span class="skill-tag key">Project Management</span>
+          <span class="skill-tag">SAML 2.0 / SSO</span>
+          <span class="skill-tag">Open API Integration</span>
+          <span class="skill-tag">Bank API / VietQR</span>
+          <span class="skill-tag">WMS / POSM</span>
+          <span class="skill-tag">eKYC / Biometrics</span>
+          <span class="skill-tag">ISMS Risk Assessment</span>
+          <span class="skill-tag">Galaxy DMS</span>
+          <span class="skill-tag">S-Invoice / TT99</span>
+          <span class="skill-tag">Arito ERP</span>
+          <span class="skill-tag">LIMS Solutions</span>
+        </div>
+      `;
+
+      // Certs panel
+      const linkedinUrl = profile.contact && profile.contact.linkedin
+        ? profile.contact.linkedin
+        : 'linkedin.com/in/hao-nguyen-986a171a9';
+      const linkedinDisplay = linkedinUrl.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//i, 'linkedin.com/in/');
+
+      const englishLabel = profile.english
+        ? profile.english.replace(/Chứng chỉ Tiếng Anh\s*/i, '').trim()
+        : 'B1';
+
+      const aboutCerts = document.getElementById('about-certs');
+      aboutCerts.innerHTML = `
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(52,211,153,0.12); color: #34d399;">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <div class="cert-name">ISO/IEC 27001:2022</div>
+            <div class="cert-sub">Chứng nhận An toàn Thông tin · PM Leader</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(56,189,248,0.1); color: #38bdf8;">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <div class="cert-name">${escapeHtml(degree)}</div>
+            <div class="cert-sub">${escapeHtml(school)}</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(167,139,250,0.1); color: #a78bfa;">
+            <i class="fa-solid fa-language"></i>
+          </div>
+          <div>
+            <div class="cert-name">Tiếng Anh — ${escapeHtml(englishLabel)}</div>
+            <div class="cert-sub">Giao tiếp &amp; tư vấn giải pháp quốc tế</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(251,191,36,0.1); color: #fbbf24;">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <div>
+            <div class="cert-name">Arito Solutions</div>
+            <div class="cert-sub">BOD Sales Assistant · Từ 01/07/2026</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon" style="background: rgba(244,63,94,0.1); color: #f43f5e;">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </div>
+          <div>
+            <div class="cert-name">LinkedIn Profile</div>
+            <div class="cert-sub" style="color: #60a5fa;">${escapeHtml(linkedinDisplay)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ── Render: PROJECTS ──────────────────────────────────────────────────────
+    function renderProjects(projects) {
+      const grid = document.getElementById('projects-grid');
+      if (!projects || projects.length === 0) {
+        grid.innerHTML = '<p style="color:var(--muted);grid-column:1/-1;text-align:center;">Không có dữ liệu dự án.</p>';
+        return;
+      }
+
+      grid.innerHTML = projects.map(proj => {
+        const isFeatured = FEATURED_IDS.has(String(proj.id));
+        const category = PROJECT_CATEGORIES[String(proj.id)] || 'Enterprise';
+        const numStr = 'PROJECT_' + pad(parseInt(proj.id, 10));
+
+        const tagsHtml = proj.tags && proj.tags.length > 0
+          ? proj.tags.map(t => `<span class="tech-chip int">${escapeHtml(t)}</span>`).join('')
+          : '';
+
+        return `
+          <div class="project-card${isFeatured ? ' featured' : ''}">
+            <div class="proj-header">
+              <span class="proj-num">${escapeHtml(numStr)}</span>
+              <span class="proj-category-tag">${escapeHtml(category)}</span>
+            </div>
+            <div class="proj-name">${escapeHtml(proj.client)}</div>
+            <p class="proj-desc">${escapeHtml(proj.description)}</p>
+            ${tagsHtml ? `<div class="proj-tech">${tagsHtml}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ── Render: CONTACT ───────────────────────────────────────────────────────
+    function renderContact(contact) {
+      const phone    = contact.phone    || '0377 116 163';
+      const email    = contact.email    || 'vonguyenhao08@gmail.com';
+      const linkedin = contact.linkedin || 'hao-nguyen-986a171a9';
+      const location = contact.location || 'Tân Bình, TP. HCM';
+
+      // Normalise linkedin to display text and full href
+      const linkedinHref = linkedin.startsWith('http')
+        ? linkedin
+        : 'https://linkedin.com/in/' + linkedin.replace(/^linkedin\.com\/in\//i, '');
+      const linkedinDisplay = linkedinHref
+        .replace(/^https?:\/\/(www\.)?/, '')
+        .replace(/\/+$/, '');
+      const linkedinShort = linkedinDisplay.replace('linkedin.com/in/', '');
+
+      // Phone href: strip spaces
+      const phoneHref = 'tel:' + phone.replace(/\s+/g, '');
+
+      document.getElementById('contact-cards').innerHTML = `
+        <a href="${phoneHref}" class="contact-card">
+          <div class="contact-card-icon"><i class="fa-solid fa-phone"></i></div>
+          <div class="contact-card-info">
+            <span class="label">Điện thoại</span>
+            <span class="value">${escapeHtml(phone)}</span>
+          </div>
+        </a>
+        <a href="mailto:${escapeHtml(email)}" class="contact-card">
+          <div class="contact-card-icon"><i class="fa-solid fa-envelope"></i></div>
+          <div class="contact-card-info">
+            <span class="label">Email</span>
+            <span class="value">${escapeHtml(email)}</span>
+          </div>
+        </a>
+        <a href="${escapeHtml(linkedinHref)}" target="_blank" class="contact-card">
+          <div class="contact-card-icon" style="background: rgba(10,102,194,0.15); color: #60a5fa;">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </div>
+          <div class="contact-card-info">
+            <span class="label">LinkedIn</span>
+            <span class="value">${escapeHtml(linkedinShort)}</span>
+          </div>
+        </a>
+        <div class="contact-card" style="cursor:default;">
+          <div class="contact-card-icon" style="background: rgba(167,139,250,0.1); color:#a78bfa;">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div class="contact-card-info">
+            <span class="label">Địa chỉ</span>
+            <span class="value">${escapeHtml(location)}</span>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('contact-cta-box').innerHTML = `
+        <div class="cta-title">Bạn đang tìm kiếm giải pháp CNTT doanh nghiệp?</div>
+        <p class="cta-desc">Từ ERP, e-Procurement, WMS đến tích hợp ngân hàng &amp; định danh điện tử — tôi có thể giúp bạn thiết kế kiến trúc giải pháp phù hợp, tiết kiệm và hiệu quả.</p>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+          <a href="mailto:${escapeHtml(email)}" class="btn-primary">
+            <i class="fa-solid fa-envelope"></i> Gửi email ngay
+          </a>
+          <a href="cv.html" target="_blank" class="btn-ghost">
+            <i class="fa-solid fa-file-lines"></i> Tải CV đầy đủ
+          </a>
+        </div>
+      `;
+
+      // Footer
+      document.getElementById('footer').innerHTML = `
+        <div class="footer-copy">© 2026 · Võ Nguyễn Hào · <span style="color:var(--sky)">vnh.portfolio()</span></div>
+        <div class="footer-socials">
+          <a href="mailto:${escapeHtml(email)}" title="Email"><i class="fa-solid fa-envelope"></i></a>
+          <a href="${escapeHtml(linkedinHref)}" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="${phoneHref}" title="Phone"><i class="fa-solid fa-phone"></i></a>
+          <a href="cv.html" target="_blank" title="CV"><i class="fa-solid fa-file-lines"></i></a>
+        </div>
+      `;
+    }
+
+    // ── Show source badge ─────────────────────────────────────────────────────
+    function showSourceBadge(source) {
+      const badge = document.getElementById('source-badge');
+      if (source === 'github' || source === 'github-raw') {
+        badge.textContent = '⚡ Live từ GitHub';
+        badge.className = 'github';
+      } else {
+        badge.textContent = '📄 Local';
+        badge.className = 'local';
+      }
+      badge.style.display = 'block';
+    }
+
+    // ── Init scroll observer ──────────────────────────────────────────────────
+    function initScrollReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+    }
+
+    // ── Init nav effects ──────────────────────────────────────────────────────
+    function initNav() {
+      const nav = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
       });
-    }, { threshold: 0.12 });
 
-    document.querySelectorAll('.reveal, .stagger').forEach(el => observer.observe(el));
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-links a');
 
-    // Typed effect on hero title
-    const cursor = document.querySelector('.typed-cursor');
-    // Just keep the blinking cursor — name is already rendered
-    // We could add a typing animation; for now keep it simple and fast
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            navLinks.forEach(a => {
+              a.style.color = '';
+              if (a.getAttribute('href') === '#' + e.target.id) a.style.color = '#38bdf8';
+            });
+          }
+        });
+      }, { rootMargin: '-40% 0px -40% 0px' });
 
-    // Smooth active nav link highlight
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
+      sections.forEach(s => sectionObserver.observe(s));
+    }
 
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          navLinks.forEach(a => {
-            a.style.color = '';
-            if (a.getAttribute('href') === '#' + e.target.id) a.style.color = '#38bdf8';
-          });
+    // ── Hide loading overlay ──────────────────────────────────────────────────
+    function hideLoading() {
+      const overlay = document.getElementById('loading-overlay');
+      overlay.classList.add('hidden');
+      setTimeout(() => { overlay.style.display = 'none'; }, 500);
+    }
+
+    // ── Main bootstrap ────────────────────────────────────────────────────────
+    (async function bootstrap() {
+      try {
+        const result = await loadCvData();
+
+        if (result && result.markdown) {
+          const cvData = parseCvMarkdown(result.markdown);
+
+          if (cvData && cvData.profile) {
+            renderHero(cvData.profile);
+            renderAbout(cvData.profile);
+            renderContact(cvData.profile.contact || {});
+          }
+
+          if (cvData && cvData.projects && cvData.projects.length > 0) {
+            renderProjects(cvData.projects);
+          }
+
+          showSourceBadge(result.source || 'local');
+        } else {
+          // No data — keep static fallbacks visible
+          console.warn('Không tải được dữ liệu CV; hiển thị nội dung mặc định.');
+          showSourceBadge('local');
         }
-      });
-    }, { rootMargin: '-40% 0px -40% 0px' });
-
-    sections.forEach(s => sectionObserver.observe(s));
+      } catch (err) {
+        console.error('Lỗi bootstrap:', err);
+        showSourceBadge('local');
+      } finally {
+        hideLoading();
+        initScrollReveal();
+        initNav();
+      }
+    })();
   </script>
 
 </body>
