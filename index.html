@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- Marked.js: parse Markdown sang HTML -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,25 +66,26 @@
     .source-badge {
       font-family: var(--mono);
       font-size: 11px;
-      padding: 4px 9px;
+      padding: 4px 10px;
       border-radius: 20px;
-      border: 1px solid;
+      border: 1px solid rgba(255,255,255,0.1);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      background: var(--card);
     }
     .source-badge.github { color: var(--emerald); border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.08); }
     .source-badge.local  { color: var(--violet);  border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
     .source-badge.error  { color: #f87171; border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.08); }
-    .source-badge i { font-size: 9px; }
+    .source-badge i { font-size: 10px; }
 
     /* ===== HERO ===== */
     #hero {
       position: relative;
-      min-height: 45vh;
+      min-height: 42vh;
       display: flex;
       align-items: center;
-      padding: 100px 60px 60px;
+      padding: 100px 60px 50px;
       overflow: hidden;
     }
     #hero::before {
@@ -102,12 +101,12 @@
     .blob-a { width:500px;height:500px;top:-100px;right:-80px;background:#0ea5e9;opacity:.14; }
     .blob-b { width:350px;height:350px;bottom:0;left:-60px;background:#a78bfa;opacity:.09; }
 
-    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-content { position: relative; z-index: 1; max-width: 750px; }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       font-family: var(--mono); font-size: 12px; color: var(--sky);
       background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.2);
-      padding: 4px 12px; border-radius: 20px; margin-bottom: 22px;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
     }
     .live-dot {
       width: 7px; height: 7px; border-radius: 50%; background: var(--emerald);
@@ -117,7 +116,7 @@
 
     .hero-name {
       font-size: clamp(38px,6vw,66px);
-      font-weight: 800; letter-spacing: -2px; line-height: 1.08; margin-bottom: 14px;
+      font-weight: 800; letter-spacing: -2px; line-height: 1.08; margin-bottom: 12px;
     }
     .hero-name .grad {
       background: linear-gradient(135deg, var(--sky) 0%, var(--cyan) 50%, var(--emerald) 100%);
@@ -127,54 +126,24 @@
     .hero-sub strong { color: var(--text); }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
-    /* ===== CONFIG PANEL (khi chưa set GitHub) ===== */
-    #configPanel {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 20px 60px 48px;
-    }
-    .config-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px 32px;
-    }
-    .config-card-title {
-      font-size: 15px; font-weight: 700; color: #f1f5f9;
-      display: flex; align-items: center; gap: 9px; margin-bottom: 6px;
-    }
-    .config-card-title i { color: var(--sky); }
-    .config-card-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
-    .cfg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .cfg-field { display: flex; flex-direction: column; gap: 5px; }
-    .cfg-field.full { grid-column: 1 / -1; }
-    .cfg-field label { font-size: 11.5px; font-weight: 600; color: var(--muted); }
-    .cfg-field input {
-      background: var(--navy); border: 1px solid var(--border); border-radius: 7px;
-      padding: 9px 12px; font-size: 12.5px; font-family: var(--mono);
-      color: var(--text); outline: none; transition: border-color 0.2s;
-    }
-    .cfg-field input:focus { border-color: var(--sky-dim); }
-    .cfg-field input::placeholder { color: var(--navy4); }
-    .cfg-actions { margin-top: 20px; display: flex; gap: 10px; }
     .btn-sky {
       display: inline-flex; align-items: center; gap: 7px;
       background: var(--sky-dim); color: #fff;
-      font-size: 13px; font-weight: 600; padding: 10px 22px;
+      font-size: 13px; font-weight: 600; padding: 10px 20px;
       border-radius: 7px; border: none; cursor: pointer; transition: all 0.2s;
-      font-family: var(--font);
+      text-decoration: none; font-family: var(--font);
     }
-    .btn-sky:hover { background: var(--sky); }
+    .btn-sky:hover { background: var(--sky); transform: translateY(-1px); }
     .btn-sec {
       display: inline-flex; align-items: center; gap: 7px;
       background: var(--card); color: var(--muted);
-      font-size: 13px; font-weight: 600; padding: 10px 22px;
+      font-size: 13px; font-weight: 600; padding: 10px 20px;
       border-radius: 7px; border: 1px solid var(--border); cursor: pointer;
-      transition: all 0.2s; font-family: var(--font);
+      text-decoration: none; transition: all 0.2s; font-family: var(--font);
     }
     .btn-sec:hover { border-color: var(--sky); color: var(--sky); }
 
-    /* ===== MAIN CONTENT (rendered markdown) ===== */
+    /* ===== MAIN CONTENT (rendered cv) ===== */
     #mainContent { padding: 0 60px 80px; max-width: 1140px; margin: 0 auto; }
 
     /* ===== SKELETON LOADER ===== */
@@ -189,63 +158,222 @@
     /* ===== RENDERED MARKDOWN STYLES ===== */
     #renderedCv {
       display: grid;
-      grid-template-columns: 300px 1fr;
+      grid-template-columns: 310px 1fr;
       gap: 0;
       background: #ffffff;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
     }
 
-    /* We'll inject parsed sections into left/right columns via JS */
     .cv-sidebar-render {
       background: #0f172a;
       color: #cbd5e1;
-      padding: 32px 22px;
+      padding: 36px 26px;
       min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-right: 1px solid rgba(255,255,255,0.06);
     }
     .cv-main-render {
       background: #fff;
       color: #0f172a;
-      padding: 32px 36px;
+      padding: 36px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
     }
 
-    /* Sidebar render elements */
-    .cv-sidebar-render h1 {
-      font-size: 22px; font-weight: 800; color: #fff;
-      letter-spacing: -0.3px; margin-bottom: 4px;
+    /* Sidebar items */
+    .profile-card-render {
+      text-align: center;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .cv-sidebar-render .role-label {
-      font-size: 11px; font-weight: 600; color: #38bdf8;
-      background: rgba(56,189,248,0.12); border: 1px solid rgba(56,189,248,0.25);
-      padding: 3px 9px; border-radius: 20px; display: inline-block; margin-bottom: 20px;
-      text-transform: uppercase; letter-spacing: 0.5px;
+    .avatar-wrapper {
+      width: 96px; height: 96px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg,#0ea5e9,#10b981);
+      box-shadow: 0 4px 20px rgba(14,165,233,.35);
     }
-    .cv-sidebar-render .contact-item {
-      font-size: 12.5px; color: #cbd5e1; padding: 5px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      display: flex; align-items: flex-start; gap: 8px;
+    .avatar-inner {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      font-size: 32px;
+      font-weight: 800;
     }
-    .cv-sidebar-render .contact-item i { color: #38bdf8; width: 14px; flex-shrink: 0; margin-top: 2px; }
-    .cv-sidebar-render h2 {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1px; color: #f8fafc;
-      border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px;
-      margin-top: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 7px;
+    .sidebar-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
     }
-    .cv-sidebar-render h2 i { color: #38bdf8; }
+    .sidebar-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #38bdf8;
+      background: rgba(14,165,233,0.12);
+      border: 1px solid rgba(56,189,248,0.25);
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sidebar-subtitle {
+      font-size: 11.5px;
+      color: #94a3b8;
+      margin-top: 6px;
+      font-weight: 500;
+    }
 
-    /* Main content render */
-    .cv-main-render h1 { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
-    .cv-main-render h2 { font-size: 15px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.6px; margin: 22px 0 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
-    .cv-main-render h3 { font-size: 14px; font-weight: 700; color: #0f172a; margin: 16px 0 6px; }
-    .cv-main-render p { font-size: 13px; color: #475569; line-height: 1.7; margin-bottom: 10px; }
-    .cv-main-render ul { padding-left: 18px; margin-bottom: 10px; }
-    .cv-main-render li { font-size: 13px; color: #475569; line-height: 1.6; margin-bottom: 5px; }
-    .cv-main-render strong { color: #0f172a; font-weight: 700; }
-    .cv-main-render ol { padding-left: 18px; margin-bottom: 10px; }
-    .cv-main-render ol li { font-size: 13px; color: #334155; margin-bottom: 8px; line-height: 1.6; }
-    .cv-main-render ol li::marker { color: #0ea5e9; font-weight: 700; }
+    .sidebar-section-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .sidebar-section-title i { color: #0ea5e9; font-size: 12px; }
+
+    .contact-item-render {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      padding: 4px 0;
+    }
+    .contact-icon-box {
+      width: 26px; height: 26px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      font-size: 11.5px;
+      flex-shrink: 0;
+    }
+    .contact-text-box a { color: #e2e8f0; text-decoration: none; word-break: break-all; }
+    .contact-text-box a:hover { color: #38bdf8; }
+
+    /* Main items */
+    .main-section-title-render {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .main-section-title-render i { color: #0284c7; }
+
+    .summary-box-render {
+      background: #f8fafc;
+      padding: 14px 18px;
+      border-radius: 8px;
+      border-left: 4px solid #0ea5e9;
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.65;
+    }
+
+    .project-card-render {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 13px 16px;
+      border-left: 3px solid #cbd5e1;
+      background: #fff;
+      transition: all 0.2s ease;
+      margin-bottom: 11px;
+    }
+    .project-card-render:hover {
+      border-color: #94a3b8;
+      border-left-color: #0ea5e9;
+      box-shadow: 0 4px 14px rgba(15,23,42,0.06);
+    }
+    .project-card-render.featured {
+      border-left-color: #0ea5e9;
+      background: #fafcff;
+    }
+
+    .proj-top-render {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 5px;
+      gap: 8px;
+    }
+    .proj-title-render {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .proj-num-render {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      background: #0f172a;
+      color: #fff;
+      font-size: 9.5px;
+      font-weight: 700;
+      font-family: var(--mono);
+      flex-shrink: 0;
+    }
+    .proj-cat-badge {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #0369a1;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .proj-desc-render {
+      font-size: 12.6px;
+      color: #475569;
+      line-height: 1.55;
+      margin-bottom: 7px;
+    }
+    .proj-tags-render {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .proj-tag-render {
+      font-size: 10.5px;
+      font-family: var(--mono);
+      color: #0284c7;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
 
     /* ===== FOOTER ===== */
     footer {
@@ -258,13 +386,12 @@
     .footer-right a { color: var(--muted); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 5px; }
     .footer-right a:hover { color: var(--sky); }
 
-    /* ===== LAST UPDATED CHIP ===== */
     .updated-chip {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: var(--mono); font-size: 11px;
-      color: var(--muted); padding: 3px 9px;
+      color: var(--muted); padding: 4px 10px;
       background: var(--card); border: 1px solid var(--border);
-      border-radius: 20px; margin-bottom: 32px;
+      border-radius: 20px; margin-bottom: 24px;
     }
     .updated-chip i { color: var(--sky); }
 
@@ -272,10 +399,9 @@
       nav { padding: 16px 20px; }
       nav.scrolled { padding: 12px 20px; }
       #hero { padding: 90px 20px 40px; }
-      #configPanel { padding: 16px 20px 40px; }
       #mainContent { padding: 0 20px 60px; }
-      .cfg-grid { grid-template-columns: 1fr; }
       #renderedCv { grid-template-columns: 1fr; }
+      .cv-sidebar-render { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
       footer { flex-direction: column; gap: 12px; text-align: center; padding: 20px; }
     }
   </style>
@@ -293,7 +419,7 @@
         <i class="fa-solid fa-user"></i> Portfolio
       </a>
       <a href="cv.html" class="nav-btn outline" target="_blank">
-        <i class="fa-solid fa-file-lines"></i> CV
+        <i class="fa-solid fa-file-lines"></i> CV A4
       </a>
       <a href="admin.html" class="nav-btn primary">
         <i class="fa-brands fa-github"></i> Admin
@@ -308,84 +434,42 @@
     <div class="hero-content">
       <div class="hero-eyebrow">
         <div class="live-dot"></div>
-        Live CV · Dữ liệu từ cv_data.md
+        Live CV · Tự động đồng bộ từ cv_data.md
       </div>
       <h1 class="hero-name">
-        Võ Nguyễn<br><span class="grad">Hào</span>
+        <span id="heroNamePrefix">Võ Nguyễn</span><br><span class="grad" id="heroNameHighlight">Hào</span>
       </h1>
-      <p class="hero-sub">
-        <strong>BOD Sales Assistant</strong> · IT Pre-Sales & Enterprise Solution Consultant · Arito Solutions
+      <p class="hero-sub" id="heroSubtitle">
+        <strong>BOD Sales Assistant</strong> · IT Pre-Sales & Enterprise Solution Consultant
       </p>
       <div class="hero-actions">
         <a href="cv.html" class="btn-sky" target="_blank">
-          <i class="fa-solid fa-file-arrow-down"></i> Tải CV đầy đủ (A4)
+          <i class="fa-solid fa-file-arrow-down"></i> In / Xuất PDF (A4)
         </a>
         <a href="portfolio.html" class="btn-sec" target="_blank">
-          <i class="fa-solid fa-eye"></i> Xem Portfolio
+          <i class="fa-solid fa-eye"></i> Xem Portfolio Đầy Đủ
         </a>
         <a href="admin.html" class="btn-sec" target="_blank">
-          <i class="fa-brands fa-github"></i> Chỉnh sửa (Admin)
+          <i class="fa-brands fa-github"></i> Quản Trị Admin
         </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- GITHUB CONFIG PANEL (hiện nếu chưa cài đặt) -->
-  <div id="configPanel" style="display:none;">
-    <div class="config-card">
-      <div class="config-card-title">
-        <i class="fa-brands fa-github"></i> Cấu hình nguồn dữ liệu GitHub
-      </div>
-      <p class="config-card-desc">
-        Nhập thông tin GitHub repo chứa file <code style="font-family:var(--mono);color:var(--sky);">cv_data.md</code> để trang này tự động render nội dung mới nhất từ GitHub. Cấu hình được lưu trong trình duyệt.
-      </p>
-      <div class="cfg-grid">
-        <div class="cfg-field">
-          <label>GitHub Username *</label>
-          <input type="text" id="idxOwner" placeholder="vd: vonguyenhao08">
-        </div>
-        <div class="cfg-field">
-          <label>Repository Name *</label>
-          <input type="text" id="idxRepo" placeholder="vd: my-cv-project">
-        </div>
-        <div class="cfg-field">
-          <label>Branch</label>
-          <input type="text" id="idxBranch" value="main" placeholder="main">
-        </div>
-        <div class="cfg-field">
-          <label>Đường dẫn file</label>
-          <input type="text" id="idxPath" value="cv_data.md" placeholder="cv_data.md">
-        </div>
-        <div class="cfg-field full">
-          <label>Personal Access Token (PAT) · Quyền repo Contents: Read</label>
-          <input type="password" id="idxToken" placeholder="ghp_xxxxxxxxxxxx">
-        </div>
-      </div>
-      <div class="cfg-actions">
-        <button class="btn-sky" onclick="saveAndRender()">
-          <i class="fa-solid fa-arrow-right"></i> Kết nối & Hiển thị CV
-        </button>
-        <button class="btn-sec" onclick="loadLocal()">
-          <i class="fa-solid fa-file"></i> Dùng file local
-        </button>
       </div>
     </div>
   </div>
 
   <!-- SKELETON LOADING -->
-  <div id="skeleton" style="padding: 0 60px 60px; max-width: 1140px; margin: 0 auto; display:none;">
-    <div class="skeleton-block" style="height:24px; width:200px; margin-bottom:24px;"></div>
-    <div style="display:grid;grid-template-columns:300px 1fr;gap:0;border-radius:16px;overflow:hidden;">
-      <div style="background:#0f172a;padding:32px;">
-        <div class="skeleton-block" style="height:80px;border-radius:50%;width:80px;margin-bottom:16px;background:rgba(255,255,255,0.08);"></div>
-        <div class="skeleton-block" style="height:16px;margin-bottom:8px;background:rgba(255,255,255,0.06);"></div>
-        <div class="skeleton-block" style="height:16px;width:70%;background:rgba(255,255,255,0.06);"></div>
+  <div id="skeleton" style="padding: 0 60px 60px; max-width: 1140px; margin: 0 auto;">
+    <div class="skeleton-block" style="height:24px; width:220px; margin-bottom:20px;"></div>
+    <div style="display:grid;grid-template-columns:310px 1fr;gap:0;border-radius:16px;overflow:hidden;">
+      <div style="background:#0f172a;padding:36px 26px;">
+        <div class="skeleton-block" style="height:96px;border-radius:50%;width:96px;margin:0 auto 16px;background:rgba(255,255,255,0.08);"></div>
+        <div class="skeleton-block" style="height:18px;margin-bottom:10px;background:rgba(255,255,255,0.06);"></div>
+        <div class="skeleton-block" style="height:14px;width:70%;margin:0 auto;background:rgba(255,255,255,0.06);"></div>
       </div>
-      <div style="background:#fff;padding:32px;">
-        <div class="skeleton-block" style="height:32px;margin-bottom:16px;background:#e2e8f0;"></div>
-        <div class="skeleton-block" style="height:16px;margin-bottom:10px;background:#e2e8f0;"></div>
-        <div class="skeleton-block" style="height:16px;width:80%;margin-bottom:10px;background:#e2e8f0;"></div>
-        <div class="skeleton-block" style="height:16px;width:60%;background:#e2e8f0;"></div>
+      <div style="background:#fff;padding:36px;">
+        <div class="skeleton-block" style="height:26px;margin-bottom:16px;background:#e2e8f0;"></div>
+        <div class="skeleton-block" style="height:14px;margin-bottom:10px;background:#e2e8f0;"></div>
+        <div class="skeleton-block" style="height:14px;width:80%;margin-bottom:10px;background:#e2e8f0;"></div>
+        <div class="skeleton-block" style="height:14px;width:60%;background:#e2e8f0;"></div>
       </div>
     </div>
   </div>
@@ -393,7 +477,7 @@
   <!-- MAIN RENDERED CONTENT -->
   <div id="mainContent" style="display:none;">
     <div class="updated-chip" id="updatedChip" style="display:none;">
-      <i class="fa-brands fa-github"></i> <span id="updatedText">Tải từ GitHub</span>
+      <i class="fa-solid fa-bolt"></i> <span id="updatedText">Dữ liệu thời gian thực</span>
     </div>
     <div id="renderedCv">
       <div class="cv-sidebar-render" id="cvSidebar"></div>
@@ -405,387 +489,216 @@
   <footer>
     <div class="footer-left">© 2026 · Võ Nguyễn Hào · vnh.portfolio()</div>
     <div class="footer-right">
-      <a href="mailto:vonguyenhao08@gmail.com"><i class="fa-solid fa-envelope"></i> Email</a>
-      <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
+      <a href="mailto:vonguyenhao08@gmail.com" id="footerEmail"><i class="fa-solid fa-envelope"></i> Email</a>
+      <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank" id="footerLinkedin"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</a>
       <a href="admin.html"><i class="fa-brands fa-github"></i> Admin</a>
     </div>
   </footer>
 
+  <!-- SCRIPT ENGINE CHUNG -->
+  <script src="cv-loader.js"></script>
+
   <script>
-  // ============================================================
-  // CONFIG KEY — shared with admin.html
-  // ============================================================
-  const CFG_KEY = 'cvAdminConfig';
+    const PROJECT_CATEGORIES = [
+      'F&B Retail ERP',
+      'POSM Warehouse',
+      'e-Procurement',
+      'Large Distribution ERP',
+      'Smart Factory & eKYC',
+      'Financial Compliance',
+      'Global Pre-Sales',
+      'FMCG Supplier Portal'
+    ];
 
-  function loadCfg() {
-    try { return JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); } catch(e) { return {}; }
-  }
+    function esc(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
-  // ============================================================
-  // INIT
-  // ============================================================
-  window.addEventListener('DOMContentLoaded', async () => {
     // Navbar scroll
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
     });
 
-    const cfg = loadCfg();
-
-    // Pre-fill config form
-    if (cfg.owner)  document.getElementById('idxOwner').value  = cfg.owner;
-    if (cfg.repo)   document.getElementById('idxRepo').value   = cfg.repo;
-    if (cfg.branch) document.getElementById('idxBranch').value = cfg.branch;
-    if (cfg.path)   document.getElementById('idxPath').value   = cfg.path;
-    if (cfg.token)  document.getElementById('idxToken').value  = cfg.token;
-
-    if (cfg.owner && cfg.repo && cfg.token) {
-      // Auto-load from GitHub
-      await fetchAndRender(cfg);
-    } else {
-      // Show config panel
-      setSourceBadge('none');
-      document.getElementById('configPanel').style.display = 'block';
-    }
-  });
-
-  // ============================================================
-  // SAVE CONFIG + RENDER
-  // ============================================================
-  async function saveAndRender() {
-    const cfg = {
-      owner:  document.getElementById('idxOwner').value.trim(),
-      repo:   document.getElementById('idxRepo').value.trim(),
-      branch: document.getElementById('idxBranch').value.trim() || 'main',
-      path:   document.getElementById('idxPath').value.trim() || 'cv_data.md',
-      token:  document.getElementById('idxToken').value.trim(),
-    };
-    if (!cfg.owner || !cfg.repo || !cfg.token) {
-      alert('Vui lòng nhập đủ: GitHub Username, Repo Name và Token.');
-      return;
-    }
-    localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
-    document.getElementById('configPanel').style.display = 'none';
-    await fetchAndRender(cfg);
-  }
-
-  // ============================================================
-  // FETCH FROM GITHUB
-  // ============================================================
-  async function fetchAndRender(cfg) {
-    showSkeleton(true);
-    setSourceBadge('loading');
-
-    const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${cfg.branch}`;
-
-    try {
-      const res = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${cfg.token}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'X-GitHub-Api-Version': '2022-11-28',
-        }
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || `HTTP ${res.status}`);
-      }
-
-      const data = await res.json();
-      const markdown = atob(data.content.replace(/\n/g, ''));
-
-      renderMarkdown(markdown, 'github', cfg);
-      setSourceBadge('github', cfg.owner + '/' + cfg.repo);
-
-      // Fetch commit date
-      fetchCommitDate(cfg);
-
-    } catch(e) {
-      console.error('GitHub fetch error:', e);
-      setSourceBadge('error', e.message);
-      showSkeleton(false);
-      // Fall back: try to show config panel again
-      document.getElementById('configPanel').style.display = 'block';
-      document.getElementById('configPanel').innerHTML += `
-        <div style="margin-top:14px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:8px;padding:12px;font-size:12.5px;color:#f87171;">
-          <i class="fa-solid fa-circle-xmark"></i> Lỗi kết nối GitHub: <strong>${e.message}</strong>.<br>
-          Kiểm tra lại thông tin repo, token và quyền truy cập.
-        </div>`;
-    }
-  }
-
-  async function fetchCommitDate(cfg) {
-    try {
-      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/commits?path=${cfg.path}&sha=${cfg.branch}&per_page=1`;
-      const res = await fetch(url, { headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github.v3+json' }});
-      if (!res.ok) return;
-      const commits = await res.json();
-      if (commits && commits.length > 0) {
-        const d = new Date(commits[0].commit.author.date);
-        const chip = document.getElementById('updatedChip');
-        document.getElementById('updatedText').textContent =
-          `Cập nhật từ GitHub · ${d.toLocaleString('vi-VN')} · ${commits[0].commit.message.substring(0,50)}`;
-        chip.style.display = 'inline-flex';
-      }
-    } catch(e) { /* silent */ }
-  }
-
-  // ============================================================
-  // LOAD LOCAL file (fetch cv_data.md relative)
-  // ============================================================
-  async function loadLocal() {
-    showSkeleton(true);
-    setSourceBadge('loading');
-    try {
-      const res = await fetch('cv_data.md');
-      if (!res.ok) throw new Error('Không tìm thấy file cv_data.md local.');
-      const markdown = await res.text();
-      renderMarkdown(markdown, 'local', null);
-      setSourceBadge('local');
-    } catch(e) {
-      setSourceBadge('error', e.message);
-      showSkeleton(false);
-    }
-  }
-
-  // ============================================================
-  // RENDER MARKDOWN → STRUCTURED CV LAYOUT
-  // ============================================================
-  function renderMarkdown(markdown, source, cfg) {
-    // Parse sections from markdown
-    const sections = parseMarkdownSections(markdown);
-
-    // Build sidebar HTML
-    let sidebarHtml = buildSidebar(sections);
-    // Build main HTML
-    let mainHtml = buildMain(sections);
-
-    document.getElementById('cvSidebar').innerHTML = sidebarHtml;
-    document.getElementById('cvMain').innerHTML    = mainHtml;
-
-    showSkeleton(false);
-    document.getElementById('mainContent').style.display = 'block';
-    document.getElementById('configPanel').style.display = 'none';
-  }
-
-  // ============================================================
-  // PARSE: split markdown into structured data
-  // ============================================================
-  function parseMarkdownSections(md) {
-    const lines = md.split('\n');
-    const sections = {};
-    let currentSection = null;
-    let buffer = [];
-
-    for (const line of lines) {
-      if (line.startsWith('# ')) {
-        if (currentSection !== null) {
-          sections[currentSection] = buffer.join('\n').trim();
-        }
-        currentSection = line.replace(/^#\s+/, '').trim();
-        buffer = [];
+    function setBadge(source, time) {
+      const badge = document.getElementById('sourceBadge');
+      if (source === 'github' || source === 'github-raw') {
+        badge.className = 'source-badge github';
+        badge.innerHTML = `<i class="fa-brands fa-github"></i> Live GitHub · ${time || ''}`;
       } else {
-        buffer.push(line);
-      }
-    }
-    if (currentSection !== null) {
-      sections[currentSection] = buffer.join('\n').trim();
-    }
-    return sections;
-  }
-
-  // ============================================================
-  // BUILD SIDEBAR: "THÔNG TIN CÁ NHÂN" section
-  // ============================================================
-  function buildSidebar(sections) {
-    const key = Object.keys(sections).find(k => k.includes('THÔNG TIN'));
-    if (!key) return '<p style="color:#94a3b8;font-size:13px;">Không tìm thấy dữ liệu cá nhân.</p>';
-
-    const raw = sections[key];
-    const lines = raw.split('\n').filter(l => l.trim().startsWith('-'));
-
-    const data = {};
-    for (const line of lines) {
-      const content = line.replace(/^-\s*/, '');
-      const colon = content.indexOf(':');
-      if (colon > -1) {
-        const k = content.substring(0, colon).trim();
-        const v = content.substring(colon + 1).trim();
-        data[k] = v;
+        badge.className = 'source-badge local';
+        badge.innerHTML = `<i class="fa-solid fa-file"></i> File local · ${time || ''}`;
       }
     }
 
-    const name = data['Họ tên'] || 'Võ Nguyễn Hào';
-    const firstName = name.split(' ').slice(-1)[0];
-    const initials = (name.split(' ')[0][0] + firstName[0]).toUpperCase();
-    const titles = (data['Chức danh'] || '').split('|').map(s => s.trim());
-    const contact = (data['Liên hệ'] || '').split('|').map(s => s.trim());
-    const edu = data['Học vấn'] || '';
-    const pm = data['Vai trò PM'] || '';
-    const current = data['Vị trí hiện tại'] || '';
+    function renderPage(data, source, time) {
+      const p = data.profile;
 
-    // Contact icons mapping
-    const contactIcons = ['fa-location-dot', 'fa-phone', 'fa-envelope', 'fa-linkedin-in'];
-
-    let html = `
-      <!-- Avatar + Name -->
-      <div style="text-align:center;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:20px;">
-        <div style="width:90px;height:90px;margin:0 auto 14px;border-radius:50%;padding:3px;background:linear-gradient(135deg,#0ea5e9,#10b981);box-shadow:0 4px 20px rgba(14,165,233,.35);">
-          <div style="width:100%;height:100%;border-radius:50%;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#38bdf8;font-size:30px;font-weight:800;">
-            ${initials}
-          </div>
-        </div>
-        <h1>${name}</h1>
-        ${titles.map((t,i) => `<div class="role-label" style="${i>0?'margin-top:6px;background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.25);color:#34d399;':''}">${t}</div>`).join('')}
-      </div>
-
-      <!-- Contact -->
-      <h2><i class="fa-solid fa-address-card"></i>Thông tin liên hệ</h2>
-      ${contact.map((c, i) => {
-        const isLinkedIn = c.toLowerCase().includes('linkedin');
-        const isEmail    = c.includes('@');
-        const isPhone    = c.match(/^\d/);
-        let icon = contactIcons[i] || 'fa-circle-dot';
-        let display = c;
-        if (isLinkedIn) {
-          const parts = c.split(':');
-          display = parts[1]?.trim() || c;
+      // 1. Cập nhật Hero
+      if (p.name) {
+        const parts = p.name.trim().split(' ');
+        if (parts.length > 1) {
+          document.getElementById('heroNamePrefix').textContent = parts.slice(0, -1).join(' ');
+          document.getElementById('heroNameHighlight').textContent = parts.slice(-1)[0];
+        } else {
+          document.getElementById('heroNamePrefix').textContent = '';
+          document.getElementById('heroNameHighlight').textContent = p.name;
         }
-        return `<div class="contact-item">
-          <i class="fa-solid ${icon}" style="${isLinkedIn?'color:#60a5fa':''}"></i>
-          <span>${display}</span>
-        </div>`;
-      }).join('')}
+      }
+      if (p.title || p.subTitle) {
+        document.getElementById('heroSubtitle').innerHTML = `<strong>${esc(p.title)}</strong> · ${esc(p.subTitle)}`;
+      }
 
-      <!-- Education -->
-      <h2 style="margin-top:20px;"><i class="fa-solid fa-graduation-cap"></i>Học vấn & Chứng chỉ</h2>
-      ${edu.split('.').filter(s => s.trim()).map(e => `
-        <div style="padding-left:12px;border-left:2px solid #38bdf8;margin-bottom:10px;">
-          <div style="font-size:12.5px;font-weight:700;color:#fff;">${e.trim()}</div>
-        </div>
-      `).join('')}
-
-      <!-- ISO PM Badge -->
-      ${pm ? `
-        <div style="margin-top:14px;padding:12px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:8px;">
-          <div style="font-size:11px;font-weight:700;color:#34d399;margin-bottom:4px;">
-            <i class="fa-solid fa-shield-halved"></i> ISO 27001:2022 · Project Manager
+      // 2. Render Sidebar
+      const initials = p.name ? p.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() : 'VH';
+      let sidebarHtml = `
+        <div class="profile-card-render">
+          <div class="avatar-wrapper">
+            <div class="avatar-inner">${initials}</div>
           </div>
-          <div style="font-size:11.5px;color:#94a3b8;line-height:1.5;">${pm}</div>
+          <h2 class="sidebar-name">${esc(p.name)}</h2>
+          <div class="sidebar-badge">${esc(p.title || 'BOD Sales Assistant')}</div>
+          <div class="sidebar-subtitle">${esc(p.subTitle || 'IT Pre-Sales & Enterprise Solution Consultant')}</div>
         </div>
-      ` : ''}
 
-      <!-- Current role -->
-      ${current ? `
-        <div style="margin-top:14px;padding:12px;background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:8px;">
-          <div style="font-size:10.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Vị trí hiện tại</div>
-          <div style="font-size:12px;color:#cbd5e1;line-height:1.55;">${current}</div>
+        <div>
+          <div class="sidebar-section-title">
+            <i class="fa-solid fa-address-card"></i> Thông tin liên hệ
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${p.contact.location ? `
+              <div class="contact-item-render">
+                <div class="contact-icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="contact-text-box">${esc(p.contact.location)}</div>
+              </div>` : ''}
+            ${p.contact.phone ? `
+              <div class="contact-item-render">
+                <div class="contact-icon-box"><i class="fa-solid fa-phone"></i></div>
+                <div class="contact-text-box"><a href="tel:${esc(p.contact.phone)}">${esc(p.contact.phone)}</a></div>
+              </div>` : ''}
+            ${p.contact.email ? `
+              <div class="contact-item-render">
+                <div class="contact-icon-box"><i class="fa-solid fa-envelope"></i></div>
+                <div class="contact-text-box"><a href="mailto:${esc(p.contact.email)}">${esc(p.contact.email)}</a></div>
+              </div>` : ''}
+            ${p.contact.linkedin ? `
+              <div class="contact-item-render">
+                <div class="contact-icon-box"><i class="fa-brands fa-linkedin-in"></i></div>
+                <div class="contact-text-box"><a href="${p.contact.linkedin.startsWith('http') ? esc(p.contact.linkedin) : 'https://' + esc(p.contact.linkedin)}" target="_blank">${esc(p.contact.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, ''))}</a></div>
+              </div>` : ''}
+          </div>
         </div>
-      ` : ''}
-    `;
 
-    return html;
-  }
+        <div>
+          <div class="sidebar-section-title">
+            <i class="fa-solid fa-graduation-cap"></i> Học vấn & Chứng chỉ
+          </div>
+          <div style="border-left:2px solid #38bdf8;padding-left:12px;margin-bottom:10px;">
+            <div style="font-size:12.5px;font-weight:700;color:#fff;">${esc(p.education || 'Cử nhân Công nghệ phần mềm')}</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+            <span style="font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#34d399;">
+              <i class="fa-solid fa-shield-halved"></i> ISO 27001:2022
+            </span>
+            ${p.english ? `
+              <span style="font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px;background:rgba(14,165,233,0.15);border:1px solid rgba(14,165,233,0.3);color:#38bdf8;">
+                <i class="fa-solid fa-language"></i> ${esc(p.english)}
+              </span>` : ''}
+          </div>
+        </div>
 
-  // ============================================================
-  // BUILD MAIN: Projects section + summary
-  // ============================================================
-  function buildMain(sections) {
-    const projKey = Object.keys(sections).find(k => k.includes('DỰ ÁN'));
-    const projects = projKey ? sections[projKey] : null;
-
-    const projectCategories = [
-      { color: '#0ea5e9', label: 'F&B ERP' },
-      { color: '#6366f1', label: 'WMS/POSM' },
-      { color: '#0ea5e9', label: 'e-Procurement' },
-      { color: '#0ea5e9', label: 'ERP Phân phối' },
-      { color: '#10b981', label: 'Smart Factory' },
-      { color: '#f59e0b', label: 'Compliance' },
-      { color: '#8b5cf6', label: 'Global Pre-Sales' },
-      { color: '#64748b', label: 'FMCG Portal' },
-    ];
-
-    let html = `
-      <!-- Summary -->
-      <h2><i class="fa-solid fa-user-tie" style="color:#0284c7;margin-right:6px;"></i>Hồ sơ chuyên môn</h2>
-      <div style="background:#f8fafc;padding:14px 18px;border-radius:8px;border-left:4px solid #0ea5e9;margin-bottom:8px;">
-        <p style="font-size:13px;color:#334155;line-height:1.7;margin:0;">
-          Chuyên gia tư vấn giải pháp CNTT doanh nghiệp kiêm <strong>Trợ lý Kinh doanh Ban Giám đốc</strong> tại Arito Solutions. Kinh nghiệm thực chiến đa ngành — F&B, Thủy sản, Phân phối, FMCG, Nông nghiệp công nghệ cao — trong tư vấn Pre-Sales, thiết kế kiến trúc tích hợp ERP và dẫn dắt chuẩn hóa <strong>ISO 27001:2022</strong>.
-        </p>
-      </div>
-    `;
-
-    // Render projects as styled cards
-    if (projects) {
-      html += `<h2 style="margin-top:22px;"><i class="fa-solid fa-diagram-project" style="color:#0284c7;margin-right:6px;"></i>Dự án trọng điểm</h2>`;
-      html += `<div style="display:flex;flex-direction:column;gap:10px;">`;
-
-      const projLines = projects.split('\n').filter(l => /^\d+\./.test(l.trim()));
-      projLines.forEach((line, idx) => {
-        const match = line.match(/^\d+\.\s+(.+?):\s*(.+)$/);
-        if (!match) return;
-        const client = match[1].trim();
-        const desc   = match[2].trim();
-        const cat = projectCategories[idx] || { color: '#64748b', label: 'Enterprise' };
-
-        // Extract tech tags from description (quoted tech names)
-        const techMatches = desc.match(/\b(Arito ERP|iPOS|S-Invoice|Vietcombank|VietinBank|VietQR|Galaxy DMS|SAML 2\.0|SSO|Open API|eKYC|LIMS|TT99|POSM|ASUPP)\b/gi) || [];
-        const uniqueTechs = [...new Set(techMatches.map(t => t.trim()))];
-
-        html += `
-          <div style="border:1px solid #e2e8f0;border-left:3px solid ${cat.color};border-radius:8px;padding:12px 15px;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:8px;">
-              <div style="font-size:13.5px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:8px;">
-                <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;background:#0f172a;color:#fff;font-size:9.5px;font-weight:700;font-family:monospace;flex-shrink:0;">${String(idx+1).padStart(2,'0')}</span>
-                ${client}
-              </div>
-              <span style="font-size:10.5px;font-weight:600;color:${cat.color};background:${cat.color}18;padding:2px 7px;border-radius:4px;white-space:nowrap;border:1px solid ${cat.color}30;">${cat.label}</span>
+        ${p.pmRole ? `
+          <div style="background:rgba(30,41,59,0.6);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius:8px;">
+            <div style="font-size:11px;font-weight:700;color:#38bdf8;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+              <i class="fa-solid fa-award"></i> Vai trò Project Manager
             </div>
-            <p style="font-size:12.5px;color:#475569;line-height:1.55;margin-bottom:${uniqueTechs.length?'8px':'0'};">${desc}</p>
-            ${uniqueTechs.length ? `<div style="display:flex;flex-wrap:wrap;gap:5px;">
-              ${uniqueTechs.map(t => `<span style="font-family:monospace;font-size:10.5px;color:#0369a1;background:#f0f9ff;border:1px solid #bae6fd;padding:1px 6px;border-radius:3px;">${t}</span>`).join('')}
-            </div>` : ''}
+            <div style="font-size:12px;color:#cbd5e1;line-height:1.5;">${esc(p.pmRole)}</div>
+          </div>` : ''}
+      `;
+      document.getElementById('cvSidebar').innerHTML = sidebarHtml;
+
+      // 3. Render Main Content
+      let mainHtml = `
+        <div>
+          <div class="main-section-title-render">
+            <i class="fa-solid fa-user-tie"></i> Hồ sơ chuyên môn
           </div>
-        `;
-      });
+          <div class="summary-box-render">
+            ${p.currentRole ? `<strong>Vị trí:</strong> ${esc(p.currentRole)}.<br>` : ''}
+            Chuyên gia tư vấn giải pháp CNTT doanh nghiệp kiêm Trợ lý Kinh doanh Ban Giám đốc tại <strong>Arito Solutions</strong>. Năng lực kết hợp sâu sắc giữa quy trình kinh doanh B2B và kiến trúc công nghệ tích hợp hệ sinh thái ERP, e-Procurement, WMS, eKYC và dẫn dắt chuẩn hóa an toàn thông tin theo <strong>ISO 27001:2022</strong>.
+          </div>
+        </div>
 
-      html += `</div>`;
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;border-bottom:2px solid #e2e8f0;padding-bottom:8px;">
+            <div class="main-section-title-render" style="border-bottom:none;padding-bottom:0;margin-bottom:0;">
+              <i class="fa-solid fa-diagram-project"></i> Danh mục Dự án Trọng điểm
+            </div>
+            <span style="font-size:11px;font-weight:700;color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:12px;">
+              ${data.projects.length} Dự án Enterprise
+            </span>
+          </div>
+
+          <div>
+            ${data.projects.map((proj, idx) => {
+              const cat = PROJECT_CATEGORIES[idx] || 'Enterprise Solution';
+              const isFeatured = (idx === 0 || idx === 2 || idx === 3);
+              return `
+                <div class="project-card-render ${isFeatured ? 'featured' : ''}">
+                  <div class="proj-top-render">
+                    <div class="proj-title-render">
+                      <span class="proj-num-render">${String(idx + 1).padStart(2, '0')}</span>
+                      <span>${esc(proj.client)}</span>
+                    </div>
+                    <span class="proj-cat-badge">${cat}</span>
+                  </div>
+                  <p class="proj-desc-render">${esc(proj.description)}</p>
+                  ${proj.tags && proj.tags.length ? `
+                    <div class="proj-tags-render">
+                      ${proj.tags.map(t => `<span class="proj-tag-render">${esc(t)}</span>`).join('')}
+                    </div>` : ''}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      document.getElementById('cvMain').innerHTML = mainHtml;
+
+      // Update footer links
+      if (p.contact.email) {
+        document.getElementById('footerEmail').href = 'mailto:' + p.contact.email;
+      }
+      if (p.contact.linkedin) {
+        document.getElementById('footerLinkedin').href = p.contact.linkedin.startsWith('http') ? p.contact.linkedin : 'https://' + p.contact.linkedin;
+      }
+
+      // Show content
+      document.getElementById('skeleton').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+
+      const chip = document.getElementById('updatedChip');
+      chip.style.display = 'inline-flex';
+      document.getElementById('updatedText').textContent = `Đồng bộ từ ${source === 'github' ? 'GitHub API' : (source === 'github-raw' ? 'GitHub Raw' : 'File Local')} lúc ${time || ''}`;
     }
 
-    return html;
-  }
-
-  // ============================================================
-  // UI HELPERS
-  // ============================================================
-  function showSkeleton(show) {
-    document.getElementById('skeleton').style.display = show ? 'block' : 'none';
-  }
-
-  function setSourceBadge(state, label = '') {
-    const badge = document.getElementById('sourceBadge');
-    if (state === 'github') {
-      badge.className = 'source-badge github';
-      badge.innerHTML = `<i class="fa-brands fa-github"></i> Live · ${label}`;
-    } else if (state === 'local') {
-      badge.className = 'source-badge local';
-      badge.innerHTML = `<i class="fa-solid fa-file"></i> Local · cv_data.md`;
-    } else if (state === 'error') {
-      badge.className = 'source-badge error';
-      badge.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Lỗi · ${label}`;
-    } else if (state === 'loading') {
-      badge.className = 'source-badge';
-      badge.style.color = '#fbbf24';
-      badge.style.borderColor = 'rgba(251,191,36,0.3)';
-      badge.style.background = 'rgba(251,191,36,0.08)';
-      badge.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Đang tải...`;
-    } else {
-      badge.className = 'source-badge';
-      badge.style.cssText = '';
-      badge.innerHTML = `Chưa cấu hình`;
-    }
-  }
+    // Bootstrap
+    (async function init() {
+      try {
+        const result = await loadCvData();
+        if (result && result.markdown) {
+          const cvData = parseCvMarkdown(result.markdown);
+          if (cvData) {
+            renderPage(cvData, result.source, result.lastUpdated);
+            setBadge(result.source, result.lastUpdated);
+          }
+        }
+      } catch (e) {
+        console.error('Lỗi khi tải cv_data:', e);
+        document.getElementById('sourceBadge').className = 'source-badge error';
+        document.getElementById('sourceBadge').textContent = 'Lỗi kết nối';
+      }
+    })();
   </script>
 </body>
 </html>
