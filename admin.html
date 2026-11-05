@@ -3,1211 +3,1904 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin · CV Data Manager</title>
+  <title>Admin · Quản trị Dữ liệu CV & Portfolio (JSON)</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- Marked.js để parse Markdown preview -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --navy:    #0a0f1e;
-      --navy2:   #0f172a;
-      --navy3:   #1e293b;
-      --navy4:   #334155;
-      --sky:     #38bdf8;
-      --sky-dim: #0ea5e9;
-      --emerald: #34d399;
-      --red:     #f87171;
-      --amber:   #fbbf24;
-      --text:    #e2e8f0;
-      --muted:   #94a3b8;
-      --border:  rgba(255,255,255,0.08);
-      --card:    rgba(255,255,255,0.04);
-      --mono:    'JetBrains Mono', monospace;
-      --font:    'Plus Jakarta Sans', sans-serif;
+      --navy-bg: #070b14;
+      --navy-surface: #0d1322;
+      --navy-card: #131c31;
+      --navy-card-hover: #18233d;
+      --navy-border: rgba(255, 255, 255, 0.09);
+      --navy-border-focus: #38bdf8;
+      --sky: #38bdf8;
+      --sky-dim: #0284c7;
+      --emerald: #10b981;
+      --emerald-dim: #059669;
+      --amber: #f59e0b;
+      --red: #f87171;
+      --text-white: #ffffff;
+      --text-main: #f1f5f9;
+      --text-body: #94a3b8;
+      --text-muted: #64748b;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
-    html, body { height: 100%; }
+
     body {
-      font-family: var(--font);
-      background: var(--navy);
-      color: var(--text);
+      font-family: var(--font-sans);
+      background-color: var(--navy-bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 13.5px;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--navy2); }
-    ::-webkit-scrollbar-thumb { background: var(--navy4); border-radius: 3px; }
 
-    /* ===== TOPBAR ===== */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy-bg); }
+    ::-webkit-scrollbar-thumb { background: #222f4c; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--sky); }
+
+    a { text-decoration: none; color: inherit; }
+    button, input, textarea, select { font-family: inherit; }
+
+    /* ================= TOPBAR ================= */
     .topbar {
-      background: var(--navy2);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
       position: sticky;
       top: 0;
       z-index: 200;
+      background: rgba(13, 19, 34, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--navy-border);
+      padding: 0 24px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .topbar-left { display: flex; align-items: center; gap: 16px; }
-    .topbar-logo {
-      font-family: var(--mono);
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text-white);
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--sky), #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #070b14;
       font-size: 14px;
+      font-weight: 800;
+    }
+
+    .connection-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--navy-border);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-body);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    .status-dot.connected {
+      background: var(--emerald);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    }
+
+    .status-dot.loading {
+      background: var(--amber);
+      animation: pulse 1s infinite alternate;
+    }
+
+    .status-dot.error {
+      background: var(--red);
+    }
+
+    @keyframes pulse { from { opacity: 0.3; } to { opacity: 1; } }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-topbar {
+      font-size: 12.5px;
       font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--navy-border);
+      background: var(--navy-surface);
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-topbar:hover {
+      border-color: var(--sky);
       color: var(--sky);
+    }
+
+    /* ================= MAIN WRAPPER ================= */
+    .admin-container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 100px;
+      flex-grow: 1;
+    }
+
+    /* GitHub Config Section */
+    .config-card {
+      background: var(--navy-surface);
+      border: 1px solid var(--navy-border);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+    }
+
+    .config-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+
+    .config-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-white);
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .topbar-logo i { font-size: 16px; }
-    .topbar-divider { width: 1px; height: 24px; background: var(--border); }
-    .topbar-badge {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 3px 9px;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .status-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--navy4);
-      transition: background 0.3s;
-    }
-    .status-dot.connected { background: var(--emerald); box-shadow: 0 0 6px rgba(52,211,153,0.5); }
-    .status-dot.error     { background: var(--red); }
-    .status-dot.loading   { background: var(--amber); animation: blink 0.8s infinite; }
-    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
-    .topbar-right { display: flex; align-items: center; gap: 10px; }
-    .nav-link {
-      font-size: 13px;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .config-toggle-icon {
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
     }
-    .nav-link:hover { background: var(--card); color: var(--text); }
 
-    /* ===== LAYOUT ===== */
-    .workspace {
+    .config-grid {
       display: grid;
-      grid-template-columns: 320px 1fr;
-      grid-template-rows: 1fr;
-      flex: 1;
-      overflow: hidden;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      align-items: end;
     }
 
-    /* ===== LEFT PANEL — CONFIG ===== */
-    .panel-config {
-      background: var(--navy2);
-      border-right: 1px solid var(--border);
+    .form-group {
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
+      gap: 6px;
     }
-    .panel-section {
-      padding: 20px;
-      border-bottom: 1px solid var(--border);
-    }
-    .panel-section:last-child { border-bottom: none; }
-    .panel-section-title {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--muted);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .panel-section-title i { color: var(--sky); }
 
-    .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-    .field:last-child { margin-bottom: 0; }
-    .field label {
+    .form-label {
       font-size: 11.5px;
       font-weight: 600;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      color: var(--text-body);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .field label .req { color: var(--red); font-size: 10px; }
-    .field input, .field select {
-      background: var(--navy);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 9px 12px;
-      font-size: 12.5px;
-      font-family: var(--mono);
-      color: var(--text);
-      outline: none;
-      width: 100%;
-      transition: border-color 0.2s;
-    }
-    .field input:focus, .field select:focus { border-color: var(--sky-dim); }
-    .field input::placeholder { color: var(--navy4); }
-    .field .hint {
-      font-size: 11px;
-      color: var(--navy4);
-      line-height: 1.4;
-    }
-    .field .hint a { color: var(--sky); text-decoration: none; }
 
-    .token-wrap { position: relative; }
-    .token-wrap input { padding-right: 38px; }
-    .token-toggle {
-      position: absolute;
-      right: 10px; top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
+    .form-control {
+      background: var(--navy-bg);
+      border: 1px solid var(--navy-border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-main);
       font-size: 13px;
-      padding: 2px;
+      transition: border-color 0.15s ease;
+      width: 100%;
     }
-    .token-toggle:hover { color: var(--sky); }
 
-    /* Buttons */
-    .btn {
+    .form-control:focus {
+      outline: none;
+      border-color: var(--navy-border-focus);
+    }
+
+    .form-control.mono {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+    }
+
+    .btn-connect {
+      background: var(--sky-dim);
+      border: 1px solid var(--sky);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 6px;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 7px;
-      padding: 9px 16px;
-      border-radius: 7px;
-      font-size: 12.5px;
+      gap: 8px;
+      transition: all 0.15s ease;
+      height: 38px;
+    }
+
+    .btn-connect:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    /* ================= TABS NAVIGATION ================= */
+    .tabs-bar {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--navy-border);
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px 8px 0 0;
+      color: var(--text-body);
+      padding: 10px 18px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-      font-family: var(--font);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
     }
-    .btn-primary { background: var(--sky-dim); color: #fff; width: 100%; }
-    .btn-primary:hover { background: var(--sky); transform: translateY(-1px); }
-    .btn-primary:disabled { background: var(--navy4); cursor: not-allowed; transform: none; }
-    .btn-danger  { background: rgba(248,113,113,0.12); color: var(--red); border: 1px solid rgba(248,113,113,0.25); width: 100%; }
-    .btn-danger:hover  { background: rgba(248,113,113,0.22); }
-    .btn-outline { background: var(--card); color: var(--text); border: 1px solid var(--border); width: 100%; }
-    .btn-outline:hover { border-color: var(--sky); color: var(--sky); }
 
-    .btn-group { display: flex; flex-direction: column; gap: 8px; }
+    .tab-btn:hover {
+      color: var(--text-white);
+      background: rgba(255, 255, 255, 0.03);
+    }
 
-    /* File info card */
-    .file-info {
-      background: var(--navy);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      font-family: var(--mono);
-      font-size: 11.5px;
-      color: var(--muted);
+    .tab-btn.active {
+      color: var(--sky);
+      background: var(--navy-surface);
+      border: 1px solid var(--navy-border);
+      border-bottom-color: var(--navy-surface);
+    }
+
+    /* Tab Panes */
+    .tab-pane {
       display: none;
     }
-    .file-info.visible { display: block; }
-    .file-info-row {
+
+    .tab-pane.active {
+      display: block;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--navy-surface);
+      border: 1px solid var(--navy-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 3px 0;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--navy-border);
+      padding-bottom: 14px;
     }
-    .file-info-row span:first-child { color: var(--navy4); }
-    .file-info-row span:last-child { color: var(--text); word-break: break-all; text-align: right; }
 
-    /* Commit message */
-    .commit-msg {
-      background: var(--navy);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 9px 12px;
-      font-size: 12.5px;
-      font-family: var(--mono);
-      color: var(--text);
-      outline: none;
-      width: 100%;
-      resize: none;
-      min-height: 64px;
-      transition: border-color 0.2s;
-    }
-    .commit-msg:focus { border-color: var(--sky-dim); }
-
-    /* ===== RIGHT PANEL — EDITOR ===== */
-    .panel-editor {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .editor-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      background: var(--navy2);
-      flex-shrink: 0;
-    }
-    .editor-tab {
-      padding: 12px 20px;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
+    .section-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-white);
       display: flex;
       align-items: center;
-      gap: 7px;
-      transition: all 0.2s;
-      user-select: none;
+      gap: 10px;
     }
-    .editor-tab:hover { color: var(--text); }
-    .editor-tab.active { color: var(--sky); border-bottom-color: var(--sky); }
-    .tab-badge {
-      background: rgba(56,189,248,0.15);
+
+    .section-card-title i {
       color: var(--sky);
-      font-size: 10px;
-      padding: 1px 6px;
-      border-radius: 10px;
     }
 
-    .editor-views { flex: 1; display: flex; overflow: hidden; }
-
-    /* Raw markdown textarea */
-    .editor-raw {
-      flex: 1;
-      display: none;
+    /* Items List (Cards within tab) */
+    .items-stack {
+      display: flex;
       flex-direction: column;
-      overflow: hidden;
+      gap: 16px;
     }
-    .editor-raw.active { display: flex; }
 
-    .line-num-editor { display: flex; flex: 1; overflow: hidden; }
-    .line-numbers {
-      width: 48px;
-      background: var(--navy2);
-      border-right: 1px solid var(--border);
-      overflow: hidden;
-      padding: 16px 0;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--navy4);
-      text-align: right;
-      padding-right: 10px;
-      user-select: none;
-      flex-shrink: 0;
+    .item-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      position: relative;
+      transition: all 0.2s ease;
     }
-    .line-numbers div { line-height: 21px; }
 
-    #mdEditor {
-      flex: 1;
-      background: var(--navy);
-      border: none;
-      outline: none;
-      resize: none;
-      padding: 16px 20px;
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 21px;
-      color: var(--text);
-      overflow-y: auto;
-      tab-size: 2;
+    .item-card:hover {
+      border-color: rgba(56, 189, 248, 0.3);
     }
-    #mdEditor::selection { background: rgba(56, 189, 248, 0.2); }
 
-    /* Preview pane */
-    .editor-preview {
-      flex: 1;
-      display: none;
-      overflow-y: auto;
-      padding: 32px 48px;
-      background: var(--navy);
+    .item-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
     }
-    .editor-preview.active { display: block; }
-    .editor-preview .md-content { max-width: 720px; }
-    .editor-preview .md-content h1 {
-      font-size: 26px;
-      font-weight: 800;
-      color: #f1f5f9;
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .editor-preview .md-content h2 {
-      font-size: 18px;
+
+    .item-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 700;
       color: var(--sky);
-      margin: 28px 0 12px;
-    }
-    .editor-preview .md-content h3 { font-size: 15px; color: var(--text); margin: 20px 0 8px; }
-    .editor-preview .md-content p { font-size: 14px; color: #94a3b8; line-height: 1.8; margin-bottom: 12px; }
-    .editor-preview .md-content ul, .editor-preview .md-content ol {
-      padding-left: 22px;
-      margin-bottom: 12px;
-    }
-    .editor-preview .md-content li { font-size: 13.5px; color: #94a3b8; line-height: 1.75; margin-bottom: 4px; }
-    .editor-preview .md-content strong { color: var(--text); font-weight: 700; }
-    .editor-preview .md-content code {
-      font-family: var(--mono);
-      font-size: 12px;
-      background: var(--navy2);
-      color: var(--sky);
-      padding: 1px 6px;
+      background: var(--navy-surface);
+      border: 1px solid var(--navy-border);
+      padding: 2px 8px;
       border-radius: 4px;
-      border: 1px solid var(--border);
-    }
-    .editor-preview .md-content pre {
-      background: var(--navy2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      overflow-x: auto;
-      margin-bottom: 16px;
-    }
-    .editor-preview .md-content pre code { background: none; border: none; padding: 0; }
-    .editor-preview .md-content blockquote {
-      border-left: 3px solid var(--sky);
-      margin: 16px 0;
-      padding: 8px 16px;
-      color: var(--muted);
     }
 
-    /* Split view */
-    .editor-split {
-      flex: 1;
-      display: none;
-      overflow: hidden;
-    }
-    .editor-split.active { display: grid; grid-template-columns: 1fr 1fr; }
-    .split-left {
-      border-right: 1px solid var(--border);
+    .item-actions {
       display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .split-header {
-      padding: 8px 16px;
-      background: var(--navy2);
-      border-bottom: 1px solid var(--border);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-family: var(--mono);
-      display: flex;
-      align-items: center;
       gap: 6px;
     }
-    .split-left textarea {
-      flex: 1;
-      background: var(--navy);
-      border: none;
-      outline: none;
-      resize: none;
-      padding: 16px 18px;
-      font-family: var(--mono);
-      font-size: 12.5px;
-      line-height: 21px;
-      color: var(--text);
-      overflow-y: auto;
-    }
-    .split-right {
-      overflow-y: auto;
-      padding: 20px 28px;
-      background: var(--navy);
-    }
 
-    /* Status bar */
-    .statusbar {
-      background: var(--sky-dim);
-      padding: 3px 14px;
+    .btn-item-action {
+      background: var(--navy-surface);
+      border: 1px solid var(--navy-border);
+      color: var(--text-body);
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 20px;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: rgba(255,255,255,0.85);
-      flex-shrink: 0;
+      justify-content: center;
+      font-size: 12px;
+      transition: all 0.15s ease;
     }
-    .statusbar.error-bar { background: #b91c1c; }
-    .statusbar.success-bar { background: #059669; }
-    .statusbar.idle-bar { background: var(--navy3); }
-    .statusbar span { display: flex; align-items: center; gap: 5px; }
 
-    /* Toast notifications */
-    #toast-container {
+    .btn-item-action:hover {
+      border-color: var(--sky);
+      color: var(--sky);
+    }
+
+    .btn-item-action.delete:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* Image Upload Widget */
+    .image-upload-box {
+      border: 2px dashed var(--navy-border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      background: var(--navy-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .image-upload-box:hover {
+      border-color: var(--sky);
+    }
+
+    .image-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--sky);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .image-preview.logo-preview {
+      border-radius: 8px;
+      width: 70px;
+      height: 70px;
+    }
+
+    .btn-upload-github {
+      background: var(--emerald-dim);
+      border: 1px solid var(--emerald);
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-upload-github:hover {
+      background: #047857;
+    }
+
+    /* Add Item Button */
+    .btn-add-item {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px dashed var(--sky);
+      color: var(--sky);
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      margin-top: 14px;
+    }
+
+    .btn-add-item:hover {
+      background: rgba(56, 189, 248, 0.16);
+      transform: translateY(-1px);
+    }
+
+    /* Grid Layouts */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ================= BOTTOM ACTION BAR ================= */
+    .action-bar {
       position: fixed;
-      bottom: 40px; right: 24px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(13, 19, 34, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--navy-border);
+      padding: 12px 24px;
+      z-index: 300;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .commit-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-grow: 1;
+      max-width: 600px;
+    }
+
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-push {
+      background: linear-gradient(135deg, var(--emerald), var(--emerald-dim));
+      border: 1px solid var(--emerald);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 9px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-push:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      color: var(--text-main);
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--sky);
+      color: var(--sky);
+    }
+
+    /* JSON Editor Pane */
+    .json-editor-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .json-textarea {
+      width: 100%;
+      height: 480px;
+      background: #040711;
+      border: 1px solid var(--navy-border);
+      border-radius: 8px;
+      padding: 16px;
+      color: #38bdf8;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    .json-textarea:focus {
+      outline: none;
+      border-color: var(--sky);
+    }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed;
+      top: 70px;
+      right: 24px;
+      z-index: 1000;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      z-index: 999;
     }
+
     .toast {
+      background: var(--navy-surface);
+      border: 1px solid var(--navy-border);
+      color: var(--text-main);
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
       display: flex;
       align-items: center;
       gap: 10px;
-      background: var(--navy2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 13px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-      animation: slideIn 0.3s ease;
-      max-width: 320px;
-    }
-    .toast.success { border-color: rgba(52,211,153,0.4); }
-    .toast.error   { border-color: rgba(248,113,113,0.4); }
-    .toast.info    { border-color: rgba(56,189,248,0.3); }
-    .toast i { font-size: 15px; }
-    .toast.success i { color: var(--emerald); }
-    .toast.error   i { color: var(--red); }
-    .toast.info    i { color: var(--sky); }
-    @keyframes slideIn {
-      from { opacity:0; transform: translateX(20px); }
-      to   { opacity:1; transform: translateX(0); }
+      animation: slideIn 0.2s ease-out;
+      min-width: 260px;
     }
 
-    /* Diff viewer */
-    .diff-block {
-      font-family: var(--mono);
-      font-size: 12px;
-      background: var(--navy2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .diff-line { padding: 2px 12px; line-height: 1.6; }
-    .diff-line.added   { background: rgba(52,211,153,0.08); color: #86efac; }
-    .diff-line.removed { background: rgba(248,113,113,0.08); color: #fca5a5; }
-    .diff-line.context { color: var(--navy4); }
-    .diff-header { padding: 8px 12px; background: var(--navy3); color: var(--muted); border-bottom: 1px solid var(--border); }
+    .toast.success { border-left: 4px solid var(--emerald); }
+    .toast.error { border-left: 4px solid var(--red); }
+    .toast.info { border-left: 4px solid var(--sky); }
 
-    /* Modal */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
-      z-index: 500;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--navy2);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      max-width: 520px;
-      width: 90%;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.4);
-    }
-    .modal-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-    .modal-title i { color: var(--amber); }
-    .modal-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
-    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
-    .modal-btn-cancel {
-      padding: 9px 20px;
-      border-radius: 7px;
-      font-size: 13px;
-      font-weight: 600;
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      cursor: pointer;
-    }
-    .modal-btn-confirm {
-      padding: 9px 20px;
-      border-radius: 7px;
-      font-size: 13px;
-      font-weight: 600;
-      background: var(--sky-dim);
-      border: none;
-      color: #fff;
-      cursor: pointer;
-    }
-    .modal-btn-confirm:hover { background: var(--sky); }
-    .modal-btn-cancel:hover { border-color: var(--sky); color: var(--sky); }
-
-    /* Local storage indicator */
-    .local-saved {
-      display: none;
-      font-size: 11px;
-      color: var(--emerald);
-      font-family: var(--mono);
-      align-items: center;
-      gap: 4px;
-    }
-    .local-saved.show { display: flex; }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   </style>
 </head>
 <body>
 
-  <!-- ======================== TOPBAR ======================== -->
-  <div class="topbar">
+  <!-- ================= TOPBAR ================= -->
+  <header class="topbar">
     <div class="topbar-left">
-      <div class="topbar-logo">
-        <i class="fa-brands fa-github"></i> CV Admin
+      <div class="brand-logo">
+        <div class="brand-icon">AR</div>
+        <span>Admin Panel · CV & Portfolio Manager</span>
       </div>
-      <div class="topbar-divider"></div>
-      <div class="topbar-badge">
-        <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">Chưa kết nối</span>
+      <div class="connection-badge" id="connBadge">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Chưa kết nối GitHub</span>
       </div>
     </div>
     <div class="topbar-right">
-      <a href="index.html" class="nav-link" target="_blank">
-        <i class="fa-solid fa-eye"></i> Xem Portfolio
+      <a href="portfolio.html" target="_blank" class="btn-topbar">
+        <i class="fa-solid fa-briefcase"></i> Mở Portfolio
       </a>
-      <a href="portfolio.html" class="nav-link" target="_blank">
-        <i class="fa-solid fa-user"></i> Portfolio
+      <a href="index.html" target="_blank" class="btn-topbar">
+        <i class="fa-solid fa-id-card"></i> Mở CV Web
       </a>
-      <a href="cv.html" class="nav-link" target="_blank">
-        <i class="fa-solid fa-file-lines"></i> CV
+      <a href="cv.html" target="_blank" class="btn-topbar">
+        <i class="fa-solid fa-file-pdf"></i> Mở bản in A4
       </a>
     </div>
-  </div>
+  </header>
 
-  <!-- ======================== WORKSPACE ======================== -->
-  <div class="workspace">
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="admin-container">
 
-    <!-- LEFT CONFIG PANEL -->
-    <aside class="panel-config">
-
-      <!-- GitHub Config -->
-      <div class="panel-section">
-        <div class="panel-section-title">
-          <i class="fa-brands fa-github"></i> Kết nối GitHub
+    <!-- GitHub Connection Config Card -->
+    <section class="config-card">
+      <div class="config-header" onclick="toggleConfigBody()">
+        <div class="config-title">
+          <i class="fa-brands fa-github"></i> Cấu hình GitHub API & Repository (Tự động tải & đồng bộ cv_data.json)
         </div>
-
-        <div class="field">
-          <label>GitHub Username <span class="req">*</span></label>
-          <input type="text" id="cfgOwner" placeholder="vd: vonguyenhao08" autocomplete="off">
+        <i class="fa-solid fa-chevron-down config-toggle-icon" id="configCaret"></i>
+      </div>
+      <div class="config-grid" id="configGrid">
+        <div class="form-group">
+          <label class="form-label">GitHub Username / Owner</label>
+          <input type="text" class="form-control mono" id="cfgOwner" placeholder="VD: vonguyenhao">
         </div>
-
-        <div class="field">
-          <label>Repository Name <span class="req">*</span></label>
-          <input type="text" id="cfgRepo" placeholder="vd: my-cv-project">
+        <div class="form-group">
+          <label class="form-label">Repository Name</label>
+          <input type="text" class="form-control mono" id="cfgRepo" placeholder="VD: my-cv-project">
         </div>
-
-        <div class="field">
-          <label>Branch</label>
-          <input type="text" id="cfgBranch" value="main" placeholder="main">
+        <div class="form-group">
+          <label class="form-label">Branch</label>
+          <input type="text" class="form-control mono" id="cfgBranch" value="main">
         </div>
-
-        <div class="field">
-          <label>Đường dẫn file <span class="req">*</span></label>
-          <input type="text" id="cfgPath" value="cv_data.md" placeholder="cv_data.md">
+        <div class="form-group">
+          <label class="form-label">Đường dẫn file JSON</label>
+          <input type="text" class="form-control mono" id="cfgPath" value="cv_data.json">
         </div>
+        <div class="form-group">
+          <label class="form-label">GitHub Personal Token</label>
+          <input type="password" class="form-control mono" id="cfgToken" placeholder="ghp_xxxxxxxxxxxx">
+        </div>
+        <div>
+          <button type="button" class="btn-connect" onclick="connectAndFetch()">
+            <i class="fa-solid fa-arrows-rotate"></i> Kết nối & Tải dữ liệu
+          </button>
+        </div>
+      </div>
+    </section>
 
-        <div class="field">
-          <label>Personal Access Token (PAT) <span class="req">*</span></label>
-          <div class="token-wrap">
-            <input type="password" id="cfgToken" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
-            <button class="token-toggle" onclick="toggleToken()" title="Hiện/ẩn token">
-              <i class="fa-solid fa-eye" id="tokenEyeIcon"></i>
-            </button>
+    <!-- TABS BAR -->
+    <div class="tabs-bar">
+      <button type="button" class="tab-btn active" onclick="switchTab('exp')">
+        <i class="fa-solid fa-briefcase"></i> 1. Quá trình làm việc
+      </button>
+      <button type="button" class="tab-btn" onclick="switchTab('profile')">
+        <i class="fa-solid fa-user"></i> 2. Giới thiệu & Avatar
+      </button>
+      <button type="button" class="tab-btn" onclick="switchTab('projects')">
+        <i class="fa-solid fa-layer-group"></i> 3. Danh mục Dự án
+      </button>
+      <button type="button" class="tab-btn" onclick="switchTab('other')">
+        <i class="fa-solid fa-graduation-cap"></i> 4. Học vấn, Chứng chỉ & Liên hệ
+      </button>
+      <button type="button" class="tab-btn" onclick="switchTab('skills')">
+        <i class="fa-solid fa-chart-pie"></i> 5. Chỉ số & Năng lực
+      </button>
+      <button type="button" class="tab-btn" onclick="switchTab('json')">
+        <i class="fa-solid fa-code"></i> 6. Raw JSON
+      </button>
+    </div>
+
+    <!-- ================= TAB 1: WORK EXPERIENCE ================= -->
+    <div class="tab-pane active" id="tab-exp">
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-briefcase"></i> Quá trình công tác & Vị trí đảm nhiệm
           </div>
-          <span class="hint">
-            Tạo tại <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>.
-            Cần quyền <strong>repo</strong> (Contents: Read & Write).
-            Token được lưu trong <strong>localStorage</strong> của trình duyệt.
-          </span>
+          <span style="font-size: 12px; color: var(--text-muted);">Hiển thị trên mục Lộ trình công tác (Career Journey Timeline)</span>
         </div>
 
-        <div style="display:flex; gap:8px; margin-top:4px;">
-          <button class="btn btn-primary" onclick="saveConfigAndConnect()" id="btnConnect">
-            <i class="fa-solid fa-plug-circle-bolt"></i> Kết nối & Tải file
-          </button>
+        <div class="items-stack" id="experiencesList">
+          <!-- Rendered dynamically -->
         </div>
 
-        <div class="local-saved" id="localSavedIndicator" style="margin-top:8px;">
-          <i class="fa-solid fa-circle-check"></i> Đã lưu cấu hình vào trình duyệt
-        </div>
+        <button type="button" class="btn-add-item" onclick="addExperience()">
+          <i class="fa-solid fa-plus"></i> Thêm vị trí công tác mới
+        </button>
       </div>
+    </div>
 
-      <!-- File Info -->
-      <div class="panel-section">
-        <div class="panel-section-title">
-          <i class="fa-solid fa-circle-info"></i> Thông tin file
-        </div>
-        <div class="file-info" id="fileInfo">
-          <div class="file-info-row"><span>File</span><span id="fiName">—</span></div>
-          <div class="file-info-row"><span>Branch</span><span id="fiBranch">—</span></div>
-          <div class="file-info-row"><span>SHA</span><span id="fiSha" style="font-size:10.5px;">—</span></div>
-          <div class="file-info-row"><span>Kích thước</span><span id="fiSize">—</span></div>
-          <div class="file-info-row"><span>Cập nhật lần cuối</span><span id="fiDate">—</span></div>
-        </div>
-        <p id="fileInfoEmpty" style="font-size:12px; color:var(--muted);">Chưa kết nối. Nhập cấu hình bên trên và bấm "Kết nối".</p>
-      </div>
-
-      <!-- Commit & Save -->
-      <div class="panel-section">
-        <div class="panel-section-title">
-          <i class="fa-solid fa-code-commit"></i> Commit & Push
-        </div>
-        <div class="field">
-          <label>Commit message</label>
-          <textarea class="commit-msg" id="commitMsg" placeholder="docs: update cv_data.md via admin panel"></textarea>
-        </div>
-        <div class="btn-group">
-          <button class="btn btn-primary" onclick="pushToGitHub()" id="btnPush" disabled>
-            <i class="fa-solid fa-cloud-arrow-up"></i> Lưu lên GitHub
-          </button>
-          <button class="btn btn-outline" onclick="fetchFile()" id="btnRefresh" disabled>
-            <i class="fa-solid fa-rotate"></i> Tải lại từ GitHub
-          </button>
-          <button class="btn btn-danger" onclick="showResetModal()" id="btnReset" disabled>
-            <i class="fa-solid fa-clock-rotate-left"></i> Hoàn tác thay đổi
-          </button>
-        </div>
-      </div>
-
-      <!-- Diff section -->
-      <div class="panel-section" id="diffSection" style="display:none;">
-        <div class="panel-section-title">
-          <i class="fa-solid fa-code-compare"></i> Thay đổi sẽ commit
-        </div>
-        <div id="diffViewer"></div>
-      </div>
-
-    </aside>
-
-    <!-- RIGHT EDITOR PANEL -->
-    <div class="panel-editor">
-
-      <!-- Tabs -->
-      <div class="editor-tabs">
-        <div class="editor-tab active" data-tab="raw" onclick="switchTab('raw')">
-          <i class="fa-solid fa-code"></i> Markdown Editor
-          <span class="tab-badge" id="changedBadge" style="display:none;">✎ Đã sửa</span>
-        </div>
-        <div class="editor-tab" data-tab="preview" onclick="switchTab('preview')">
-          <i class="fa-solid fa-eye"></i> Xem trước
-        </div>
-        <div class="editor-tab" data-tab="split" onclick="switchTab('split')">
-          <i class="fa-solid fa-table-columns"></i> Split View
-        </div>
-        <div style="margin-left:auto; padding:0 16px; display:flex; align-items:center; gap:12px;">
-          <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">
-            <i class="fa-solid fa-file-code"></i> <span id="lineCount">0</span> dòng · <span id="charCount">0</span> ký tự
-          </span>
-        </div>
-      </div>
-
-      <!-- View: Raw Editor -->
-      <div class="editor-raw active" id="viewRaw">
-        <div class="line-num-editor">
-          <div class="line-numbers" id="lineNumbers"></div>
-          <textarea id="mdEditor"
-            placeholder="&#x2022; Chưa tải file. Nhập cấu hình GitHub và bấm 'Kết nối & Tải file' ở bên trái.&#10;&#10;&#x2022; Sau khi kết nối, nội dung cv_data.md sẽ hiện tại đây để bạn chỉnh sửa.&#10;&#10;&#x2022; Sau khi sửa xong, bấm 'Lưu lên GitHub' để commit."
-            spellcheck="false"
-            oninput="onEditorInput()"></textarea>
-        </div>
-      </div>
-
-      <!-- View: Preview -->
-      <div class="editor-preview" id="viewPreview">
-        <div class="md-content" id="mdPreviewContent">
-          <p style="color:var(--muted);font-size:14px;">Nội dung xem trước sẽ hiện ở đây sau khi bạn nhập hoặc tải Markdown...</p>
-        </div>
-      </div>
-
-      <!-- View: Split -->
-      <div class="editor-split" id="viewSplit">
-        <div class="split-left">
-          <div class="split-header"><i class="fa-solid fa-code"></i> Markdown Source</div>
-          <textarea id="splitEditor" spellcheck="false" oninput="syncSplit(this.value)"></textarea>
-        </div>
-        <div class="split-right">
-          <div class="split-header" style="background:var(--navy2);padding:8px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-family:var(--mono);display:flex;align-items:center;gap:6px;position:sticky;top:0;z-index:1;">
-            <i class="fa-solid fa-eye"></i> Preview
+    <!-- ================= TAB 2: PROFILE & AVATAR ================= -->
+    <div class="tab-pane" id="tab-profile">
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-user"></i> Thông tin cá nhân & Ảnh đại diện (Avatar)
           </div>
-          <div class="md-content" id="splitPreviewContent" style="padding-top:16px;"></div>
+        </div>
+
+        <div class="form-grid-2" style="margin-bottom: 20px;">
+          <!-- Left: Basic info -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label">Họ và tên</label>
+              <input type="text" class="form-control" id="profName" placeholder="Võ Nguyễn Hào">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Chữ viết tắt (Avatar Initials)</label>
+              <input type="text" class="form-control mono" id="profInitials" placeholder="VH" maxlength="4">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Chức danh chính</label>
+              <input type="text" class="form-control" id="profTitle" placeholder="BOD Sales Assistant">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Chức danh phụ / Định vị chuyên môn</label>
+              <input type="text" class="form-control" id="profSubTitle" placeholder="IT Pre-Sales & Enterprise Solution Consultant">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Công ty</label>
+              <input type="text" class="form-control" id="profCompany" placeholder="Arito Solutions">
+            </div>
+          </div>
+
+          <!-- Right: Avatar Image Uploader -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label">Ảnh đại diện (Avatar)</label>
+              <div class="image-upload-box" onclick="triggerFileInput('avatarFileInput')">
+                <img src="assets/images/avatar.jpg" alt="Avatar Preview" class="image-preview" id="avatarPreviewImg" onerror="this.src='https://ui-avatars.com/api/?name=Vo+Nguyen+Hao&background=0284c7&color=fff&size=128'">
+                <div>
+                  <div style="font-weight: 600; color: var(--text-white);">Nhấn để chọn ảnh đại diện từ máy tính</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Hỗ trợ file JPG, PNG, WEBP (Khuyên dùng ảnh vuông)</div>
+                </div>
+                <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarSelected(event)">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Đường dẫn ảnh lưu trữ trong JSON</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="form-control mono" id="profAvatarPath" placeholder="assets/images/avatar.jpg">
+                <button type="button" class="btn-upload-github" id="btnUploadAvatarGh" onclick="uploadAvatarToGitHub()" style="white-space: nowrap;">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> Upload lên GitHub Repo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tóm tắt giới thiệu chung (Executive Summary)</label>
+          <textarea class="form-control" id="profSummary" rows="4" placeholder="Cầu nối chiến lược giữa nhu cầu nghiệp vụ doanh nghiệp và kiến trúc công nghệ số..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 3: PROJECTS ================= -->
+    <div class="tab-pane" id="tab-projects">
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-layer-group"></i> Danh mục Dự án Trọng điểm (Enterprise Projects)
+          </div>
+          <span style="font-size: 12px; color: var(--text-muted);">Hiển thị trên Portfolio Grid và bản in CV</span>
+        </div>
+
+        <div class="items-stack" id="projectsList">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <button type="button" class="btn-add-item" onclick="addProject()">
+          <i class="fa-solid fa-plus"></i> Thêm dự án mới
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= TAB 4: EDUCATION & CERTIFICATIONS & CONTACT ================= -->
+    <div class="tab-pane" id="tab-other">
+      <!-- Contact Info -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-address-book"></i> Thông tin liên hệ trực tiếp
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Địa điểm làm việc</label>
+            <input type="text" class="form-control" id="contactLocation" placeholder="Tân Bình, TP.HCM">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control mono" id="contactPhone" placeholder="0377 116 163">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email công vụ</label>
+            <input type="email" class="form-control mono" id="contactEmail" placeholder="vonguyenhao08@gmail.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">LinkedIn Profile URL</label>
+            <input type="text" class="form-control mono" id="contactLinkedin" placeholder="https://linkedin.com/in/hao-nguyen-986a171a9/">
+          </div>
         </div>
       </div>
 
-    </div>
-  </div>
+      <!-- Education & Degree -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-graduation-cap"></i> Học vấn & Bằng cấp chính quy
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Tên bằng cấp</label>
+            <input type="text" class="form-control" id="eduDegree" placeholder="Cử nhân Công nghệ phần mềm">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Trường đào tạo</label>
+            <input type="text" class="form-control" id="eduSchool" placeholder="Trường Đại học Quy Nhơn">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chi tiết hệ đào tạo</label>
+            <input type="text" class="form-control" id="eduDetails" placeholder="Chính quy chuyên ngành Kỹ thuật phần mềm">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chứng chỉ ngoại ngữ</label>
+            <input type="text" class="form-control" id="eduEnglish" placeholder="Chứng chỉ Tiếng Anh B1">
+          </div>
+        </div>
+      </div>
 
-  <!-- STATUS BAR -->
-  <div class="statusbar idle-bar" id="statusBar">
-    <span><i class="fa-solid fa-circle-info"></i> Sẵn sàng · Nhập cấu hình GitHub để bắt đầu</span>
-  </div>
-
-  <!-- TOAST CONTAINER -->
-  <div id="toast-container"></div>
-
-  <!-- MODAL: Confirm Reset -->
-  <div class="modal-overlay" id="resetModal">
-    <div class="modal">
-      <div class="modal-title"><i class="fa-solid fa-triangle-exclamation"></i> Hoàn tác thay đổi?</div>
-      <p class="modal-desc">Tất cả chỉnh sửa chưa lưu lên GitHub sẽ bị mất và file sẽ được tải lại từ GitHub. Bạn chắc chắn chưa?</p>
-      <div class="modal-actions">
-        <button class="modal-btn-cancel" onclick="closeResetModal()">Hủy bỏ</button>
-        <button class="modal-btn-confirm" onclick="confirmReset()">Hoàn tác</button>
+      <!-- Certifications (ISO 27001) -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-shield-halved"></i> Chứng chỉ Quốc tế (ISO/IEC 27001:2022)
+          </div>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Tiêu chuẩn chứng nhận</label>
+            <input type="text" class="form-control" id="certName" placeholder="ISO/IEC 27001:2022">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tổ chức cấp chứng nhận</label>
+            <input type="text" class="form-control" id="certOrg" placeholder="KNA Certification Co., Ltd">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Khóa đào tạo</label>
+            <input type="text" class="form-control" id="certCourse" placeholder="Nhận thức chung & Đánh giá viên nội bộ ISMS">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Số chứng nhận & Ngày cấp</label>
+            <input type="text" class="form-control mono" id="certCode" placeholder="KAT259070013 · 28/11/2025 & 03/07/2026">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Đường dẫn ảnh chứng chỉ (Image)</label>
+            <input type="text" class="form-control mono" id="certImage" placeholder="assets/images/iso-27001-certificate.jpg">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Đường dẫn file PDF chứng chỉ</label>
+            <input type="text" class="form-control mono" id="certPdf" placeholder="assets/images/iso-27001-certificate.pdf">
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
+    <!-- ================= TAB 5: SKILLS & METRICS ================= -->
+    <div class="tab-pane" id="tab-skills">
+      <!-- Metrics Bar -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-arrow-trend-up"></i> Chỉ số định lượng (Metrics Stats Bar)
+          </div>
+          <span style="font-size: 12px; color: var(--text-muted);">4 chỉ số nổi bật trên thanh ngang Portfolio</span>
+        </div>
+        <div class="form-grid-2" id="metricsContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Core Capabilities (4 Pillars) -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-shapes"></i> 4 Trụ cột Năng lực cốt lõi (Core Capabilities)
+          </div>
+        </div>
+        <div class="items-stack" id="skillsContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB 6: RAW JSON ================= -->
+    <div class="tab-pane" id="tab-json">
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">
+            <i class="fa-solid fa-code"></i> Mã nguồn dữ liệu thô (Raw JSON Editor)
+          </div>
+          <button type="button" class="btn-topbar" onclick="syncJsonToForms()">
+            <i class="fa-solid fa-arrows-rotate"></i> Cập nhật ngược lại giao diện UI
+          </button>
+        </div>
+        <div class="json-editor-pane">
+          <textarea class="json-textarea" id="rawJsonArea" oninput="handleRawJsonChanged()"></textarea>
+          <div style="font-size: 12px; color: var(--text-muted);">
+            Lưu ý: Mọi chỉnh sửa ở các tab UI sẽ tự động cập nhật vào khung JSON này, và ngược lại khi bạn nhấn "Cập nhật ngược lại giao diện UI".
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= BOTTOM ACTION BAR ================= -->
+  <footer class="action-bar">
+    <div class="commit-input-wrap">
+      <input type="text" class="form-control" id="commitMsgInput" placeholder="Nội dung commit GitHub (VD: Cập nhật thông tin dự án...)">
+    </div>
+    <div class="action-buttons">
+      <button type="button" class="btn-secondary" onclick="exportJsonFile()" title="Tải file cv_data.json về máy tính">
+        <i class="fa-solid fa-download"></i> Tải JSON về máy
+      </button>
+      <button type="button" class="btn-secondary" onclick="saveToLocalDraft()" title="Lưu nháp vào trình duyệt">
+        <i class="fa-solid fa-floppy-disk"></i> Lưu nháp
+      </button>
+      <button type="button" class="btn-push" id="btnPush" onclick="pushJsonToGitHub()">
+        <i class="fa-brands fa-github"></i> Lưu & Push lên GitHub
+      </button>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <!-- SCRIPT ENGINE -->
   <script>
     // ============================================================
-    // STATE
+    // DEFAULT DATA (Fallback initial schema)
     // ============================================================
+    let cvData = {
+      profile: {
+        name: "Võ Nguyễn Hào",
+        avatar: "assets/images/avatar.jpg",
+        initials: "VH",
+        title: "BOD Sales Assistant",
+        subTitle: "IT Pre-Sales & Enterprise Solution Consultant",
+        company: "Arito Solutions",
+        summary: "Cầu nối chiến lược giữa nhu cầu nghiệp vụ doanh nghiệp và kiến trúc công nghệ số. Chuyên sâu tư vấn Pre-Sales, thiết kế kiến trúc tích hợp hệ sinh thái ERP, e-Procurement, WMS, eKYC và dẫn dắt chuẩn hóa an toàn thông tin theo chuẩn quốc tế ISO 27001:2022.",
+        currentRole: "Trợ lý Kinh doanh Ban Giám đốc (từ 01/07/2026), trước đó là BD Executive & Assistant to Deputy CEO (từ 02/2025) tại Arito Solutions.",
+        pmRole: "Project Manager dẫn dắt dự án đạt chứng nhận an toàn thông tin ISO 27001:2022.",
+        contact: {
+          location: "Tân Bình, TP.HCM",
+          phone: "0377 116 163",
+          email: "vonguyenhao08@gmail.com",
+          linkedin: "https://linkedin.com/in/hao-nguyen-986a171a9/"
+        },
+        education: {
+          degree: "Cử nhân Công nghệ phần mềm",
+          school: "Trường Đại học Quy Nhơn",
+          details: "Chính quy chuyên ngành Kỹ thuật phần mềm",
+          english: "Chứng chỉ Tiếng Anh B1"
+        },
+        certifications: [
+          {
+            name: "ISO/IEC 27001:2022",
+            organization: "KNA Certification Co., Ltd",
+            course: "Nhận thức chung & Đánh giá viên nội bộ ISMS",
+            code: "KAT259070013",
+            date: "28/11/2025 & 03/07/2026",
+            image: "assets/images/iso-27001-certificate.jpg",
+            pdf: "assets/images/iso-27001-certificate.pdf"
+          }
+        ],
+        metrics: [
+          { number: "08+", label: "Dự án Enterprise" },
+          { number: "80K+", label: "Hóa đơn đầu vào (NTS)" },
+          { number: "125/31", label: "Users / Chi nhánh (CMV)" },
+          { number: "ISO 27001", label: "Internal Auditor KNA", highlight: true }
+        ],
+        skills: [
+          {
+            title: "Tư vấn Pre-Sales & Khảo sát B2B",
+            desc: "Khảo sát yêu cầu đặc thù của doanh nghiệp, xây dựng tài liệu RFP, Proposal kỹ thuật và bảo vệ tính khả thi giải pháp trước C-Level.",
+            icon: "fa-solid fa-comments"
+          },
+          {
+            title: "Kiến trúc Tích hợp Hệ thống",
+            desc: "Thiết kế tích hợp đa nền tảng: Open API, SAML 2.0 / SSO, Bank APIs (VietinBank, VCB, VietQR), Galaxy DMS, iPOS và hóa đơn điện tử.",
+            icon: "fa-solid fa-network-wired"
+          },
+          {
+            title: "Quản trị An toàn Thông tin (ISO)",
+            desc: "Đảm nhiệm Project Manager dẫn dắt xây dựng hệ thống ISMS, thẩm định rủi ro và đạt chứng nhận an toàn thông tin ISO/IEC 27001:2022.",
+            icon: "fa-solid fa-shield-halved",
+            highlight: true
+          },
+          {
+            title: "Tham mưu Ban Giám đốc (BOD)",
+            desc: "Hỗ trợ Ban Giám đốc đánh giá cơ hội thị trường, kết nối nguồn lực liên phòng ban (Sales - R&D - Triển khai) phục vụ khách hàng trọng điểm.",
+            icon: "fa-solid fa-briefcase"
+          }
+        ]
+      },
+      experiences: [
+        {
+          id: "exp-1",
+          role: "Trợ lý Kinh doanh Ban Giám đốc (BOD Sales Assistant)",
+          company: "Arito Solutions",
+          period: "01/07/2026 - Hiện tại",
+          active: true,
+          duties: [
+            "Tham mưu trực tiếp Ban Giám đốc về chiến lược kinh doanh B2B và định hướng tiếp cận khách hàng quy mô lớn (Enterprise Accounts).",
+            "Chủ trì phối hợp giữa khối Kinh doanh (BD/Sales) và khối Kỹ thuật/Triển khai để thẩm định tính khả thi kiến trúc giải pháp trước khi trình phê duyệt cấp cao.",
+            "Đại diện doanh nghiệp làm việc trực tiếp cùng C-Level của khách hàng trong các phiên trình bày giải pháp chuyển đổi số phức hợp."
+          ]
+        },
+        {
+          id: "exp-2",
+          role: "BD Executive & Assistant to Deputy CEO",
+          company: "Arito Solutions",
+          period: "02/2025 - 06/2026",
+          active: false,
+          duties: [
+            "Đồng hành cùng Phó Tổng Giám đốc trong phát triển kinh doanh dịch vụ CNTT, khảo sát nhu cầu nghiệp vụ và xây dựng hồ sơ thầu, tài liệu đề xuất giải pháp (RFP/Proposal).",
+            "Tư vấn giải pháp Pre-Sales hệ thống ERP, e-Procurement, WMS và ký số cho các tập đoàn đa quốc gia và tổng công ty trong nước.",
+            "Tối ưu quy trình điều phối dự án liên phòng ban và hỗ trợ mở rộng kết nối đối tác công nghệ ngân hàng."
+          ]
+        },
+        {
+          id: "exp-3",
+          role: "Project Manager: Dự án Chứng nhận ISO 27001:2022",
+          company: "Arito Solutions (Hệ thống Quản lý ISMS)",
+          period: "Hoàn thành",
+          active: false,
+          hasCert: true,
+          duties: [
+            "Dẫn dắt toàn diện dự án triển khai và áp dụng hệ thống bảo mật an toàn thông tin theo chuẩn quốc tế ISO/IEC 27001:2022 cho toàn công ty.",
+            "Chủ trì thiết lập chính sách bảo mật, đánh giá rủi ro an toàn thông tin trên quy trình phát triển phần mềm, hạ tầng hệ thống và vận hành dịch vụ.",
+            "Làm việc trực tiếp cùng tổ chức chứng nhận độc lập, đưa công ty đạt chứng chỉ ISO 27001:2022 đúng lộ trình cam kết."
+          ]
+        }
+      ],
+      projects: [
+        {
+          id: "1",
+          client: "Black Pearl Việt Nam",
+          domain: "F&B Retail ERP",
+          logo: "",
+          featured: true,
+          description: "Triển khai Arito ERP cho chuỗi F&B (Đô Đô, Mr. Good Tea), tích hợp iPOS, S-Invoice, Vietcombank; nâng cấp TT99.",
+          tags: ["Arito ERP", "iPOS", "S-Invoice", "Vietcombank", "TT99"]
+        },
+        {
+          id: "2",
+          client: "Bằng Phương / Square Group",
+          domain: "POSM Warehouse",
+          logo: "",
+          featured: false,
+          description: "Giải pháp POSM Warehouse đặc thù, phê duyệt điện tử vật phẩm quảng cáo.",
+          tags: ["POSM", "WMS", "Phê duyệt điện tử"]
+        },
+        {
+          id: "3",
+          client: "I Group & Nha Trang Seafoods",
+          domain: "e-Procurement",
+          logo: "",
+          featured: true,
+          description: "Hệ thống e-Procurement tập đoàn thủy sản, xử lý 80.000 hóa đơn đầu vào, tích hợp API, SSO SAML 2.0.",
+          tags: ["e-Procurement", "80K Hóa đơn", "SSO SAML 2.0", "Open API"]
+        },
+        {
+          id: "4",
+          client: "Thương Nghiệp Cà Mau (CMV)",
+          domain: "Large Distribution ERP",
+          logo: "",
+          featured: true,
+          description: "Arito ERP 125 users/31 chi nhánh; xử lý kế toán đặc thù, tích hợp Galaxy DMS, tích hợp Bank API (VietinBank, Vietcombank, VietQR).",
+          tags: ["Arito ERP", "125 Users / 31 Chi nhánh", "Galaxy DMS", "VietinBank API", "VietQR"]
+        },
+        {
+          id: "5",
+          client: "De Heus - Premix Sông Mây",
+          domain: "Smart Factory & eKYC",
+          logo: "",
+          featured: false,
+          description: "Giải pháp WH Intake kết hợp định danh điện tử Arito eKYC, nhận diện khuôn mặt tài xế và ký số nội bộ.",
+          tags: ["Arito eKYC", "WH Intake", "Face Recognition", "Ký số nội bộ"]
+        },
+        {
+          id: "6",
+          client: "Sunrise INS",
+          domain: "Financial Compliance",
+          logo: "",
+          featured: false,
+          description: "Cấu hình dữ liệu và nâng cấp báo cáo chuẩn TT99.",
+          tags: ["TT99", "Báo cáo tài chính", "Data Config"]
+        },
+        {
+          id: "7",
+          client: "Tentamus Indonesia",
+          domain: "International Pre-Sales",
+          logo: "",
+          featured: false,
+          description: "Tư vấn Pre-Sales giải pháp ERP & LIMS quốc tế.",
+          tags: ["International Pre-Sales", "LIMS", "ERP"]
+        },
+        {
+          id: "8",
+          client: "Acecook Việt Nam",
+          domain: "FMCG Supplier Portal",
+          logo: "",
+          featured: false,
+          description: "Hệ thống phát hành chứng từ & quản lý chất lượng ASUPP.",
+          tags: ["ASUPP", "Supplier Portal", "Quality Management"]
+        }
+      ]
+    };
+
     let currentSHA = '';
-    let originalContent = '';
-    let isConnected = false;
+    let selectedAvatarFile = null;
+    let selectedLogoFiles = {};
 
     // ============================================================
-    // INIT — load saved config from localStorage
+    // TOAST NOTIFIER
     // ============================================================
-    window.addEventListener('DOMContentLoaded', () => {
-      const cfg = loadConfig();
-      if (cfg.owner)  document.getElementById('cfgOwner').value  = cfg.owner;
-      if (cfg.repo)   document.getElementById('cfgRepo').value   = cfg.repo;
-      if (cfg.branch) document.getElementById('cfgBranch').value = cfg.branch;
-      if (cfg.path)   document.getElementById('cfgPath').value   = cfg.path;
-      if (cfg.token)  document.getElementById('cfgToken').value  = cfg.token;
+    function toast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      const icon = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-info');
+      el.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${msg}</span>`;
+      container.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 200);
+      }, 4000);
+    }
 
-      if (cfg.owner && cfg.repo && cfg.token) {
-        document.getElementById('localSavedIndicator').classList.add('show');
+    // ============================================================
+    // TAB SWITCHING
+    // ============================================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+      const targetPane = document.getElementById(`tab-${tabId}`);
+      if (targetPane) targetPane.classList.add('active');
+
+      const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (targetBtn) targetBtn.classList.add('active');
+
+      if (tabId === 'json') {
+        collectFormData();
+        document.getElementById('rawJsonArea').value = JSON.stringify(cvData, null, 2);
       }
-
-      // Set default commit message with timestamp
-      setDefaultCommitMsg();
-      updateLineNumbers();
-    });
-
-    function loadConfig() {
-      try { return JSON.parse(localStorage.getItem('cvAdminConfig') || '{}'); }
-      catch(e) { return {}; }
     }
 
-    function saveConfig() {
-      const cfg = {
-        owner:  document.getElementById('cfgOwner').value.trim(),
-        repo:   document.getElementById('cfgRepo').value.trim(),
-        branch: document.getElementById('cfgBranch').value.trim() || 'main',
-        path:   document.getElementById('cfgPath').value.trim() || 'cv_data.md',
-        token:  document.getElementById('cfgToken').value.trim(),
-      };
-      localStorage.setItem('cvAdminConfig', JSON.stringify(cfg));
-      return cfg;
+    function toggleConfigBody() {
+      const grid = document.getElementById('configGrid');
+      const caret = document.getElementById('configCaret');
+      if (grid.style.display === 'none') {
+        grid.style.display = 'grid';
+        caret.style.transform = 'rotate(0deg)';
+      } else {
+        grid.style.display = 'none';
+        caret.style.transform = 'rotate(-90deg)';
+      }
     }
 
-    function getConfig() {
+    // ============================================================
+    // GITHUB CONFIG & LOAD
+    // ============================================================
+    function getGhConfig() {
       return {
-        owner:  document.getElementById('cfgOwner').value.trim(),
-        repo:   document.getElementById('cfgRepo').value.trim(),
+        owner: document.getElementById('cfgOwner').value.trim(),
+        repo: document.getElementById('cfgRepo').value.trim(),
         branch: document.getElementById('cfgBranch').value.trim() || 'main',
-        path:   document.getElementById('cfgPath').value.trim() || 'cv_data.md',
-        token:  document.getElementById('cfgToken').value.trim(),
+        path: document.getElementById('cfgPath').value.trim() || 'cv_data.json',
+        token: document.getElementById('cfgToken').value.trim()
       };
     }
 
-    function setDefaultCommitMsg() {
-      const now = new Date().toLocaleString('vi-VN');
-      document.getElementById('commitMsg').value = `docs: cập nhật cv_data.md qua Admin Panel · ${now}`;
+    function saveGhConfig() {
+      const cfg = getGhConfig();
+      localStorage.setItem('cvAdminConfig', JSON.stringify(cfg));
     }
 
-    // ============================================================
-    // CONNECT & FETCH
-    // ============================================================
-    async function saveConfigAndConnect() {
-      const cfg = getConfig();
+    function loadSavedGhConfig() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('cvAdminConfig') || '{}');
+        if (saved.owner) document.getElementById('cfgOwner').value = saved.owner;
+        if (saved.repo) document.getElementById('cfgRepo').value = saved.repo;
+        if (saved.branch) document.getElementById('cfgBranch').value = saved.branch;
+        if (saved.path) document.getElementById('cfgPath').value = saved.path.endsWith('.md') ? 'cv_data.json' : saved.path;
+        if (saved.token) document.getElementById('cfgToken').value = saved.token;
+      } catch(e) {}
+    }
+
+    function setStatus(state, text) {
+      const dot = document.getElementById('statusDot');
+      const label = document.getElementById('statusText');
+      dot.className = `status-dot ${state}`;
+      label.textContent = text;
+    }
+
+    async function connectAndFetch() {
+      const cfg = getGhConfig();
       if (!cfg.owner || !cfg.repo || !cfg.token) {
-        toast('Vui lòng nhập đầy đủ: GitHub Username, Repo Name và Token.', 'error');
+        toast('Vui lòng nhập đầy đủ Owner, Repo và Token GitHub!', 'error');
         return;
       }
-      saveConfig();
-      document.getElementById('localSavedIndicator').classList.add('show');
-      await fetchFile();
-    }
+      saveGhConfig();
+      setStatus('loading', 'Đang kết nối GitHub...');
 
-    async function fetchFile() {
-      const cfg = getConfig();
-      setStatus('loading', 'Đang kết nối GitHub API...');
-
-      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${cfg.branch}`;
+      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${cfg.branch}&_t=${Date.now()}`;
 
       try {
         const res = await fetch(url, {
           headers: {
             'Authorization': `Bearer ${cfg.token}`,
             'Accept': 'application/vnd.github.v3+json',
-            'X-GitHub-Api-Version': '2022-11-28',
           }
+        });
+
+        if (res.ok) {
+          const fileData = await res.json();
+          currentSHA = fileData.sha;
+          const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+          
+          if (cfg.path.endsWith('.json') || decoded.trim().startsWith('{')) {
+            cvData = JSON.parse(decoded);
+          }
+          populateUI();
+          setStatus('connected', `Đã kết nối: ${cfg.owner}/${cfg.repo}/${cfg.path}`);
+          toast(`Đã tải dữ liệu thành công từ GitHub!`, 'success');
+        } else if (res.status === 404) {
+          // File json chưa có, thử đọc cv_data.json local
+          toast(`File ${cfg.path} chưa có trên GitHub. Đang dùng dữ liệu chuẩn sẵn sàng để push!`, 'info');
+          setStatus('connected', `Sẵn sàng tạo mới: ${cfg.path}`);
+          currentSHA = '';
+        } else {
+          const err = await res.json();
+          throw new Error(err.message || `Mã lỗi ${res.status}`);
+        }
+      } catch (err) {
+        setStatus('error', `Lỗi: ${err.message}`);
+        toast(`Lỗi kết nối GitHub: ${err.message}`, 'error');
+      }
+    }
+
+    // ============================================================
+    // POPULATE UI FROM cvData
+    // ============================================================
+    function populateUI() {
+      const p = cvData.profile || {};
+      document.getElementById('profName').value = p.name || '';
+      document.getElementById('profInitials').value = p.initials || 'VH';
+      document.getElementById('profTitle').value = p.title || '';
+      document.getElementById('profSubTitle').value = p.subTitle || '';
+      document.getElementById('profCompany').value = p.company || 'Arito Solutions';
+      document.getElementById('profSummary').value = p.summary || '';
+      document.getElementById('profAvatarPath').value = p.avatar || 'assets/images/avatar.jpg';
+      if (p.avatar) {
+        document.getElementById('avatarPreviewImg').src = p.avatar;
+      }
+
+      // Contact
+      const c = p.contact || {};
+      document.getElementById('contactLocation').value = c.location || '';
+      document.getElementById('contactPhone').value = c.phone || '';
+      document.getElementById('contactEmail').value = c.email || '';
+      document.getElementById('contactLinkedin').value = c.linkedin || '';
+
+      // Education
+      const edu = p.education || {};
+      document.getElementById('eduDegree').value = edu.degree || '';
+      document.getElementById('eduSchool').value = edu.school || '';
+      document.getElementById('eduDetails').value = edu.details || '';
+      document.getElementById('eduEnglish').value = edu.english || '';
+
+      // Certifications
+      const cert = (p.certifications && p.certifications[0]) || {};
+      document.getElementById('certName').value = cert.name || '';
+      document.getElementById('certOrg').value = cert.organization || '';
+      document.getElementById('certCourse').value = cert.course || '';
+      document.getElementById('certCode').value = [cert.code, cert.date].filter(Boolean).join(' · ');
+      document.getElementById('certImage').value = cert.image || '';
+      document.getElementById('certPdf').value = cert.pdf || '';
+
+      // Render Dynamic Lists
+      renderExperiences();
+      renderProjects();
+      renderMetrics();
+      renderSkills();
+
+      document.getElementById('rawJsonArea').value = JSON.stringify(cvData, null, 2);
+    }
+
+    // ============================================================
+    // EXPERIENCES
+    // ============================================================
+    function renderExperiences() {
+      const container = document.getElementById('experiencesList');
+      container.innerHTML = (cvData.experiences || []).map((exp, idx) => `
+        <div class="item-card" data-idx="${idx}">
+          <div class="item-card-top">
+            <span class="item-badge">Vị trí #${idx + 1}</span>
+            <div class="item-actions">
+              <button type="button" class="btn-item-action" onclick="moveExperience(${idx}, -1)" title="Di chuyển lên"><i class="fa-solid fa-arrow-up"></i></button>
+              <button type="button" class="btn-item-action" onclick="moveExperience(${idx}, 1)" title="Di chuyển xuống"><i class="fa-solid fa-arrow-down"></i></button>
+              <button type="button" class="btn-item-action delete" onclick="deleteExperience(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="form-grid-2" style="margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">Chức danh (Role)</label>
+              <input type="text" class="form-control" value="${esc(exp.role)}" onchange="updateExpField(${idx}, 'role', this.value)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Thời gian công tác (Period)</label>
+              <input type="text" class="form-control mono" value="${esc(exp.period)}" onchange="updateExpField(${idx}, 'period', this.value)">
+            </div>
+          </div>
+          <div class="form-grid-2" style="margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">Công ty / Đơn vị</label>
+              <input type="text" class="form-control" value="${esc(exp.company)}" onchange="updateExpField(${idx}, 'company', this.value)">
+            </div>
+            <div class="form-group" style="justify-content: center;">
+              <label style="display: flex; align-items: center; gap: 8px; margin-top: 18px; cursor: pointer;">
+                <input type="checkbox" ${exp.active ? 'checked' : ''} onchange="updateExpField(${idx}, 'active', this.checked)">
+                <span style="font-weight: 600; color: var(--emerald);">Vị trí đương nhiệm (Active Role)</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nhiệm vụ & Thành tựu (Mỗi dòng một gạch đầu dòng)</label>
+            <textarea class="form-control" rows="3" onchange="updateExpDuties(${idx}, this.value)">${(exp.duties || []).join('\n')}</textarea>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addExperience() {
+      if (!cvData.experiences) cvData.experiences = [];
+      cvData.experiences.push({
+        id: `exp-${Date.now()}`,
+        role: "Vị trí mới",
+        company: "Arito Solutions",
+        period: "2026 - Hiện tại",
+        active: false,
+        duties: ["Mô tả nhiệm vụ công tác..."]
+      });
+      renderExperiences();
+    }
+
+    function deleteExperience(idx) {
+      if (confirm('Bạn chắc chắn muốn xóa vị trí này?')) {
+        cvData.experiences.splice(idx, 1);
+        renderExperiences();
+      }
+    }
+
+    function moveExperience(idx, delta) {
+      const target = idx + delta;
+      if (target < 0 || target >= cvData.experiences.length) return;
+      const temp = cvData.experiences[idx];
+      cvData.experiences[idx] = cvData.experiences[target];
+      cvData.experiences[target] = temp;
+      renderExperiences();
+    }
+
+    function updateExpField(idx, field, val) {
+      if (cvData.experiences[idx]) cvData.experiences[idx][field] = val;
+    }
+
+    function updateExpDuties(idx, text) {
+      if (cvData.experiences[idx]) {
+        cvData.experiences[idx].duties = text.split('\n').map(s => s.trim()).filter(Boolean);
+      }
+    }
+
+    // ============================================================
+    // PROJECTS
+    // ============================================================
+    function renderProjects() {
+      const container = document.getElementById('projectsList');
+      container.innerHTML = (cvData.projects || []).map((proj, idx) => `
+        <div class="item-card" data-idx="${idx}">
+          <div class="item-card-top">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="item-badge">#${String(idx + 1).padStart(2, '0')}</span>
+              <strong style="color: var(--text-white); font-size: 14px;">${esc(proj.client)}</strong>
+            </div>
+            <div class="item-actions">
+              <button type="button" class="btn-item-action" onclick="moveProject(${idx}, -1)" title="Di chuyển lên"><i class="fa-solid fa-arrow-up"></i></button>
+              <button type="button" class="btn-item-action" onclick="moveProject(${idx}, 1)" title="Di chuyển xuống"><i class="fa-solid fa-arrow-down"></i></button>
+              <button type="button" class="btn-item-action delete" onclick="deleteProject(${idx})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="form-grid-3" style="margin-bottom: 12px;">
+            <div class="form-group">
+              <label class="form-label">Tên khách hàng / Dự án</label>
+              <input type="text" class="form-control" value="${esc(proj.client)}" onchange="updateProjField(${idx}, 'client', this.value)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Lĩnh vực (Domain Badge)</label>
+              <input type="text" class="form-control" value="${esc(proj.domain)}" onchange="updateProjField(${idx}, 'domain', this.value)">
+            </div>
+            <div class="form-group" style="justify-content: center;">
+              <label style="display: flex; align-items: center; gap: 8px; margin-top: 18px; cursor: pointer;">
+                <input type="checkbox" ${proj.featured ? 'checked' : ''} onchange="updateProjField(${idx}, 'featured', this.checked)">
+                <span style="font-weight: 600; color: var(--sky);">Đánh dấu nổi bật (Featured Card)</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Mô tả giải pháp & Tích hợp kỹ thuật</label>
+            <textarea class="form-control" rows="2" onchange="updateProjField(${idx}, 'description', this.value)">${esc(proj.description)}</textarea>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Tags công nghệ (Phân tách bằng dấu phẩy)</label>
+              <input type="text" class="form-control mono" value="${esc((proj.tags || []).join(', '))}" onchange="updateProjTags(${idx}, this.value)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Logo / Ảnh dự án (Đường dẫn hoặc tải file)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" class="form-control mono" id="projLogoInput_${idx}" value="${esc(proj.logo || '')}" placeholder="assets/images/projects/logo.png" onchange="updateProjField(${idx}, 'logo', this.value)">
+                <button type="button" class="btn-topbar" onclick="triggerProjLogoUpload(${idx})" title="Chọn file logo từ máy">
+                  <i class="fa-solid fa-file-image"></i> Chọn ảnh
+                </button>
+                <input type="file" id="projFileInput_${idx}" accept="image/*" style="display:none;" onchange="handleProjLogoSelected(${idx}, event)">
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addProject() {
+      if (!cvData.projects) cvData.projects = [];
+      cvData.projects.push({
+        id: String(cvData.projects.length + 1),
+        client: "Dự án Doanh nghiệp mới",
+        domain: "Enterprise System",
+        logo: "",
+        featured: false,
+        description: "Mô tả triển khai giải pháp và tích hợp...",
+        tags: ["ERP", "Open API"]
+      });
+      renderProjects();
+    }
+
+    function deleteProject(idx) {
+      if (confirm('Bạn chắc chắn muốn xóa dự án này?')) {
+        cvData.projects.splice(idx, 1);
+        renderProjects();
+      }
+    }
+
+    function moveProject(idx, delta) {
+      const target = idx + delta;
+      if (target < 0 || target >= cvData.projects.length) return;
+      const temp = cvData.projects[idx];
+      cvData.projects[idx] = cvData.projects[target];
+      cvData.projects[target] = temp;
+      renderProjects();
+    }
+
+    function updateProjField(idx, field, val) {
+      if (cvData.projects[idx]) cvData.projects[idx][field] = val;
+    }
+
+    function updateProjTags(idx, text) {
+      if (cvData.projects[idx]) {
+        cvData.projects[idx].tags = text.split(',').map(s => s.trim()).filter(Boolean);
+      }
+    }
+
+    function triggerProjLogoUpload(idx) {
+      const input = document.getElementById(`projFileInput_${idx}`);
+      if (input) input.click();
+    }
+
+    async function handleProjLogoSelected(idx, event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const targetRepoPath = `assets/images/projects/${cleanName}`;
+      
+      document.getElementById(`projLogoInput_${idx}`).value = targetRepoPath;
+      updateProjField(idx, 'logo', targetRepoPath);
+
+      // Upload directly if token configured
+      const cfg = getGhConfig();
+      if (cfg.owner && cfg.repo && cfg.token) {
+        toast(`Đang upload logo "${file.name}" lên GitHub repo...`, 'info');
+        const ok = await uploadFileToGitHub(file, targetRepoPath);
+        if (ok) toast(`Đã upload logo thành công vào ${targetRepoPath}`, 'success');
+      } else {
+        toast(`Đã chọn logo. Lưu ý: Cấu hình GitHub Token để tự động push ảnh lên repo.`, 'info');
+      }
+    }
+
+    // ============================================================
+    // METRICS & SKILLS
+    // ============================================================
+    function renderMetrics() {
+      const container = document.getElementById('metricsContainer');
+      const metrics = (cvData.profile && cvData.profile.metrics) || [];
+      container.innerHTML = metrics.map((m, idx) => `
+        <div class="item-card">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Số liệu #${idx + 1}</label>
+              <input type="text" class="form-control" value="${esc(m.number)}" onchange="updateMetric(${idx}, 'number', this.value)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nhãn mô tả</label>
+              <input type="text" class="form-control" value="${esc(m.label)}" onchange="updateMetric(${idx}, 'label', this.value)">
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateMetric(idx, field, val) {
+      if (cvData.profile && cvData.profile.metrics && cvData.profile.metrics[idx]) {
+        cvData.profile.metrics[idx][field] = val;
+      }
+    }
+
+    function renderSkills() {
+      const container = document.getElementById('skillsContainer');
+      const skills = (cvData.profile && cvData.profile.skills) || [];
+      container.innerHTML = skills.map((s, idx) => `
+        <div class="item-card">
+          <div class="form-grid-2" style="margin-bottom: 10px;">
+            <div class="form-group">
+              <label class="form-label">Tiêu đề năng lực #${idx + 1}</label>
+              <input type="text" class="form-control" value="${esc(s.title)}" onchange="updateSkill(${idx}, 'title', this.value)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Icon Class (FontAwesome)</label>
+              <input type="text" class="form-control mono" value="${esc(s.icon || 'fa-solid fa-circle-check')}" onchange="updateSkill(${idx}, 'icon', this.value)">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nội dung chi tiết</label>
+            <textarea class="form-control" rows="2" onchange="updateSkill(${idx}, 'desc', this.value)">${esc(s.desc)}</textarea>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateSkill(idx, field, val) {
+      if (cvData.profile && cvData.profile.skills && cvData.profile.skills[idx]) {
+        cvData.profile.skills[idx][field] = val;
+      }
+    }
+
+    // ============================================================
+    // AVATAR HANDLING & GITHUB UPLOAD
+    // ============================================================
+    function triggerFileInput(id) {
+      document.getElementById(id).click();
+    }
+
+    function handleAvatarSelected(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      selectedAvatarFile = file;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('avatarPreviewImg').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+
+      const targetPath = `assets/images/${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+      document.getElementById('profAvatarPath').value = targetPath;
+      if (cvData.profile) cvData.profile.avatar = targetPath;
+      toast(`Đã chọn ảnh đại diện "${file.name}". Bạn có thể nhấn nút upload lên GitHub.`, 'info');
+    }
+
+    async function uploadAvatarToGitHub() {
+      if (!selectedAvatarFile) {
+        toast('Vui lòng chọn một file ảnh từ máy trước!', 'error');
+        return;
+      }
+      const targetPath = document.getElementById('profAvatarPath').value.trim() || 'assets/images/avatar.jpg';
+      const btn = document.getElementById('btnUploadAvatarGh');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang tải lên...';
+
+      const ok = await uploadFileToGitHub(selectedAvatarFile, targetPath);
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Upload lên GitHub Repo';
+      if (ok) {
+        toast(`Đã upload thành công avatar vào repo tại "${targetPath}"!`, 'success');
+      }
+    }
+
+    async function uploadFileToGitHub(file, targetPath) {
+      const cfg = getGhConfig();
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        toast('Chưa có token GitHub. Vui lòng kiểm tra lại cấu hình!', 'error');
+        return false;
+      }
+
+      try {
+        // Read file as Base64
+        const base64Data = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(',')[1]);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+        // Check if file exists to get SHA
+        let fileSha = '';
+        try {
+          const checkRes = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${targetPath}?ref=${cfg.branch}`, {
+            headers: { 'Authorization': `Bearer ${cfg.token}` }
+          });
+          if (checkRes.ok) {
+            const checkData = await checkRes.json();
+            fileSha = checkData.sha;
+          }
+        } catch(e) {}
+
+        const body = {
+          message: `upload(assets): tải ảnh ${file.name} lên ${targetPath}`,
+          content: base64Data,
+          branch: cfg.branch
+        };
+        if (fileSha) body.sha = fileSha;
+
+        const putRes = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${targetPath}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${cfg.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+
+        if (!putRes.ok) {
+          const err = await putRes.json();
+          throw new Error(err.message || 'Lỗi HTTP');
+        }
+        return true;
+      } catch (err) {
+        toast(`Lỗi tải ảnh lên GitHub: ${err.message}`, 'error');
+        return false;
+      }
+    }
+
+    // ============================================================
+    // COLLECT ALL FORM DATA
+    // ============================================================
+    function collectFormData() {
+      if (!cvData.profile) cvData.profile = {};
+      const p = cvData.profile;
+
+      p.name = document.getElementById('profName').value.trim();
+      p.initials = document.getElementById('profInitials').value.trim() || 'VH';
+      p.title = document.getElementById('profTitle').value.trim();
+      p.subTitle = document.getElementById('profSubTitle').value.trim();
+      p.company = document.getElementById('profCompany').value.trim();
+      p.summary = document.getElementById('profSummary').value.trim();
+      p.avatar = document.getElementById('profAvatarPath').value.trim();
+
+      // Contact
+      if (!p.contact) p.contact = {};
+      p.contact.location = document.getElementById('contactLocation').value.trim();
+      p.contact.phone = document.getElementById('contactPhone').value.trim();
+      p.contact.email = document.getElementById('contactEmail').value.trim();
+      p.contact.linkedin = document.getElementById('contactLinkedin').value.trim();
+
+      // Education
+      if (!p.education) p.education = {};
+      p.education.degree = document.getElementById('eduDegree').value.trim();
+      p.education.school = document.getElementById('eduSchool').value.trim();
+      p.education.details = document.getElementById('eduDetails').value.trim();
+      p.education.english = document.getElementById('eduEnglish').value.trim();
+
+      // Certifications
+      if (!p.certifications) p.certifications = [{}];
+      p.certifications[0] = {
+        name: document.getElementById('certName').value.trim(),
+        organization: document.getElementById('certOrg').value.trim(),
+        course: document.getElementById('certCourse').value.trim(),
+        code: document.getElementById('certCode').value.trim(),
+        image: document.getElementById('certImage').value.trim(),
+        pdf: document.getElementById('certPdf').value.trim()
+      };
+
+      return cvData;
+    }
+
+    function syncJsonToForms() {
+      try {
+        const text = document.getElementById('rawJsonArea').value;
+        cvData = JSON.parse(text);
+        populateUI();
+        toast('Đã đồng bộ dữ liệu JSON vào form UI!', 'success');
+      } catch (err) {
+        toast(`Lỗi cú pháp JSON: ${err.message}`, 'error');
+      }
+    }
+
+    function handleRawJsonChanged() {
+      // User is editing raw json
+    }
+
+    // ============================================================
+    // COMMIT & PUSH TO GITHUB
+    // ============================================================
+    async function pushJsonToGitHub() {
+      const cfg = getGhConfig();
+      if (!cfg.owner || !cfg.repo || !cfg.token) {
+        toast('Vui lòng điền đầy đủ cấu hình GitHub Token!', 'error');
+        return;
+      }
+
+      collectFormData();
+      const jsonContent = JSON.stringify(cvData, null, 2);
+      const commitMsg = document.getElementById('commitMsgInput').value.trim() ||
+        `feat(cv): cập nhật cv_data.json qua Admin Panel · ${new Date().toLocaleString('vi-VN')}`;
+
+      const btn = document.getElementById('btnPush');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang push lên GitHub...';
+      setStatus('loading', 'Đang commit lên GitHub...');
+
+      try {
+        // Base64 encode UTF-8 correctly
+        const base64Content = btoa(unescape(encodeURIComponent(jsonContent)));
+
+        // Get latest SHA if empty
+        if (!currentSHA) {
+          try {
+            const check = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${cfg.branch}`, {
+              headers: { 'Authorization': `Bearer ${cfg.token}` }
+            });
+            if (check.ok) {
+              const fileInfo = await check.json();
+              currentSHA = fileInfo.sha;
+            }
+          } catch(e) {}
+        }
+
+        const body = {
+          message: commitMsg,
+          content: base64Content,
+          branch: cfg.branch
+        };
+        if (currentSHA) body.sha = currentSHA;
+
+        const res = await fetch(`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${cfg.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
         });
 
         if (!res.ok) {
           const err = await res.json();
-          throw new Error(err.message || `HTTP ${res.status}`);
+          throw new Error(err.message || 'Lỗi HTTP');
         }
 
-        const data = await res.json();
-        const content = atob(data.content.replace(/\n/g, ''));
-        currentSHA = data.sha;
-        originalContent = content;
-
-        // Populate editor
-        document.getElementById('mdEditor').value = content;
-        document.getElementById('splitEditor').value = content;
-        updateLineNumbers();
-        updateStats();
-        renderPreview(content);
-
-        // File info
-        showFileInfo(data, cfg);
-
-        // Fetch last commit date
-        fetchLastCommitDate(cfg, data.sha);
-
-        isConnected = true;
-        setStatus('connected', `Đã kết nối · ${cfg.owner}/${cfg.repo}/${cfg.path}`);
-        enableButtons(true);
-        toast(`Tải thành công file "${cfg.path}" từ ${cfg.owner}/${cfg.repo}`, 'success');
-        document.getElementById('changedBadge').style.display = 'none';
-
-      } catch(e) {
-        setStatus('error', `Lỗi: ${e.message}`);
-        toast(`Không thể kết nối: ${e.message}`, 'error');
-        enableButtons(false);
-      }
-    }
-
-    async function fetchLastCommitDate(cfg, sha) {
-      try {
-        const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/commits?path=${cfg.path}&sha=${cfg.branch}&per_page=1`;
-        const res = await fetch(url, {
-          headers: {
-            'Authorization': `Bearer ${cfg.token}`,
-            'Accept': 'application/vnd.github.v3+json',
-          }
-        });
-        if (!res.ok) return;
-        const commits = await res.json();
-        if (commits && commits.length > 0) {
-          const date = new Date(commits[0].commit.author.date);
-          document.getElementById('fiDate').textContent = date.toLocaleString('vi-VN');
-        }
-      } catch(e) { /* silent */ }
-    }
-
-    function showFileInfo(data, cfg) {
-      document.getElementById('fiName').textContent = data.name;
-      document.getElementById('fiBranch').textContent = cfg.branch;
-      document.getElementById('fiSha').textContent = data.sha.substring(0, 12) + '...';
-      document.getElementById('fiSize').textContent = formatBytes(data.size);
-      document.getElementById('fileInfo').classList.add('visible');
-      document.getElementById('fileInfoEmpty').style.display = 'none';
-    }
-
-    // ============================================================
-    // PUSH TO GITHUB
-    // ============================================================
-    async function pushToGitHub() {
-      if (!isConnected || !currentSHA) {
-        toast('Chưa kết nối. Vui lòng tải file trước.', 'error');
-        return;
-      }
-
-      const cfg = getConfig();
-      const newContent = document.getElementById('mdEditor').value;
-      const commitMsg = document.getElementById('commitMsg').value.trim()
-                     || 'docs: update cv_data.md';
-
-      // Show diff in sidebar
-      showDiff(originalContent, newContent);
-
-      setStatus('loading', 'Đang commit & push lên GitHub...');
-      document.getElementById('btnPush').disabled = true;
-      document.getElementById('btnPush').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
-
-      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-
-      try {
-        const res = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${cfg.token}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json',
-            'X-GitHub-Api-Version': '2022-11-28',
-          },
-          body: JSON.stringify({
-            message: commitMsg,
-            content: btoa(unescape(encodeURIComponent(newContent))),
-            sha: currentSHA,
-            branch: cfg.branch,
-          })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message || `HTTP ${res.status}`);
-        }
-
-        // Update SHA for next commit
-        currentSHA = data.content.sha;
-        originalContent = newContent;
-        document.getElementById('fiSha').textContent = data.content.sha.substring(0,12) + '...';
-        document.getElementById('fiDate').textContent = new Date().toLocaleString('vi-VN');
-        document.getElementById('changedBadge').style.display = 'none';
-
-        setStatus('connected', `✓ Commit thành công · ${cfg.owner}/${cfg.repo}`);
-        toast(`Commit thành công! File "${cfg.path}" đã được cập nhật trên GitHub.`, 'success');
-        setDefaultCommitMsg();
-
-      } catch(e) {
-        setStatus('error', `Lỗi push: ${e.message}`);
-        toast(`Push thất bại: ${e.message}`, 'error');
+        const resData = await res.json();
+        currentSHA = resData.content.sha;
+        setStatus('connected', `Đã push thành công (${new Date().toLocaleTimeString('vi-VN')})`);
+        toast(`Đã lưu & commit file "${cfg.path}" lên GitHub thành công!`, 'success');
+        localStorage.setItem('cv_data_local_draft', jsonContent);
+      } catch (err) {
+        setStatus('error', `Lỗi push: ${err.message}`);
+        toast(`Không thể lưu lên GitHub: ${err.message}`, 'error');
       } finally {
-        document.getElementById('btnPush').disabled = false;
-        document.getElementById('btnPush').innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Lưu lên GitHub';
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-brands fa-github"></i> Lưu & Push lên GitHub';
       }
     }
 
     // ============================================================
-    // EDITOR EVENTS
+    // EXPORT FILE & LOCAL DRAFT
     // ============================================================
-    function onEditorInput() {
-      const content = document.getElementById('mdEditor').value;
-      document.getElementById('splitEditor').value = content;
-      updateLineNumbers();
-      updateStats();
-      renderPreview(content);
-
-      const changed = content !== originalContent && isConnected;
-      document.getElementById('changedBadge').style.display = changed ? 'inline-flex' : 'none';
+    function exportJsonFile() {
+      collectFormData();
+      const content = JSON.stringify(cvData, null, 2);
+      const blob = new Blob([content], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cv_data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast('Đã tải file cv_data.json về máy tính!', 'success');
     }
 
-    function syncSplit(val) {
-      document.getElementById('mdEditor').value = val;
-      updateLineNumbers();
-      updateStats();
-      renderPreview(val);
-      const changed = val !== originalContent && isConnected;
-      document.getElementById('changedBadge').style.display = changed ? 'inline-flex' : 'none';
+    function saveToLocalDraft() {
+      collectFormData();
+      const content = JSON.stringify(cvData, null, 2);
+      localStorage.setItem('cv_data_local_draft', content);
+      toast('Đã lưu bản nháp vào bộ nhớ trình duyệt!', 'success');
     }
 
-    function updateLineNumbers() {
-      const text = document.getElementById('mdEditor').value;
-      const lines = text.split('\n').length;
-      const container = document.getElementById('lineNumbers');
-      container.innerHTML = Array.from({length: lines}, (_, i) => `<div>${i+1}</div>`).join('');
-      document.getElementById('lineCount').textContent = lines;
+    function esc(s) {
+      if (!s) return '';
+      return String(s).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    function updateStats() {
-      const chars = document.getElementById('mdEditor').value.length;
-      document.getElementById('charCount').textContent = chars.toLocaleString('vi-VN');
-    }
+    // ============================================================
+    // INIT
+    // ============================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedGhConfig();
 
-    // Sync scroll between editor and line numbers
-    document.addEventListener('DOMContentLoaded', () => {
-      const editor = document.getElementById('mdEditor');
-      const lineNums = document.getElementById('lineNumbers');
-      if (editor && lineNums) {
-        editor.addEventListener('scroll', () => {
-          lineNums.scrollTop = editor.scrollTop;
+      // Check if local file cv_data.json exists
+      fetch(`cv_data.json?_t=${Date.now()}`)
+        .then(res => res.json())
+        .then(json => {
+          cvData = json;
+          populateUI();
+        })
+        .catch(() => {
+          populateUI();
         });
-      }
-    });
 
-    // ============================================================
-    // PREVIEW
-    // ============================================================
-    function renderPreview(md) {
-      const html = marked.parse(md || '');
-      document.getElementById('mdPreviewContent').innerHTML = html;
-      document.getElementById('splitPreviewContent').innerHTML = html;
-    }
-
-    // ============================================================
-    // TABS
-    // ============================================================
-    function switchTab(tab) {
-      document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
-      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-
-      document.getElementById('viewRaw').classList.remove('active');
-      document.getElementById('viewPreview').classList.remove('active');
-      document.getElementById('viewSplit').classList.remove('active');
-
-      const content = document.getElementById('mdEditor').value;
-      if (tab === 'raw')     { document.getElementById('viewRaw').classList.add('active'); }
-      if (tab === 'preview') { renderPreview(content); document.getElementById('viewPreview').classList.add('active'); }
-      if (tab === 'split')   {
-        renderPreview(content);
-        document.getElementById('splitEditor').value = content;
-        document.getElementById('viewSplit').classList.add('active');
-      }
-    }
-
-    // ============================================================
-    // DIFF VIEWER
-    // ============================================================
-    function showDiff(original, current) {
-      const origLines = original.split('\n');
-      const currLines = current.split('\n');
-
-      if (origLines.join('\n') === currLines.join('\n')) {
-        document.getElementById('diffSection').style.display = 'none';
-        return;
-      }
-
-      let diffHtml = '<div class="diff-block"><div class="diff-header"><i class="fa-solid fa-code-compare"></i> Thay đổi trong cv_data.md</div>';
-
-      const maxLen = Math.max(origLines.length, currLines.length);
-      let hasChanges = false;
-
-      for (let i = 0; i < maxLen; i++) {
-        const o = origLines[i];
-        const c = currLines[i];
-        if (o === undefined) {
-          diffHtml += `<div class="diff-line added">+ ${escapeHtml(c)}</div>`;
-          hasChanges = true;
-        } else if (c === undefined) {
-          diffHtml += `<div class="diff-line removed">- ${escapeHtml(o)}</div>`;
-          hasChanges = true;
-        } else if (o !== c) {
-          diffHtml += `<div class="diff-line removed">- ${escapeHtml(o)}</div>`;
-          diffHtml += `<div class="diff-line added">+ ${escapeHtml(c)}</div>`;
-          hasChanges = true;
-        }
-        // Skip context lines for brevity
-      }
-
-      diffHtml += '</div>';
-
-      if (hasChanges) {
-        document.getElementById('diffViewer').innerHTML = diffHtml;
-        document.getElementById('diffSection').style.display = 'block';
-      }
-    }
-
-    function escapeHtml(str = '') {
-      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-
-    // ============================================================
-    // UI HELPERS
-    // ============================================================
-    function setStatus(state, msg) {
-      const dot = document.getElementById('statusDot');
-      const txt = document.getElementById('statusText');
-      const bar = document.getElementById('statusBar');
-
-      dot.className = 'status-dot ' + state;
-      txt.textContent = msg.length > 60 ? msg.substring(0, 58) + '…' : msg;
-
-      bar.className = 'statusbar';
-      bar.innerHTML = `<span>${msg}</span>`;
-
-      if (state === 'connected') bar.classList.add('success-bar');
-      else if (state === 'error') bar.classList.add('error-bar');
-      else bar.classList.add('idle-bar');
-    }
-
-    function enableButtons(enable) {
-      ['btnPush', 'btnRefresh', 'btnReset'].forEach(id => {
-        document.getElementById(id).disabled = !enable;
-      });
-    }
-
-    function toggleToken() {
-      const inp = document.getElementById('cfgToken');
-      const icon = document.getElementById('tokenEyeIcon');
-      if (inp.type === 'password') {
-        inp.type = 'text';
-        icon.className = 'fa-solid fa-eye-slash';
-      } else {
-        inp.type = 'password';
-        icon.className = 'fa-solid fa-eye';
-      }
-    }
-
-    // ============================================================
-    // TOAST
-    // ============================================================
-    function toast(msg, type = 'info') {
-      const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', info: 'fa-circle-info' };
-      const container = document.getElementById('toast-container');
-      const el = document.createElement('div');
-      el.className = `toast ${type}`;
-      el.innerHTML = `<i class="fa-solid ${icons[type]}"></i><span>${msg}</span>`;
-      container.appendChild(el);
-      setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all 0.3s'; setTimeout(()=>el.remove(), 300); }, 4000);
-    }
-
-    // ============================================================
-    // RESET MODAL
-    // ============================================================
-    function showResetModal() { document.getElementById('resetModal').classList.add('open'); }
-    function closeResetModal() { document.getElementById('resetModal').classList.remove('open'); }
-    async function confirmReset() {
-      closeResetModal();
-      await fetchFile();
-    }
-
-    // ============================================================
-    // UTILS
-    // ============================================================
-    function formatBytes(bytes) {
-      if (bytes < 1024) return bytes + ' B';
-      return (bytes / 1024).toFixed(1) + ' KB';
-    }
-
-    // Tab key support in editor
-    document.addEventListener('DOMContentLoaded', () => {
-      const editor = document.getElementById('mdEditor');
-      if (editor) {
-        editor.addEventListener('keydown', function(e) {
-          if (e.key === 'Tab') {
-            e.preventDefault();
-            const start = this.selectionStart;
-            const end = this.selectionEnd;
-            this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
-            this.selectionStart = this.selectionEnd = start + 2;
-            onEditorInput();
-          }
-          // Ctrl+S shortcut
-          if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-            e.preventDefault();
-            pushToGitHub();
-          }
-        });
-      }
-
-      // Close modal on overlay click
-      document.getElementById('resetModal').addEventListener('click', function(e) {
-        if (e.target === this) closeResetModal();
-      });
+      // Set default commit message
+      document.getElementById('commitMsgInput').value = `feat(cv): cập nhật cv_data.json qua Admin Panel · ${new Date().toLocaleString('vi-VN')}`;
     });
   </script>
 </body>

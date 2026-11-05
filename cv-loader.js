@@ -1,6 +1,6 @@
 /**
- * cv-loader.js — Quản lý tải và phân tích cv_data.md động từ GitHub / Local
- * Có cơ chế chống cache (cache-busting)
+ * cv-loader.js — Quản lý tải dữ liệu động từ cv_data.json (và fallback cv_data.md)
+ * Hỗ trợ GitHub API, GitHub Raw, và Local File với cơ chế chống cache (cache-busting).
  */
 
 const CV_CONFIG_KEY = 'cvAdminConfig';
@@ -14,16 +14,17 @@ function getStoredCvConfig() {
 }
 
 /**
- * Tải nội dung cv_data.md (Ưu tiên GitHub API nếu có config, fallback sang local cv_data.md)
+ * Tải dữ liệu CV (Ưu tiên cv_data.json, fallback sang cv_data.md)
  */
 async function loadCvData() {
   const cfg = getStoredCvConfig();
   const timestamp = Date.now();
+  const targetPath = cfg.path || 'cv_data.json';
 
   // 1. Thử lấy từ GitHub API nếu đã cấu hình
   if (cfg.owner && cfg.repo && cfg.token) {
     try {
-      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path || 'cv_data.md'}?ref=${cfg.branch || 'main'}&_t=${timestamp}`;
+      const url = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${targetPath}?ref=${cfg.branch || 'main'}&_t=${timestamp}`;
       const res = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${cfg.token}`,
@@ -32,45 +33,75 @@ async function loadCvData() {
         cache: 'no-store'
       });
       if (res.ok) {
-        const data = await res.json();
-        const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
-        return { markdown: content, source: 'github', lastUpdated: new Date().toLocaleTimeString('vi-VN') };
+        const fileInfo = await res.json();
+        const content = decodeURIComponent(escape(atob(fileInfo.content.replace(/\n/g, ''))));
+        const now = new Date().toLocaleTimeString('vi-VN');
+        
+        // Thử parse JSON
+        if (targetPath.endsWith('.json') || content.trim().startsWith('{')) {
+          try {
+            const json = JSON.parse(content);
+            return { data: json, markdown: content, source: 'github', lastUpdated: now };
+          } catch (je) {
+            console.warn('Lỗi parse JSON từ GitHub API, coi như raw text:', je);
+          }
+        }
+        return { data: parseCvMarkdown(content), markdown: content, source: 'github', lastUpdated: now };
       }
     } catch (e) {
-      console.warn('Không thể tải từ GitHub API, thử tải local:', e);
+      console.warn('Không thể tải từ GitHub API, thử tải phương thức khác:', e);
     }
   }
 
-  // 2. Thử tải từ GitHub Raw nếu có repo nhưng không cần token
+  // 2. Thử tải từ GitHub Raw
   if (cfg.owner && cfg.repo) {
-    try {
-      const rawUrl = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/${cfg.branch || 'main'}/${cfg.path || 'cv_data.md'}?_t=${timestamp}`;
-      const res = await fetch(rawUrl, { cache: 'no-store' });
-      if (res.ok) {
-        const text = await res.text();
-        return { markdown: text, source: 'github-raw', lastUpdated: new Date().toLocaleTimeString('vi-VN') };
-      }
-    } catch (e) {
-      console.warn('Lỗi tải từ raw.githubusercontent.com:', e);
+    const rawPaths = [targetPath, 'cv_data.json', 'cv_data.md'];
+    for (const p of [...new Set(rawPaths)]) {
+      try {
+        const rawUrl = `https://raw.githubusercontent.com/${cfg.owner}/${cfg.repo}/${cfg.branch || 'main'}/${p}?_t=${timestamp}`;
+        const res = await fetch(rawUrl, { cache: 'no-store' });
+        if (res.ok) {
+          const text = await res.text();
+          const now = new Date().toLocaleTimeString('vi-VN');
+          if (p.endsWith('.json') || text.trim().startsWith('{')) {
+            try {
+              const json = JSON.parse(text);
+              return { data: json, markdown: text, source: 'github-raw', lastUpdated: now };
+            } catch (je) {}
+          }
+          return { data: parseCvMarkdown(text), markdown: text, source: 'github-raw', lastUpdated: now };
+        }
+      } catch (e) { /* thử tiếp */ }
     }
   }
 
-  // 3. Fallback: Tải file local cv_data.md
+  // 3. Tải file Local cv_data.json
+  try {
+    const jsonRes = await fetch(`cv_data.json?_t=${timestamp}`, { cache: 'no-store' });
+    if (jsonRes.ok) {
+      const json = await jsonRes.json();
+      return { data: json, markdown: JSON.stringify(json, null, 2), source: 'local-json', lastUpdated: new Date().toLocaleTimeString('vi-VN') };
+    }
+  } catch (e) {
+    // Không có cv_data.json local, thử fallback sang cv_data.md
+  }
+
+  // 4. Fallback: Tải file local cv_data.md
   try {
     const localRes = await fetch(`cv_data.md?_t=${timestamp}`, { cache: 'no-store' });
     if (localRes.ok) {
       const localText = await localRes.text();
-      return { markdown: localText, source: 'local', lastUpdated: new Date().toLocaleTimeString('vi-VN') };
+      return { data: parseCvMarkdown(localText), markdown: localText, source: 'local-md', lastUpdated: new Date().toLocaleTimeString('vi-VN') };
     }
   } catch (e) {
-    console.error('Không thể đọc file cv_data.md local:', e);
+    console.error('Không thể đọc file dữ liệu local:', e);
   }
 
   return null;
 }
 
 /**
- * Phân tích cú pháp cv_data.md thành JSON cấu trúc chuẩn
+ * Phân tích cú pháp cv_data.md (giữ lại để tương thích ngược nếu người dùng vẫn dùng file .md)
  */
 function parseCvMarkdown(md) {
   if (!md) return null;
@@ -83,9 +114,11 @@ function parseCvMarkdown(md) {
       currentRole: '',
       pmRole: '',
       contact: { location: '', phone: '', email: '', linkedin: '' },
-      education: '',
-      english: '',
+      education: { degree: '', school: '', english: '' },
+      metrics: [],
+      skills: []
     },
+    experiences: [],
     projects: []
   };
 
@@ -125,8 +158,8 @@ function parseCvMarkdown(md) {
       } else if (line.startsWith('- Học vấn:')) {
         const eduStr = line.replace('- Học vấn:', '').trim();
         const parts = eduStr.split('.').map(s => s.trim()).filter(Boolean);
-        result.profile.education = parts[0] || '';
-        if (parts[1]) result.profile.english = parts[1];
+        result.profile.education.degree = parts[0] || '';
+        if (parts[1]) result.profile.education.english = parts[1];
       }
     } else if (currentSection.includes('DỰ ÁN TRỌNG ĐIỂM')) {
       const match = line.match(/^(\d+)\.\s*(.+?):\s*(.+)$/);
@@ -134,7 +167,6 @@ function parseCvMarkdown(md) {
         const rawName = match[2].trim();
         const desc = match[3].trim();
         
-        // Trích xuất tags kỹ thuật / nghiệp vụ
         const techMatches = desc.match(/\b(Arito ERP|iPOS|S-Invoice|Vietcombank|VietinBank|VietQR|Galaxy DMS|SAML 2\.0|SSO|Open API|eKYC|LIMS|TT99|Thông tư 99|POSM|ASUPP|WMS)\b/gi) || [];
         const uniqueTechs = [...new Set(techMatches.map(t => t.trim()))];
 

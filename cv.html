@@ -3,30 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Võ Nguyên Hào - Curriculum Vitae</title>
+  <title>Võ Nguyễn Hào | Curriculum Vitae</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <style>
     :root {
-      --primary-dark: #090e17;
       --navy-sidebar: #0f172a;
       --navy-accent: #1e293b;
-      --navy-light: #334155;
-      --teal-primary: #0ea5e9;
-      --teal-accent: #06b6d4;
-      --teal-emerald: #10b981;
-      --teal-glow: rgba(14, 165, 233, 0.15);
-      --text-main: #1e293b;
+      --navy-subtle: #334155;
+      --accent-blue: #0284c7;
+      --accent-light: #38bdf8;
+      --emerald: #059669;
+      --text-main: #0f172a;
+      --text-body: #334155;
       --text-muted: #64748b;
-      --text-light: #94a3b8;
       --text-sidebar: #cbd5e1;
       --bg-page: #f1f5f9;
       --card-bg: #ffffff;
       --border-subtle: #e2e8f0;
-      --tag-bg: #f8fafc;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -46,384 +43,460 @@
       font-size: 13.5px;
       display: flex;
       justify-content: center;
-      padding: 30px 15px;
+      padding: 24px 16px;
     }
 
-    /* Action bar on top for preview screen */
+    /* Screen Action Bar */
     .screen-toolbar {
       position: fixed;
-      top: 15px;
-      right: 25px;
+      top: 16px;
+      right: 24px;
       display: flex;
-      gap: 12px;
+      gap: 10px;
       z-index: 1000;
     }
 
     .btn-action {
-      background: #0f172a;
+      background: var(--navy-sidebar);
       color: #ffffff;
-      border: 1px solid #334155;
-      padding: 10px 18px;
-      border-radius: 8px;
+      border: 1px solid var(--navy-subtle);
+      padding: 9px 16px;
+      border-radius: 6px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
-      transition: all 0.2s ease;
       text-decoration: none;
+      transition: background 0.15s ease;
     }
 
     .btn-action:hover {
-      background: #1e293b;
-      border-color: var(--teal-primary);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(14, 165, 233, 0.3);
+      background: var(--navy-accent);
+      border-color: var(--accent-blue);
     }
 
     .btn-action.btn-accent {
-      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      background: var(--accent-blue);
       border: none;
     }
 
     .btn-action.btn-accent:hover {
-      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      background: #0369a1;
     }
 
-    /* CV Container - standard 2-page or continuous responsive container */
+    /* CV Document Structure */
     .cv-container {
       width: 100%;
       max-width: 960px;
       background: #ffffff;
-      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.12);
-      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
       overflow: hidden;
       display: grid;
-      grid-template-columns: 310px 1fr;
+      grid-template-columns: 300px 1fr;
     }
 
-    /* ================= SIDEBAR (LEFT) ================= */
+    /* Left Sidebar */
     .cv-sidebar {
       background-color: var(--navy-sidebar);
       color: var(--text-sidebar);
-      padding: 36px 26px;
+      padding: 32px 24px;
       display: flex;
       flex-direction: column;
-      gap: 26px;
-      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 22px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .profile-card {
       text-align: center;
-      padding-bottom: 22px;
+      padding-bottom: 20px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .avatar-wrapper {
-      position: relative;
-      width: 110px;
-      height: 110px;
-      margin: 0 auto 16px;
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 12px;
       border-radius: 50%;
-      padding: 3px;
-      background: linear-gradient(135deg, #0ea5e9, #10b981);
-      box-shadow: 0 4px 20px rgba(14, 165, 233, 0.35);
-    }
-
-    .avatar-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: #1e293b;
+      background: var(--navy-accent);
+      border: 2px solid var(--accent-blue);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #38bdf8;
-      font-size: 38px;
+      color: var(--accent-light);
+      font-size: 30px;
       font-weight: 800;
-      letter-spacing: -1px;
+      font-family: var(--font-mono);
     }
 
     .name {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: -0.3px;
-      margin-bottom: 6px;
-      line-height: 1.25;
+      margin-bottom: 4px;
     }
 
     .title-badge {
       display: inline-block;
       font-size: 11px;
       font-weight: 600;
-      color: #38bdf8;
-      background: rgba(14, 165, 233, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      padding: 4px 10px;
-      border-radius: 20px;
-      line-height: 1.4;
+      color: var(--accent-light);
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 3px 9px;
+      border-radius: 4px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
+    }
+
+    .subtitle {
+      font-size: 11.5px;
+      color: #94a3b8;
+      margin-top: 6px;
+      font-weight: 500;
     }
 
     .sidebar-section-title {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       color: #f8fafc;
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .sidebar-section-title i {
-      color: var(--teal-primary);
-      font-size: 12px;
+      color: var(--accent-light);
+      font-size: 11px;
     }
 
-    /* Contact details list */
     .contact-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .contact-item {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
+      gap: 10px;
       font-size: 12.5px;
       color: #cbd5e1;
-      line-height: 1.4;
     }
 
     .contact-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.06);
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--teal-accent);
-      font-size: 12px;
+      color: var(--accent-light);
+      font-size: 11px;
       flex-shrink: 0;
     }
 
     .contact-text a {
       color: #e2e8f0;
       text-decoration: none;
-      transition: color 0.2s;
       word-break: break-all;
     }
 
-    .contact-text a:hover {
-      color: #38bdf8;
-    }
+    .contact-text a:hover { color: var(--accent-light); }
 
     .contact-label {
-      font-size: 10px;
+      font-size: 10.5px;
       text-transform: uppercase;
       color: #94a3b8;
       display: block;
       font-weight: 600;
-      letter-spacing: 0.5px;
     }
 
-    /* Education & Certifications */
+    /* Education & Badge */
     .edu-item {
-      margin-bottom: 14px;
-      position: relative;
-      padding-left: 14px;
-      border-left: 2px solid var(--teal-accent);
+      padding-left: 10px;
+      border-left: 2px solid var(--accent-blue);
+      margin-bottom: 8px;
     }
 
     .edu-degree {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #ffffff;
-      line-height: 1.3;
     }
 
     .edu-school {
-      font-size: 12px;
+      font-size: 11.5px;
       color: #94a3b8;
-      margin-top: 2px;
     }
 
-    .edu-cert-tag {
+    .badge-iso {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      margin-top: 5px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #34d399;
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-weight: 600;
-    }
-
-    /* Key Competencies / Skills */
-    .skills-group {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .skill-cat-name {
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #94a3b8;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-
-    .pill-cloud {
-      display: flex;
-      flex-wrap: wrap;
       gap: 6px;
-    }
-
-    .skill-pill {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 4px 8px;
-      border-radius: 5px;
-      font-size: 11.5px;
-      color: #e2e8f0;
-      font-family: var(--font-sans);
-    }
-
-    .skill-pill.highlight {
-      background: rgba(14, 165, 233, 0.18);
-      border-color: rgba(56, 189, 248, 0.35);
-      color: #38bdf8;
+      font-size: 11px;
       font-weight: 600;
-    }
-
-    .skill-pill.badge-iso {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.35);
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(5, 150, 105, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
       color: #34d399;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .badge-iso:hover {
+      background: rgba(5, 150, 105, 0.28);
+      border-color: #34d399;
+    }
+
+    .btn-cert-mini {
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-light);
+      font-size: 11px;
       font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      font-family: inherit;
     }
 
-    /* Core Strengths summary card */
-    .strength-card {
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 12px;
+    .btn-cert-mini:hover {
+      background: rgba(2, 132, 199, 0.3);
+      color: #ffffff;
+      border-color: var(--accent-light);
+    }
+
+    /* Modal Backdrop */
+    .cert-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 17, 32, 0.88);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .cert-modal-backdrop.active {
+      display: flex;
+    }
+
+    .cert-modal-box {
+      background: var(--navy-sidebar);
+      border: 1px solid var(--border-subtle);
       border-radius: 8px;
-      font-size: 12px;
-      color: #cbd5e1;
-      line-height: 1.5;
-    }
-
-    .strength-card strong {
-      color: #38bdf8;
-    }
-
-    /* ================= MAIN CONTENT (RIGHT) ================= */
-    .cv-main {
-      padding: 36px 36px;
+      width: 100%;
+      max-width: 820px;
+      max-height: 94vh;
       display: flex;
       flex-direction: column;
-      gap: 26px;
-      background: #ffffff;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
     }
 
-    .main-section-header {
+    .cert-modal-header {
+      padding: 14px 20px;
+      background: var(--navy-accent);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cert-modal-title-wrap {
       display: flex;
       align-items: center;
       gap: 10px;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 8px;
-      margin-bottom: 14px;
+    }
+
+    .cert-modal-title-wrap i {
+      color: #10b981;
+      font-size: 18px;
+    }
+
+    .cert-modal-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    .cert-modal-sub {
+      font-size: 12px;
+      color: #94a3b8;
+      margin: 2px 0 0;
+    }
+
+    .cert-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-modal-tool {
+      background: var(--navy-subtle);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 5px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .btn-modal-tool:hover {
+      border-color: var(--accent-light);
+      color: #ffffff;
+    }
+
+    .btn-modal-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-modal-close:hover {
+      background: rgba(248, 113, 113, 0.2);
+      color: #f87171;
+    }
+
+    .cert-modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      background: #070d19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cert-preview-img {
+      width: 100%;
+      max-width: 650px;
+      height: auto;
+      border-radius: 4px;
+      border: 1px solid #334155;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .cert-meta-card {
+      width: 100%;
+      max-width: 650px;
+      background: var(--navy-accent);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #cbd5e1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 16px;
+    }
+
+    .cert-meta-item strong {
+      color: #94a3b8;
+      display: block;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
+    }
+
+    .badge-eng {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid rgba(2, 132, 199, 0.35);
+      color: var(--accent-light);
+    }
+
+    /* Right Main Column */
+    .cv-main {
+      padding: 32px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      background: #ffffff;
     }
 
     .main-section-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--navy-sidebar);
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.6px;
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
+      border-bottom: 2px solid var(--border-subtle);
+      padding-bottom: 6px;
+      margin-bottom: 12px;
     }
 
-    .main-section-title i {
-      color: #0284c7;
-      font-size: 15px;
-    }
+    .main-section-title i { color: var(--accent-blue); }
 
-    .section-counter {
-      margin-left: auto;
-      font-size: 11px;
-      font-weight: 700;
-      color: #64748b;
-      background: #f1f5f9;
-      padding: 2px 8px;
-      border-radius: 12px;
-    }
-
-    /* Executive summary */
-    .summary-text {
-      font-size: 13.5px;
-      color: #334155;
+    .summary-box {
+      font-size: 13px;
+      color: var(--text-body);
       line-height: 1.6;
       background: #f8fafc;
-      padding: 14px 18px;
-      border-radius: 8px;
-      border-left: 4px solid #0ea5e9;
+      padding: 12px 16px;
+      border-radius: 6px;
+      border-left: 3px solid var(--accent-blue);
     }
 
-    /* Timeline Experience */
+    /* Timeline */
     .timeline {
-      position: relative;
-      padding-left: 18px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      top: 6px;
-      bottom: 6px;
-      left: 3px;
-      width: 2px;
-      background: #e2e8f0;
+      gap: 16px;
     }
 
     .timeline-item {
+      border-left: 2px solid var(--border-subtle);
+      padding-left: 14px;
       position: relative;
     }
 
-    .timeline-dot {
-      position: absolute;
-      left: -19px;
-      top: 5px;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #ffffff;
-      border: 3px solid #0ea5e9;
-      box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
-    }
-
-    .timeline-item.current .timeline-dot {
-      border-color: #10b981;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+    .timeline-item.current {
+      border-left-color: var(--emerald);
     }
 
     .exp-header {
@@ -435,111 +508,89 @@
     }
 
     .exp-role {
-      font-size: 14.5px;
+      font-size: 14px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--navy-sidebar);
     }
 
     .exp-period {
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #0284c7;
-      background: #e0f2fe;
-      padding: 2px 8px;
-      border-radius: 4px;
       font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      padding: 1px 6px;
+      border-radius: 4px;
     }
 
-    .exp-period.current-tag {
-      background: #dcfce7;
-      color: #15803d;
+    .exp-period.current {
+      color: #047857;
+      background: #ecfdf5;
+      border-color: #a7f3d0;
     }
 
     .exp-company {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: #475569;
+      color: var(--text-muted);
       margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
-    .exp-company i {
-      color: #94a3b8;
-      font-size: 12px;
-    }
-
-    .exp-responsibilities {
+    .exp-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      margin-top: 6px;
+      gap: 4px;
     }
 
-    .exp-responsibilities li {
-      font-size: 12.8px;
-      color: #475569;
+    .exp-list li {
+      font-size: 12.5px;
+      color: var(--text-body);
       line-height: 1.5;
       position: relative;
-      padding-left: 14px;
+      padding-left: 12px;
     }
 
-    .exp-responsibilities li::before {
-      content: '▹';
+    .exp-list li::before {
+      content: '•';
       position: absolute;
       left: 0;
-      color: #0ea5e9;
-      font-size: 11px;
+      color: var(--accent-blue);
     }
 
-    /* Key Projects Grid */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+    /* Project Cards */
+    .projects-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     .project-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 11px 14px;
       background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 13px 15px;
-      transition: all 0.2s ease;
-      page-break-inside: avoid;
-      break-inside: avoid;
       border-left: 3px solid #cbd5e1;
     }
 
-    .project-card:hover {
-      border-color: #94a3b8;
-      border-left-color: #0ea5e9;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
-    }
-
     .project-card.featured {
-      border-left-color: #0ea5e9;
+      border-left-color: var(--accent-blue);
       background: #fafcff;
-    }
-
-    .project-card.iso-highlight {
-      border-left-color: #10b981;
-      background: #f0fdf4;
     }
 
     .proj-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
       gap: 8px;
     }
 
     .proj-title {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--navy-sidebar);
       display: flex;
       align-items: center;
       gap: 6px;
@@ -549,70 +600,55 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
-      background: #0f172a;
+      width: 17px;
+      height: 17px;
+      border-radius: 3px;
+      background: var(--navy-sidebar);
       color: #ffffff;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 700;
       font-family: var(--font-mono);
+      flex-shrink: 0;
     }
 
-    .proj-category {
-      font-size: 11px;
+    .proj-cat {
+      font-size: 10.5px;
       font-weight: 600;
-      color: #0369a1;
-      background: #e0f2fe;
-      padding: 2px 7px;
+      color: var(--accent-blue);
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      padding: 1px 6px;
       border-radius: 4px;
       white-space: nowrap;
     }
 
     .proj-desc {
-      font-size: 12.6px;
-      color: #475569;
+      font-size: 12.3px;
+      color: var(--text-body);
       line-height: 1.5;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
     }
 
     .proj-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
+      gap: 4px;
     }
 
-    .proj-tech-tag {
-      font-size: 10.5px;
+    .tech-tag {
       font-family: var(--font-mono);
-      color: #475569;
-      background: #f1f5f9;
-      padding: 1px 6px;
-      border-radius: 3px;
+      font-size: 10.5px;
+      color: #0369a1;
+      background: #f8fafc;
       border: 1px solid #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 3px;
     }
 
-    .proj-tech-tag.integration {
-      color: #0284c7;
-      background: #f0f9ff;
-      border-color: #bae6fd;
-    }
-
-    /* Print Break Utilities */
-    .page-break-after {
-      page-break-after: always;
-      break-after: page;
-    }
-
-    .avoid-break {
-      page-break-inside: avoid;
-      break-inside: avoid;
-    }
-
-    /* ================= PRINT STYLES ================= */
+    /* Print Rules */
     @page {
       size: A4 portrait;
-      margin: 8mm 8mm 8mm 8mm;
+      margin: 8mm;
     }
 
     @media print {
@@ -620,223 +656,73 @@
         background: transparent !important;
         padding: 0 !important;
         margin: 0 !important;
-        font-size: 12px !important;
+        font-size: 11.5px !important;
       }
 
-      .screen-toolbar {
+      .screen-toolbar,
+      .cert-modal-backdrop,
+      .btn-cert-mini {
         display: none !important;
       }
 
       .cv-container {
         width: 100% !important;
-        max-width: 100% !important;
-        box-shadow: none !important;
+        border: none !important;
         border-radius: 0 !important;
-        grid-template-columns: 270px 1fr !important;
+        grid-template-columns: 260px 1fr !important;
       }
 
       .cv-sidebar {
-        padding: 22px 18px !important;
-        gap: 18px !important;
+        padding: 20px 16px !important;
+        gap: 16px !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
 
       .cv-main {
-        padding: 22px 24px !important;
-        gap: 18px !important;
+        padding: 20px 20px !important;
+        gap: 16px !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
       }
 
-      .avatar-wrapper {
-        width: 90px !important;
-        height: 90px !important;
-        margin-bottom: 12px !important;
-      }
-
-      .avatar-inner {
-        font-size: 30px !important;
-      }
-
-      .name {
-        font-size: 19px !important;
-      }
-
-      .main-section-title {
-        font-size: 13.5px !important;
-      }
-
-      .project-card {
-        padding: 9px 12px !important;
-        margin-bottom: 0 !important;
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-        box-shadow: none !important;
-      }
-
-      .timeline-item {
+      .project-card, .timeline-item {
         break-inside: avoid !important;
         page-break-inside: avoid !important;
       }
 
-      a {
-        text-decoration: none !important;
-        color: inherit !important;
-      }
-
-      #loadingOverlay,
-      #dataSourceIndicator {
-        display: none !important;
-      }
+      a { text-decoration: none !important; color: inherit !important; }
     }
 
-    /* Responsive for small screens / tablets */
-    @media screen and (max-width: 820px) {
-      body {
-        padding: 10px;
-      }
-      .screen-toolbar {
-        top: 10px;
-        right: 10px;
-      }
-      .cv-container {
-        grid-template-columns: 1fr;
-      }
-      .cv-sidebar {
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 25px 20px;
-      }
-      .cv-main {
-        padding: 25px 20px;
-      }
-    }
-
-    /* ================= LOADING OVERLAY ================= */
-    #loadingOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.75);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      gap: 16px;
-      backdrop-filter: blur(4px);
-      transition: opacity 0.3s ease;
-    }
-
-    #loadingOverlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .spinner {
-      width: 44px;
-      height: 44px;
-      border: 4px solid rgba(14, 165, 233, 0.2);
-      border-top-color: #0ea5e9;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      color: #e2e8f0;
-      font-size: 14px;
-      font-weight: 500;
-      font-family: var(--font-sans);
-    }
-
-    /* ================= ERROR BANNER ================= */
-    #errorBanner {
-      display: none;
-      position: fixed;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fef2f2;
-      border: 1px solid #fca5a5;
-      color: #b91c1c;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      z-index: 9998;
-      box-shadow: 0 4px 12px rgba(185, 28, 28, 0.15);
-    }
-
-    /* ================= DATA SOURCE INDICATOR ================= */
-    #dataSourceIndicator {
-      position: fixed;
-      bottom: 14px;
-      right: 18px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #94a3b8;
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      padding: 5px 10px;
-      border-radius: 20px;
-      z-index: 500;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      font-family: var(--font-sans);
-    }
-
-    #dataSourceIndicator.visible {
-      opacity: 1;
+    @media screen and (max-width: 768px) {
+      body { padding: 10px; }
+      .cv-container { grid-template-columns: 1fr; }
+      .cv-sidebar { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .screen-toolbar { top: 8px; right: 8px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay">
-    <div class="spinner"></div>
-    <div class="loading-text">Đang tải dữ liệu CV…</div>
-  </div>
-
-  <!-- Error Banner -->
-  <div id="errorBanner">
-    <i class="fa-solid fa-triangle-exclamation"></i>
-    Không thể tải dữ liệu CV. Hiển thị thông tin mặc định.
-  </div>
-
-  <!-- Data Source Indicator -->
-  <div id="dataSourceIndicator"></div>
-
-  <!-- Floating Action Buttons for quick Print/Download -->
+  <!-- Floating Print Control -->
   <div class="screen-toolbar">
     <button onclick="window.print()" class="btn-action btn-accent">
-      <i class="fa-solid fa-print"></i> In / Lưu PDF (A4)
+      <i class="fa-solid fa-print"></i> In / Xuất PDF (A4)
     </button>
   </div>
 
   <div class="cv-container">
     
-    <!-- ==================== LEFT COLUMN (SIDEBAR) ==================== -->
+    <!-- LEFT COLUMN -->
     <aside class="cv-sidebar">
-      
-      <!-- Profile Header -->
       <div class="profile-card">
-        <div class="avatar-wrapper">
-          <div class="avatar-inner" id="avatarInitials">VH</div>
-        </div>
-        <h1 class="name" id="profileName">Võ Nguyễn Hào</h1>
-        <div class="title-badge" id="profileTitle">BOD Sales Assistant</div>
-        <div style="font-size: 11.5px; color: #94a3b8; margin-top: 6px; font-weight: 500;" id="profileSubTitle">
-          IT Pre-Sales &amp; Enterprise Solution Consultant
-        </div>
+        <div class="avatar-wrapper" id="sidebarAvatar">VH</div>
+        <h1 class="name" id="cvName">VÕ NGUYỄN HÀO</h1>
+        <div class="title-badge" id="cvTitle">BOD Sales Assistant</div>
+        <div class="subtitle" id="cvSubtitle">IT Pre-Sales & Enterprise Solution Consultant</div>
       </div>
 
-      <!-- Contact Info -->
-      <div class="sidebar-block">
+      <div>
         <div class="sidebar-section-title">
           <i class="fa-solid fa-address-card"></i> Thông tin liên hệ
         </div>
@@ -845,403 +731,310 @@
             <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
             <div class="contact-text">
               <span class="contact-label">Khu vực</span>
-              <span id="contactLocation">Tân Bình, TP. Hồ Chí Minh</span>
+              <span id="cvLocation">Tân Bình, TP.HCM</span>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
             <div class="contact-text">
               <span class="contact-label">Điện thoại</span>
-              <a id="contactPhone" href="tel:0377116163">0377 116 163</a>
+              <a href="tel:0377116163" id="cvPhone">0377 116 163</a>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
             <div class="contact-text">
               <span class="contact-label">Email</span>
-              <a id="contactEmail" href="mailto:vonguyenhao08@gmail.com">vonguyenhao08@gmail.com</a>
+              <a href="mailto:vonguyenhao08@gmail.com" id="cvEmail">vonguyenhao08@gmail.com</a>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon"><i class="fa-brands fa-linkedin-in"></i></div>
             <div class="contact-text">
               <span class="contact-label">LinkedIn</span>
-              <a id="contactLinkedin" href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank">hao-nguyen-986a171a9</a>
+              <a href="https://linkedin.com/in/hao-nguyen-986a171a9/" target="_blank" id="cvLinkedin">hao-nguyen-986a171a9</a>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Education & Certification -->
-      <div class="sidebar-block">
+      <div>
         <div class="sidebar-section-title">
-          <i class="fa-solid fa-graduation-cap"></i> Học vấn &amp; Chứng chỉ
+          <i class="fa-solid fa-graduation-cap"></i> Học vấn & Chứng chỉ
         </div>
-        
         <div class="edu-item">
-          <div class="edu-degree" id="eduDegree">Cử nhân Công nghệ Phần mềm</div>
-          <div class="edu-school" id="eduSchool">Trường Đại học Quy Nhơn</div>
+          <div class="edu-degree" id="cvEduDegree">Cử nhân Công nghệ phần mềm</div>
+          <div class="edu-school" id="cvEduSchool">Đại học Quy Nhơn</div>
         </div>
-
-        <div class="edu-item" style="border-left-color: #10b981;">
-          <div class="edu-degree">Chứng nhận &amp; Ngôn ngữ</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
-            <span class="edu-cert-tag">
-              <i class="fa-solid fa-shield-halved"></i> ISO 27001:2022
-            </span>
-            <span class="edu-cert-tag" id="englishCert" style="background: rgba(14, 165, 233, 0.15); border-color: rgba(14, 165, 233, 0.3); color: #38bdf8;">
-              <i class="fa-solid fa-language"></i> Tiếng Anh B1
-            </span>
-          </div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;">
+          <button type="button" class="badge-iso" onclick="openCertModal()" title="Nhấn để xem chứng nhận ISO/IEC 27001:2022">
+            <i class="fa-solid fa-shield-halved"></i> ISO 27001:2022 <i class="fa-solid fa-eye" style="font-size: 9px; margin-left: 2px;"></i>
+          </button>
+          <span class="badge-eng" id="cvEngBadge">
+            <i class="fa-solid fa-language"></i> <span id="cvEng">Tiếng Anh B1</span>
+          </span>
         </div>
       </div>
 
-      <!-- Key Competencies -->
-      <div class="sidebar-block">
-        <div class="sidebar-section-title">
-          <i class="fa-solid fa-layer-group"></i> Năng lực chuyên môn
+      <div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 12px;">
+        <div style="font-size: 11px; font-weight: 700; color: var(--accent-light); margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <i class="fa-solid fa-shield-check"></i> Trách nhiệm Project Manager
         </div>
-        <div class="skills-group">
-          <div>
-            <div class="skill-cat-name">Tư vấn &amp; Kinh doanh giải pháp</div>
-            <div class="pill-cloud">
-              <span class="skill-pill highlight">BOD Sales Assistant</span>
-              <span class="skill-pill highlight">IT Pre-Sales</span>
-              <span class="skill-pill">Enterprise ERP</span>
-              <span class="skill-pill">e-Procurement</span>
-              <span class="skill-pill">Giải pháp WMS &amp; POSM</span>
-            </div>
-          </div>
-
-          <div>
-            <div class="skill-cat-name">Hệ thống &amp; Tích hợp (Integrations)</div>
-            <div class="pill-cloud">
-              <span class="skill-pill">Open API Integration</span>
-              <span class="skill-pill">SAML 2.0 / SSO</span>
-              <span class="skill-pill">Bank APIs &amp; VietQR</span>
-              <span class="skill-pill">Hóa đơn S-Invoice</span>
-              <span class="skill-pill">Galaxy DMS / iPOS</span>
-              <span class="skill-pill">Arito eKYC &amp; Biometrics</span>
-            </div>
-          </div>
-
-          <div>
-            <div class="skill-cat-name">Quản trị &amp; Tiêu chuẩn</div>
-            <div class="pill-cloud">
-              <span class="skill-pill badge-iso">Project Management (ISO)</span>
-              <span class="skill-pill">ISO/IEC 27001:2022</span>
-              <span class="skill-pill">Chuẩn kế toán TT99</span>
-              <span class="skill-pill">Quản lý rủi ro ISMS</span>
-            </div>
-          </div>
+        <div style="font-size: 11.5px; color: #cbd5e1; line-height: 1.5;" id="cvPmRole">
+          Project Manager dẫn dắt dự án toàn diện đạt chứng nhận an toàn thông tin ISO 27001:2022.
+        </div>
+        <div style="margin-top: 8px;">
+          <button type="button" class="btn-cert-mini" onclick="openCertModal()">
+            <i class="fa-solid fa-file-shield"></i> Xem chứng chỉ KNA
+          </button>
         </div>
       </div>
-
-      <!-- Value Proposition / Core Value -->
-      <div class="strength-card">
-        <div style="font-weight: 700; color: #ffffff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-          <i class="fa-solid fa-bullseye" style="color: #38bdf8;"></i> Định vị giá trị
-        </div>
-        Cầu nối chiến lược giữa <strong>Nghiệp vụ Doanh nghiệp (Business)</strong> và <strong>Kiến trúc Công nghệ (Technology)</strong>, tối ưu hóa quy trình phê duyệt Ban Giám đốc và dẫn dắt giải pháp B2B chuyển đổi số quy mô lớn.
-      </div>
-
     </aside>
 
-    <!-- ==================== RIGHT COLUMN (MAIN CONTENT) ==================== -->
+    <!-- RIGHT COLUMN -->
     <main class="cv-main">
-      
-      <!-- Section: Executive Summary -->
       <section>
-        <div class="main-section-header">
-          <h2 class="main-section-title">
-            <i class="fa-solid fa-user-tie"></i> Hồ sơ chuyên môn
-          </h2>
+        <h2 class="main-section-title">
+          <i class="fa-solid fa-user-tie"></i> Hồ sơ chuyên môn
+        </h2>
+        <div class="summary-box">
+          Chuyên gia tư vấn giải pháp CNTT doanh nghiệp kiêm Trợ lý Kinh doanh Ban Giám đốc tại <strong>Arito Solutions</strong>. Nền tảng chuyên môn Công nghệ phần mềm kết hợp kỹ năng phân tích nghiệp vụ thực chiến (F&B, Thủy sản, FMCG, Bán buôn & Phân phối). Năng lực chuyên sâu về tư vấn Pre-Sales, thiết kế kiến trúc tích hợp hệ sinh thái ERP, e-Procurement, WMS, eKYC và dẫn dắt chuẩn hóa an toàn thông tin theo chuẩn quốc tế <strong>ISO 27001:2022</strong>.
         </div>
-        <p class="summary-text" id="summaryText">
-          Chuyên gia tư vấn giải pháp CNTT doanh nghiệp (<strong>Enterprise Solution Consultant</strong>) kiêm <strong>Trợ lý Kinh doanh Ban Giám đốc (BOD Sales Assistant)</strong> tại <strong>Arito Solutions</strong>. Sở hữu nền tảng Cử nhân Công nghệ Phần mềm kết hợp kinh nghiệm thực chiến đa ngành (F&amp;B, Thủy sản, FMCG, Bán buôn &amp; Phân phối). Năng lực chuyên sâu về tư vấn Pre-Sales, thiết kế kiến trúc tích hợp hệ sinh thái ERP, e-Procurement, WMS, eKYC và dẫn dắt chuẩn hóa an toàn thông tin theo chuẩn quốc tế <strong>ISO 27001:2022</strong>.
-        </p>
       </section>
 
-      <!-- Section: Work Experience -->
       <section>
-        <div class="main-section-header">
-          <h2 class="main-section-title">
-            <i class="fa-solid fa-briefcase"></i> Quá trình công tác
-          </h2>
-        </div>
-
+        <h2 class="main-section-title">
+          <i class="fa-solid fa-briefcase"></i> Quá trình công tác
+        </h2>
         <div class="timeline">
-          
-          <!-- Role 1: BOD Sales Assistant -->
           <div class="timeline-item current">
-            <div class="timeline-dot"></div>
             <div class="exp-header">
-              <span class="exp-role" id="role1Title">Trợ lý Kinh doanh Ban Giám đốc (BOD Sales Assistant)</span>
-              <span class="exp-period current-tag">01/07/2026 – Hiện tại</span>
+              <span class="exp-role">Trợ lý Kinh doanh Ban Giám đốc (BOD Sales Assistant)</span>
+              <span class="exp-period current">01/07/2026: Hiện tại</span>
             </div>
-            <div class="exp-company">
-              <i class="fa-solid fa-building"></i> Công ty Cổ phần Giải pháp Công nghệ Arito (Arito Solutions)
-            </div>
-            <ul class="exp-responsibilities">
-              <li>Trực tiếp tham mưu và hỗ trợ Ban Giám đốc trong công tác định hướng kinh doanh, đánh giá cơ hội thị trường và xây dựng chiến lược tiếp cận các khách hàng doanh nghiệp lớn (Enterprise Accounts).</li>
-              <li>Chủ trì phối hợp giữa khối Kinh doanh (BD/Sales) và khối Kỹ thuật/Triển khai để thẩm định tính khả thi, kiến trúc hệ thống và giải pháp tổng thể trước khi trình phê duyệt cấp cao.</li>
-              <li>Đại diện doanh nghiệp làm việc trực tiếp cùng C-Level, Ban điều hành của khách hàng trong các phiên trình bày giải pháp chuyển đổi số phức hợp.</li>
+            <div class="exp-company">Công ty Cổ phần Giải pháp Công nghệ Arito</div>
+            <ul class="exp-list">
+              <li>Trực tiếp tham mưu Ban Giám đốc về chiến lược kinh doanh B2B và định hướng tiếp cận khách hàng lớn (Enterprise Accounts).</li>
+              <li>Chủ trì phối hợp giữa khối Kinh doanh (BD/Sales) và khối Kỹ thuật/Triển khai để thẩm định tính khả thi kiến trúc giải pháp trước khi trình phê duyệt cấp cao.</li>
+              <li>Đại diện doanh nghiệp làm việc trực tiếp cùng C-Level của khách hàng trong các phiên trình bày giải pháp chuyển đổi số phức hợp.</li>
             </ul>
           </div>
 
-          <!-- Role 2: BD Executive & Assistant to Deputy CEO -->
           <div class="timeline-item">
-            <div class="timeline-dot"></div>
             <div class="exp-header">
-              <span class="exp-role">BD Executive &amp; Assistant to Deputy CEO</span>
-              <span class="exp-period">02/2025 – 06/2026</span>
+              <span class="exp-role">BD Executive & Assistant to Deputy CEO</span>
+              <span class="exp-period">02/2025: 06/2026</span>
             </div>
-            <div class="exp-company">
-              <i class="fa-solid fa-building"></i> Công ty Cổ phần Giải pháp Công nghệ Arito (Arito Solutions)
-            </div>
-            <ul class="exp-responsibilities">
-              <li>Đồng hành cùng Phó Tổng Giám đốc trong phát triển kinh doanh dịch vụ CNTT, khảo sát nhu cầu nghiệp vụ và xây dựng hồ sơ thầu, đề xuất giải pháp kỹ thuật (RFP/RFI/Proposal).</li>
-              <li>Tư vấn giải pháp Pre-Sales hệ thống ERP, e-Procurement, WMS và ký số cho các tập đoàn đa quốc gia và tổng công ty trong nước.</li>
-              <li>Quản lý tiến độ dự án chiến lược nội bộ, tối ưu quy trình phối hợp liên phòng ban và hỗ trợ mở rộng mạng lưới đối tác công nghệ ngân hàng &amp; thanh toán.</li>
+            <div class="exp-company">Công ty Cổ phần Giải pháp Công nghệ Arito</div>
+            <ul class="exp-list">
+              <li>Đồng hành cùng Phó Tổng Giám đốc trong phát triển kinh doanh dịch vụ CNTT, khảo sát nhu cầu nghiệp vụ và xây dựng hồ sơ thầu, đề xuất giải pháp (RFP/Proposal).</li>
+              <li>Tư vấn Pre-Sales giải pháp hệ thống ERP, e-Procurement, WMS và ký số cho các tập đoàn đa quốc gia và tổng công ty trong nước.</li>
+              <li>Điều phối tiến độ dự án nội bộ, tối ưu quy trình phối hợp liên phòng ban và hỗ trợ mở rộng kết nối đối tác công nghệ ngân hàng.</li>
             </ul>
           </div>
-
-          <!-- Role 3: ISO Project Manager -->
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <div class="exp-header">
-              <span class="exp-role" id="pmRoleTitle">Project Manager – Dự án Chứng nhận ISO 27001:2022</span>
-              <span class="exp-period">Arito Solutions</span>
-            </div>
-            <div class="exp-company">
-              <i class="fa-solid fa-shield-virus"></i> Hệ thống Quản lý An toàn Thông tin (ISMS)
-            </div>
-            <ul class="exp-responsibilities">
-              <li>Đóng vai trò Project Manager dẫn dắt toàn diện dự án triển khai và áp dụng hệ thống bảo mật thông tin chuẩn quốc tế <strong>ISO/IEC 27001:2022</strong> cho toàn công ty.</li>
-              <li>Chủ trì thiết lập chính sách bảo mật, đánh giá rủi ro an toàn thông tin trên toàn bộ quy trình phát triển phần mềm, hạ tầng máy chủ và vận hành dịch vụ khách hàng.</li>
-              <li>Điều phối các đợt đánh giá nội bộ và làm việc trực tiếp với tổ chức chứng nhận độc lập, đưa Arito Solutions chính thức đạt chứng nhận ISO 27001:2022 đúng lộ trình.</li>
-            </ul>
-          </div>
-
         </div>
       </section>
 
-      <!-- Section: Key Projects -->
       <section>
-        <div class="main-section-header">
-          <h2 class="main-section-title">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+          <h2 class="main-section-title" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">
             <i class="fa-solid fa-diagram-project"></i> Danh mục Dự án Trọng điểm
           </h2>
-          <span class="section-counter" id="projectCounter">8 Dự án Enterprise</span>
+          <span style="font-size: 11px; font-weight: 700; color: var(--accent-blue); background: #f0f9ff; border: 1px solid #bae6fd; padding: 2px 7px; border-radius: 4px;" id="cvProjCount">
+            8 Dự án Enterprise
+          </span>
         </div>
-
-        <div class="projects-grid" id="projectsGrid">
-          <!-- Project cards will be rendered dynamically -->
+        <div class="projects-container" id="cvProjectsContainer">
+          <!-- Rendered dynamically -->
         </div>
       </section>
-
     </main>
 
   </div>
 
-  <!-- cv-loader.js: must be loaded BEFORE the render script below -->
+  <!-- CERTIFICATE MODAL -->
+  <div class="cert-modal-backdrop" id="certModal" role="dialog" aria-modal="true" aria-labelledby="cvCertModalTitle" onclick="handleBackdropClick(event)">
+    <div class="cert-modal-box">
+      <div class="cert-modal-header">
+        <div class="cert-modal-title-wrap">
+          <i class="fa-solid fa-shield-halved"></i>
+          <div>
+            <h3 class="cert-modal-title" id="cvCertModalTitle">Chứng nhận ISO/IEC 27001:2022</h3>
+            <p class="cert-modal-sub">KNA Certification Co., Ltd · Mã chứng nhận: KAT259070013</p>
+          </div>
+        </div>
+        <div class="cert-modal-actions">
+          <a href="iso-27001-certificate.pdf" target="_blank" class="btn-modal-tool" title="Mở file PDF trong tab mới">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Mở PDF
+          </a>
+          <a href="iso-27001-certificate.pdf" download="Vo_Nguyen_Hao_Chung_Nhan_ISO_27001.pdf" class="btn-modal-tool" title="Tải file PDF chứng nhận về máy">
+            <i class="fa-solid fa-download"></i> Tải về
+          </a>
+          <button type="button" class="btn-modal-close" onclick="closeCertModal()" aria-label="Đóng (Esc)">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="cert-modal-body">
+        <a href="iso-27001-certificate.pdf" target="_blank" title="Nhấn để mở file PDF đầy đủ">
+          <img src="iso-27001-certificate.jpg" alt="Chứng nhận ISO/IEC 27001:2022 - Võ Nguyên Hào" class="cert-preview-img">
+        </a>
+        <div class="cert-meta-card">
+          <div class="cert-meta-item">
+            <strong>Học viên & Đơn vị</strong>
+            <span>Võ Nguyên Hào · Công ty Cổ phần Giải pháp Công nghệ Arito</span>
+          </div>
+          <div class="cert-meta-item">
+            <strong>Nội dung chứng nhận</strong>
+            <span>Nhận thức chung & Đánh giá viên nội bộ Tiêu chuẩn ISO/IEC 27001:2022</span>
+          </div>
+          <div class="cert-meta-item">
+            <strong>Đơn vị cấp</strong>
+            <span>KNA Certification Co., Ltd (Giám đốc: Phạm Minh Luân)</span>
+          </div>
+          <div class="cert-meta-item">
+            <strong>Mã số & Thời gian</strong>
+            <span>KAT259070013 · 28/11/2025 & 03/07/2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT ENGINE -->
   <script src="cv-loader.js"></script>
 
   <script>
-    // ============================================================
-    // Project category mapping (by id 1–8)
-    // ============================================================
-    const PROJECT_CATEGORIES = {
-      '1': 'F&B Retail ERP',
-      '2': 'POSM Warehouse',
-      '3': 'e-Procurement',
-      '4': 'Large Distribution ERP',
-      '5': 'Smart Factory & eKYC',
-      '6': 'Financial Compliance',
-      '7': 'Global Pre-Sales',
-      '8': 'FMCG Supplier Portal',
-    };
+    function openCertModal() {
+      const modal = document.getElementById('certModal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
 
-    // Featured project IDs (left border highlight)
-    const FEATURED_IDS = new Set(['1', '3', '4']);
+    function closeCertModal() {
+      const modal = document.getElementById('certModal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
 
-    // ============================================================
-    // Helpers
-    // ============================================================
-    function el(id) { return document.getElementById(id); }
-
-    function getInitials(name) {
-      if (!name) return 'VH';
-      const parts = name.trim().split(/\s+/);
-      if (parts.length >= 2) {
-        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    function handleBackdropClick(e) {
+      if (e.target.id === 'certModal') {
+        closeCertModal();
       }
-      return name.slice(0, 2).toUpperCase();
     }
 
-    function parseEducation(eduStr) {
-      // "Cử nhân Công nghệ Phần mềm - Đại học Quy Nhơn" → degree + school
-      const dashIdx = eduStr.indexOf(' - ');
-      if (dashIdx !== -1) {
-        return {
-          degree: eduStr.slice(0, dashIdx).trim(),
-          school: eduStr.slice(dashIdx + 3).trim(),
-        };
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeCertModal();
       }
-      return { degree: eduStr, school: '' };
+    });
+    const PROJECT_DOMAINS = [
+      'F&B Retail ERP',
+      'POSM Warehouse',
+      'e-Procurement',
+      'Large Distribution ERP',
+      'Smart Factory & eKYC',
+      'Financial Compliance',
+      'International Pre-Sales',
+      'FMCG Supplier Portal'
+    ];
+
+    function esc(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function buildProjectCard(project) {
-      const num = String(project.id).padStart(2, '0');
-      const category = PROJECT_CATEGORIES[project.id] || '';
-      const isFeatured = FEATURED_IDS.has(String(project.id));
-      const cardClass = 'project-card' + (isFeatured ? ' featured' : '');
-
-      const tagsHtml = project.tags.length > 0
-        ? project.tags.map(t => `<span class="proj-tech-tag integration">${escHtml(t)}</span>`).join('')
-        : '';
-
-      return `
-        <div class="${cardClass}">
-          <div class="proj-top">
-            <div class="proj-title">
-              <span class="proj-num">${num}</span>
-              <span>${escHtml(project.client)}</span>
-            </div>
-            ${category ? `<span class="proj-category">${escHtml(category)}</span>` : ''}
-          </div>
-          <p class="proj-desc">${escHtml(project.description)}</p>
-          ${tagsHtml ? `<div class="proj-tags">${tagsHtml}</div>` : ''}
-        </div>`;
-    }
-
-    function escHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    // ============================================================
-    // Render CV data into placeholders
-    // ============================================================
-    function renderCvData(data) {
+    function renderCv(data) {
       if (!data) return;
-
-      const p = data.profile;
-
-      // Avatar initials
-      el('avatarInitials').textContent = getInitials(p.name);
-
-      // Profile header
-      if (p.name)     el('profileName').textContent = p.name.toUpperCase();
-      if (p.title)    el('profileTitle').textContent = p.title;
-      if (p.subTitle) el('profileSubTitle').textContent = p.subTitle;
-
-      // Contact
-      if (p.contact.location) el('contactLocation').textContent = p.contact.location;
-      if (p.contact.phone) {
-        const phoneEl = el('contactPhone');
-        const cleaned = p.contact.phone.replace(/\s+/g, '');
-        phoneEl.textContent = p.contact.phone;
-        phoneEl.href = 'tel:' + cleaned;
+      const p = data.profile || {};
+      if (p.name) {
+        document.getElementById('cvName').textContent = p.name;
+        const initials = p.initials || p.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+        const avEl = document.getElementById('sidebarAvatar');
+        if (avEl) {
+          if (p.avatar) {
+            avEl.innerHTML = `<img src="${esc(p.avatar)}" alt="${esc(p.name)}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.parentElement.textContent='${esc(initials)}';">`;
+          } else {
+            avEl.textContent = initials;
+          }
+        }
       }
-      if (p.contact.email) {
-        const emailEl = el('contactEmail');
-        emailEl.textContent = p.contact.email;
-        emailEl.href = 'mailto:' + p.contact.email;
-      }
-      if (p.contact.linkedin) {
-        const liEl = el('contactLinkedin');
-        const handle = p.contact.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, '');
-        liEl.textContent = handle || p.contact.linkedin;
-        liEl.href = p.contact.linkedin.startsWith('http')
-          ? p.contact.linkedin
-          : 'https://linkedin.com/in/' + p.contact.linkedin;
+      if (p.title) document.getElementById('cvTitle').textContent = p.title;
+      if (p.subTitle) document.getElementById('cvSubtitle').textContent = p.subTitle;
+
+      if (p.contact) {
+        if (p.contact.location) document.getElementById('cvLocation').textContent = p.contact.location;
+        if (p.contact.phone) {
+          document.getElementById('cvPhone').textContent = p.contact.phone;
+          document.getElementById('cvPhone').href = 'tel:' + p.contact.phone.replace(/\s+/g, '');
+        }
+        if (p.contact.email) {
+          document.getElementById('cvEmail').textContent = p.contact.email;
+          document.getElementById('cvEmail').href = 'mailto:' + p.contact.email;
+        }
+        if (p.contact.linkedin) {
+          const clean = p.contact.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//i, '').replace(/\/$/, '');
+          document.getElementById('cvLinkedin').textContent = clean;
+          document.getElementById('cvLinkedin').href = p.contact.linkedin.startsWith('http') ? p.contact.linkedin : 'https://' + p.contact.linkedin;
+        }
       }
 
-      // Education
       if (p.education) {
-        const edu = parseEducation(p.education);
-        el('eduDegree').textContent = edu.degree;
-        if (edu.school) el('eduSchool').textContent = edu.school;
+        if (typeof p.education === 'object') {
+          if (p.education.degree) document.getElementById('cvEduDegree').textContent = p.education.degree;
+          if (p.education.school) document.getElementById('cvEduSchool').textContent = p.education.school;
+          if (p.education.english) document.getElementById('cvEng').textContent = p.education.english;
+        } else {
+          const parts = p.education.split(':').map(s => s.trim());
+          document.getElementById('cvEduDegree').textContent = parts[0] || p.education;
+          if (parts[1]) document.getElementById('cvEduSchool').textContent = parts[1];
+        }
       }
-
-      // English cert badge
       if (p.english) {
-        const certEl = el('englishCert');
-        certEl.innerHTML = `<i class="fa-solid fa-language"></i> ${escHtml(p.english)}`;
+        document.getElementById('cvEng').textContent = p.english;
       }
+      if (p.pmRole) document.getElementById('cvPmRole').textContent = p.pmRole;
 
-      // Current role (timeline Role 1 title)
-      if (p.currentRole) el('role1Title').textContent = p.currentRole;
-
-      // PM role (timeline Role 3 title)
-      if (p.pmRole) el('pmRoleTitle').textContent = p.pmRole;
-
-      // Projects grid
-      if (data.projects && data.projects.length > 0) {
-        el('projectCounter').textContent = data.projects.length + ' Dự án Enterprise';
-        el('projectsGrid').innerHTML = data.projects.map(buildProjectCard).join('');
+      if (data.projects && data.projects.length) {
+        document.getElementById('cvProjCount').textContent = `${data.projects.length} Dự án Enterprise`;
+        const container = document.getElementById('cvProjectsContainer');
+        container.innerHTML = data.projects.map((proj, idx) => {
+          const isFeatured = proj.featured ?? (idx === 0 || idx === 2 || idx === 3);
+          const domain = proj.domain || PROJECT_DOMAINS[idx] || 'Enterprise System';
+          return `
+            <div class="project-card ${isFeatured ? 'featured' : ''}">
+              <div class="proj-top">
+                <div class="proj-title">
+                  <span class="proj-num">${String(idx + 1).padStart(2, '0')}</span>
+                  ${proj.logo ? `<img src="${esc(proj.logo)}" alt="${esc(proj.client)}" style="height: 16px; object-fit: contain; margin-right: 4px;">` : ''}
+                  <span>${esc(proj.client)}</span>
+                </div>
+                <span class="proj-cat">${esc(domain)}</span>
+              </div>
+              <p class="proj-desc">${esc(proj.description)}</p>
+              ${proj.tags && proj.tags.length ? `
+                <div class="proj-tags">
+                  ${proj.tags.map(t => `<span class="tech-tag">${esc(t)}</span>`).join('')}
+                </div>` : ''}
+            </div>
+          `;
+        }).join('');
       }
     }
 
-    // ============================================================
-    // Data source indicator
-    // ============================================================
-    function showIndicator(source, time) {
-      const ind = el('dataSourceIndicator');
-      if (source === 'github' || source === 'github-raw') {
-        ind.textContent = '⚡ Live · Dữ liệu từ GitHub · ' + (time || '');
-        ind.style.color = '#34d399';
-      } else {
-        ind.textContent = '📄 File local · ' + (time || '');
-        ind.style.color = '#94a3b8';
-      }
-      ind.classList.add('visible');
-    }
-
-    // ============================================================
-    // Hide / show loading overlay
-    // ============================================================
-    function hideLoading() {
-      const overlay = el('loadingOverlay');
-      overlay.classList.add('hidden');
-      setTimeout(() => { overlay.style.display = 'none'; }, 350);
-    }
-
-    function showError() {
-      const banner = el('errorBanner');
-      banner.style.display = 'block';
-      setTimeout(() => { banner.style.display = 'none'; }, 6000);
-    }
-
-    // ============================================================
-    // Main entry point
-    // ============================================================
     (async function init() {
       try {
-        const result = await loadCvData();
-        if (result && result.markdown) {
-          const cvData = parseCvMarkdown(result.markdown);
-          if (cvData) {
-            renderCvData(cvData);
-            showIndicator(result.source, result.lastUpdated);
-          } else {
-            showError();
-          }
-        } else {
-          showError();
+        const res = await loadCvData();
+        if (res && res.data) {
+          renderCv(res.data);
+        } else if (res && res.markdown) {
+          const parsed = parseCvMarkdown(res.markdown);
+          if (parsed) renderCv(parsed);
         }
       } catch (err) {
-        console.error('Lỗi khởi tạo CV:', err);
-        showError();
-      } finally {
-        hideLoading();
+        console.error('Lỗi tải dữ liệu CV:', err);
       }
     })();
   </script>
-
 </body>
 </html>
