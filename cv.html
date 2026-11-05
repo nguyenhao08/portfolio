@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Võ Nguyễn Hào | Curriculum Vitae</title>
+  <title>Võ Nguyên Hào | Curriculum Vitae</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -717,7 +717,7 @@
     <aside class="cv-sidebar">
       <div class="profile-card">
         <div class="avatar-wrapper" id="sidebarAvatar">VH</div>
-        <h1 class="name" id="cvName">VÕ NGUYỄN HÀO</h1>
+        <h1 class="name" id="cvName">VÕ NGUYÊN HÀO</h1>
         <div class="title-badge" id="cvTitle">BOD Sales Assistant</div>
         <div class="subtitle" id="cvSubtitle">IT Pre-Sales & Enterprise Solution Consultant</div>
       </div>
@@ -1021,6 +1021,15 @@
         }).join('');
       }
     }
+
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'cv_data_live' && e.newValue) {
+        try {
+          const updated = JSON.parse(e.newValue);
+          renderCv(updated);
+        } catch(err) {}
+      }
+    });
 
     (async function init() {
       try {

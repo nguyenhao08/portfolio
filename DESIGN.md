@@ -1,4 +1,4 @@
-# Design Direction — Portfolio & CV: Võ Nguyễn Hào
+# Design Direction — Portfolio & CV: Võ Nguyên Hào
 
 ## 1. Identity & Character
 - **Role:** BOD Sales Assistant | IT Pre-Sales & Enterprise Solution Consultant.

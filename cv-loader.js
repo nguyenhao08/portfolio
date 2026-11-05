@@ -1,9 +1,15 @@
 /**
  * cv-loader.js — Quản lý tải dữ liệu động từ cv_data.json (và fallback cv_data.md)
- * Hỗ trợ GitHub API, GitHub Raw, và Local File với cơ chế chống cache (cache-busting).
+ * Hỗ trợ:
+ * 0. Dữ liệu Live trực tiếp từ trang Admin (localStorage: cv_data_live)
+ * 1. GitHub Contents API (khi có token)
+ * 2. GitHub Raw User Content (công khai)
+ * 3. File local cv_data.json
+ * 4. File local cv_data.md (tương thích ngược)
  */
 
 const CV_CONFIG_KEY = 'cvAdminConfig';
+const CV_LIVE_KEY = 'cv_data_live';
 
 function getStoredCvConfig() {
   try {
@@ -14,11 +20,34 @@ function getStoredCvConfig() {
 }
 
 /**
- * Tải dữ liệu CV (Ưu tiên cv_data.json, fallback sang cv_data.md)
+ * Tải dữ liệu CV
  */
 async function loadCvData() {
-  const cfg = getStoredCvConfig();
   const timestamp = Date.now();
+
+  // 0. Ưu tiên dữ liệu Live từ trang Admin (nếu người dùng vừa chỉnh sửa/upload ảnh trong trình duyệt)
+  try {
+    let liveDraft = localStorage.getItem(CV_LIVE_KEY);
+    if (liveDraft) {
+      if (liveDraft.includes('Võ Nguyễn Hào')) {
+        liveDraft = liveDraft.replace(/Võ Nguyễn Hào/g, 'Võ Nguyên Hào');
+        try { localStorage.setItem(CV_LIVE_KEY, liveDraft); } catch (_) {}
+      }
+      const parsed = JSON.parse(liveDraft);
+      if (parsed && (parsed.profile || parsed.projects)) {
+        return {
+          data: parsed,
+          markdown: JSON.stringify(parsed, null, 2),
+          source: 'local-live',
+          lastUpdated: 'Admin Live'
+        };
+      }
+    }
+  } catch (e) {
+    console.warn('Không đọc được cv_data_live:', e);
+  }
+
+  const cfg = getStoredCvConfig();
   const targetPath = cfg.path || 'cv_data.json';
 
   // 1. Thử lấy từ GitHub API nếu đã cấu hình
@@ -37,7 +66,6 @@ async function loadCvData() {
         const content = decodeURIComponent(escape(atob(fileInfo.content.replace(/\n/g, ''))));
         const now = new Date().toLocaleTimeString('vi-VN');
         
-        // Thử parse JSON
         if (targetPath.endsWith('.json') || content.trim().startsWith('{')) {
           try {
             const json = JSON.parse(content);
@@ -101,7 +129,7 @@ async function loadCvData() {
 }
 
 /**
- * Phân tích cú pháp cv_data.md (giữ lại để tương thích ngược nếu người dùng vẫn dùng file .md)
+ * Phân tích cú pháp cv_data.md (giữ lại để tương thích ngược)
  */
 function parseCvMarkdown(md) {
   if (!md) return null;

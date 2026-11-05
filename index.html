@@ -1009,6 +1009,15 @@
       }
     })();
 
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'cv_data_live' && e.newValue) {
+        try {
+          const updated = JSON.parse(e.newValue);
+          renderIndex(updated, 'local-live', new Date().toLocaleTimeString('vi-VN'));
+        } catch(err) {}
+      }
+    });
+
     (async function init() {
       try {
         const res = await loadCvData();

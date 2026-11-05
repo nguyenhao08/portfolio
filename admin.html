@@ -762,7 +762,7 @@
           <div style="display: flex; flex-direction: column; gap: 14px;">
             <div class="form-group">
               <label class="form-label">Họ và tên</label>
-              <input type="text" class="form-control" id="profName" placeholder="Võ Nguyễn Hào">
+              <input type="text" class="form-control" id="profName" placeholder="Võ Nguyên Hào">
             </div>
             <div class="form-group">
               <label class="form-label">Chữ viết tắt (Avatar Initials)</label>
@@ -985,8 +985,8 @@
       <button type="button" class="btn-secondary" onclick="exportJsonFile()" title="Tải file cv_data.json về máy tính">
         <i class="fa-solid fa-download"></i> Tải JSON về máy
       </button>
-      <button type="button" class="btn-secondary" onclick="saveToLocalDraft()" title="Lưu nháp vào trình duyệt">
-        <i class="fa-solid fa-floppy-disk"></i> Lưu nháp
+      <button type="button" class="btn-secondary" onclick="saveToLocalDraft()" title="Lưu và áp dụng ngay sang Portfolio & CV">
+        <i class="fa-solid fa-bolt" style="color: var(--amber);"></i> Áp dụng ngay sang Portfolio / CV
       </button>
       <button type="button" class="btn-push" id="btnPush" onclick="pushJsonToGitHub()">
         <i class="fa-brands fa-github"></i> Lưu & Push lên GitHub
@@ -1004,7 +1004,7 @@
     // ============================================================
     let cvData = {
       profile: {
-        name: "Võ Nguyễn Hào",
+        name: "Võ Nguyên Hào",
         avatar: "assets/images/avatar.jpg",
         initials: "VH",
         title: "BOD Sales Assistant",
@@ -1548,24 +1548,17 @@
       if (input) input.click();
     }
 
-    async function handleProjLogoSelected(idx, event) {
+    function handleProjLogoSelected(idx, event) {
       const file = event.target.files[0];
       if (!file) return;
-      const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-      const targetRepoPath = `assets/images/projects/${cleanName}`;
-      
-      document.getElementById(`projLogoInput_${idx}`).value = targetRepoPath;
-      updateProjField(idx, 'logo', targetRepoPath);
 
-      // Upload directly if token configured
-      const cfg = getGhConfig();
-      if (cfg.owner && cfg.repo && cfg.token) {
-        toast(`Đang upload logo "${file.name}" lên GitHub repo...`, 'info');
-        const ok = await uploadFileToGitHub(file, targetRepoPath);
-        if (ok) toast(`Đã upload logo thành công vào ${targetRepoPath}`, 'success');
-      } else {
-        toast(`Đã chọn logo. Lưu ý: Cấu hình GitHub Token để tự động push ảnh lên repo.`, 'info');
-      }
+      compressImage(file, 240, 240, 0.85, function(dataUrl) {
+        const input = document.getElementById(`projLogoInput_${idx}`);
+        if (input) input.value = dataUrl;
+        updateProjField(idx, 'logo', dataUrl);
+        saveToLocalDraft();
+        toast(`Đã lưu logo dự án và cập nhật ngay sang Portfolio / CV!`, 'success');
+      });
     }
 
     // ============================================================
@@ -1632,21 +1625,54 @@
       document.getElementById(id).click();
     }
 
+    // Nén ảnh về kích thước chuẩn và tạo Data URL tối ưu
+    function compressImage(file, maxWidth, maxHeight, quality, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          let width = img.width;
+          let height = img.height;
+          if (width > height) {
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+          } else {
+            if (height > maxHeight) {
+              width = Math.round((width * maxHeight) / height);
+              height = maxHeight;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', quality);
+          callback(dataUrl);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
     function handleAvatarSelected(event) {
       const file = event.target.files[0];
       if (!file) return;
       selectedAvatarFile = file;
 
-      const reader = new FileReader();
-      reader.onload = e => {
-        document.getElementById('avatarPreviewImg').src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      // Nén ảnh về kích thước chuẩn (360x360 px, ~25KB) để nhúng trực tiếp Data URL
+      compressImage(file, 360, 360, 0.88, function(dataUrl) {
+        document.getElementById('avatarPreviewImg').src = dataUrl;
+        document.getElementById('profAvatarPath').value = dataUrl;
+        if (!cvData.profile) cvData.profile = {};
+        cvData.profile.avatar = dataUrl;
 
-      const targetPath = `assets/images/${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-      document.getElementById('profAvatarPath').value = targetPath;
-      if (cvData.profile) cvData.profile.avatar = targetPath;
-      toast(`Đã chọn ảnh đại diện "${file.name}". Bạn có thể nhấn nút upload lên GitHub.`, 'info');
+        // Lưu ngay vào localStorage (cv_data_live) để Portfolio và CV cập nhật lập tức!
+        saveToLocalDraft();
+        toast('Đã lưu ảnh avatar! Mở tab Portfolio hoặc CV để thấy ảnh hiển thị ngay.', 'success');
+      });
     }
 
     async function uploadAvatarToGitHub() {
@@ -1873,8 +1899,9 @@
     function saveToLocalDraft() {
       collectFormData();
       const content = JSON.stringify(cvData, null, 2);
+      localStorage.setItem('cv_data_live', content);
       localStorage.setItem('cv_data_local_draft', content);
-      toast('Đã lưu bản nháp vào bộ nhớ trình duyệt!', 'success');
+      toast('Đã lưu và đồng bộ tức thì sang Portfolio & CV!', 'success');
     }
 
     function esc(s) {
@@ -1888,16 +1915,32 @@
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedGhConfig();
 
-      // Check if local file cv_data.json exists
-      fetch(`cv_data.json?_t=${Date.now()}`)
-        .then(res => res.json())
-        .then(json => {
-          cvData = json;
+      // Check if live data exists in localStorage first, otherwise fetch cv_data.json
+      let hasLive = false;
+      try {
+        let live = localStorage.getItem('cv_data_live');
+        if (live) {
+          if (live.includes('Võ Nguyễn Hào')) {
+            live = live.replace(/Võ Nguyễn Hào/g, 'Võ Nguyên Hào');
+            try { localStorage.setItem('cv_data_live', live); } catch(_) {}
+          }
+          cvData = JSON.parse(live);
           populateUI();
-        })
-        .catch(() => {
-          populateUI();
-        });
+          hasLive = true;
+        }
+      } catch(e) {}
+
+      if (!hasLive) {
+        fetch(`cv_data.json?_t=${Date.now()}`)
+          .then(res => res.json())
+          .then(json => {
+            cvData = json;
+            populateUI();
+          })
+          .catch(() => {
+            populateUI();
+          });
+      }
 
       // Set default commit message
       document.getElementById('commitMsgInput').value = `feat(cv): cập nhật cv_data.json qua Admin Panel · ${new Date().toLocaleString('vi-VN')}`;

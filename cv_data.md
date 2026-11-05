@@ -1,5 +1,5 @@
 # THÔNG TIN CÁ NHÂN
-- Họ tên: Võ Nguyễn Hào
+- Họ tên: Võ Nguyên Hào
 - Chức danh: BOD Sales Assistant | IT Pre-Sales & Enterprise Solution Consultant
 - Vị trí hiện tại: Trợ lý Kinh doanh Ban Giám đốc (từ 01/07/2026), trước đó là BD Executive & Assistant to Deputy CEO (từ 02/2025) tại Arito Solutions.
 - Vai trò PM: Project Manager dẫn dắt dự án đạt chứng nhận an toàn thông tin ISO 27001:2022.

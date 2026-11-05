@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Võ Nguyễn Hào | Enterprise Solution Consultant & BOD Sales Assistant</title>
+  <title>Võ Nguyên Hào | Enterprise Solution Consultant & BOD Sales Assistant</title>
   
   <!-- Google Fonts: Outfit & Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1175,7 +1175,7 @@
   <nav class="navbar">
     <a href="#" class="nav-brand">
       <div class="brand-badge" id="navBrandBadge">VH</div>
-      <span id="navBrandName">Võ Nguyễn Hào</span>
+      <span id="navBrandName">Võ Nguyên Hào</span>
     </a>
     <ul class="nav-menu">
       <li><a href="#services" class="nav-link active">Năng lực</a></li>
@@ -1210,7 +1210,7 @@
         <div class="hero-greeting">Hồ sơ năng lực cá nhân</div>
 
         <h1 class="hero-headline" id="heroHeadline">
-          Võ Nguyễn <span class="highlight-text">Hào</span>
+          Võ Nguyên <span class="highlight-text">Hào</span>
         </h1>
 
         <div class="hero-role-title" id="heroRoleTitle">
@@ -1235,7 +1235,7 @@
       <div class="hero-visual">
         <div class="profile-showcase-card">
           <div class="avatar-fawzi" id="heroAvatarBox">VH</div>
-          <h2 class="profile-card-name" id="heroNameCard">Võ Nguyễn Hào</h2>
+          <h2 class="profile-card-name" id="heroNameCard">Võ Nguyên Hào</h2>
           <div class="profile-card-role" id="heroRoleCard">BOD Sales Assistant | Arito Solutions</div>
 
           <div class="profile-badges-row">
@@ -1426,7 +1426,7 @@
               <span><strong>Khóa đào tạo:</strong> Nhận thức chung & Đánh giá viên nội bộ ISMS</span>
               <span><strong>Mã chứng nhận:</strong> KAT259070013</span>
               <span><strong>Thời gian:</strong> 28/11/2025 & 03/07/2026</span>
-              <span><strong>Học viên:</strong> Võ Nguyễn Hào (Arito Solutions)</span>
+              <span><strong>Học viên:</strong> Võ Nguyên Hào (Arito Solutions)</span>
             </div>
           </div>
           <div>
@@ -1526,7 +1526,7 @@
   <!-- ================= FOOTER ================= -->
   <footer>
     <div class="footer-brand">
-      © 2026 <span>Võ Nguyễn Hào</span> · Enterprise Solution Consultant Portfolio.
+      © 2026 <span>Võ Nguyên Hào</span> · Enterprise Solution Consultant Portfolio.
     </div>
     <div class="sync-status-badge live" id="syncStatus">
       <i class="fa-solid fa-circle-check"></i> <span id="syncText">Đồng bộ dữ liệu thời gian thực</span>
@@ -1555,12 +1555,12 @@
       </div>
       <div class="cert-modal-body">
         <a href="iso-27001-certificate.pdf" target="_blank" title="Nhấn để xem PDF kích thước đầy đủ">
-          <img src="iso-27001-certificate.jpg" alt="Chứng nhận ISO/IEC 27001:2022 - Võ Nguyễn Hào" class="cert-preview-img">
+          <img src="iso-27001-certificate.jpg" alt="Chứng nhận ISO/IEC 27001:2022 - Võ Nguyên Hào" class="cert-preview-img">
         </a>
         <div class="cert-meta-grid">
           <div class="cert-meta-item">
             <strong>Học viên & Đơn vị</strong>
-            <span>Võ Nguyễn Hào · Công ty Cổ phần Giải pháp Công nghệ Arito</span>
+            <span>Võ Nguyên Hào · Công ty Cổ phần Giải pháp Công nghệ Arito</span>
           </div>
           <div class="cert-meta-item">
             <strong>Nội dung đào tạo</strong>
@@ -1839,6 +1839,15 @@
         });
       }
     })();
+
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'cv_data_live' && e.newValue) {
+        try {
+          const updated = JSON.parse(e.newValue);
+          renderPortfolio(updated, 'local-live', new Date().toLocaleTimeString('vi-VN'));
+        } catch(err) {}
+      }
+    });
 
     (async function init() {
       try {
